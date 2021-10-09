@@ -1,0 +1,6 @@
+LDR       |Ban Giam Doc   |Nguyen Quoc    |Tinh |2	           |1	
+HRS       |Ban Nhan Su    |Le Nguyen Tien |Anh  |4	           |2
+MKT       |Ban Kinh Doanh |Truong Quang   |Chu  |5	           |1
+TNC       |Ban Ki Thuat   |Nguyen Duc     |Duy  |6	           |0
+ACT       |Ban Ke Toan    |Vo Dai         |Khang|4	           |2
+PJT	      |Ban Du An	  |Le Van 	      |Thinh|4	           |2
