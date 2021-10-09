@@ -1,4 +1,3 @@
-Mã Đơn Vị | Tên Đơn Vị    | Người đứng đầu      | Số lượng nam | Số lượng nữ
 LDR       |Ban Giam Doc   |Nguyen Quoc    |Tinh |2	           |1	
 HRS       |Ban Nhan Su    |Le Nguyen Tien |Anh  |4	           |2
 MKT       |Ban Kinh Doanh |Truong Quang   |Chu  |5	           |1

@@ -1,0 +1,34 @@
+Mã NV | Họ             |Tên   |SĐT        |Ngày Sinh  |Giới Tính | Mã Đơn Vị |Chức Vụ  | Hệ Số Lương |Năm vào | Trình Độ | Ngoại Ngữ
+L001  |Nguyen Quoc     |Tinh  |0912459841 |24/06/1965 |Nam       | LDR       |GD       | 6.5         |1988    | Dai Hoc  | ielts 8.5
+L002  |Phan Khanh      |Ngan  |0896224056 |27/01/1969 |Nu        | LDR       |PGD      | 6.2         |1990    | Dai Hoc  | ielts 8.0
+L003  |Tran Trong      |Nam   |0899227417 |27/06/1970 |Nam       | LDR       |PGD      | 6.2         |1993    | Dai Hoc  | ielts 8.5 
+H101  |Le Nguyen Tien  |Anh   |0936217548 |02/03/1977 |Nam       | HRS       |TP       | 5.5         |2000    | Dai Hoc  | ielts 8.5
+H102  |Duong Quoc      |Bao   |0399883467 |08/01/1977 |Nam       | HRS       |PP       | 5.2         |2001    | Dai Hoc  | ielts 8.0
+H103  |Nguyen Thi      |Cam   |0387201054 |23/06/1979 |Nu        | HRS       |NV       | 4.4         |2002    | Cao Dang | TOEIC 850
+H104  |Nguyen Thi Kim  |Chi   |0935675483 |08/08/1978 |Nu        | HRS       |NV       | 4.5         |2002    | Cao Dang | TOEIC 900
+H105  |Nguyen Van      |Nghia |0352736013 |30/08/1980 |Nam       | HRS       |NV       | 3.5         |2004    | Dai Hoc  | TOEIC 850
+H106  |Duong Quang     |Phu   |0338375765 |24/11/1985 |Nam       | HRS       |NV       | 3.5         |2007    | Cao Dang | TOEIC 800
+M201  |Truong Quang    |Chu   |0799024990 |12/11/1975 |Nam       | MKT       |TP       | 5.5         |1999    | Dai Hoc  | ielts 8.5
+M202  |Le Van          |Dat   |0862700132 |19/05/1976 |Nam       | MKT       |PP       | 5.2         |1999    | Dai Hoc  | ielts 7.5
+M203  |Tran Thi        |Diem  |0394707101 |28/06/1978 |Nu        | MKT       |NV       | 4.0         |2000    | Dai Hoc  | TOEIC 850
+M204  |Nguyen Huu      |Duc   |0986301507 |15/11/1976 |Nam       | MKT       |NV       | 4.0         |1998    | Cao Dang | TOEIC 850
+M205  |Hoang Le Thanh  |Phuong|0948887172 |30/05/1983 |Nam       | MKT       |NV       | 3.6         |2006    | Dai Hoc  | ielts 7.5
+M206  |Do Minh         |Quan  |0935365832 |05/03/1991 |Nam       | MKT       |NV       | 3.4         |2014    | Dai Hoc  | ielts 7.0 
+T301  |Nguyen Duc      |Duy   |0763503451 |16/11/1974 |Nam       | TNC       |TP       | 5.5         |1996    | Dai Hoc  | ielts 9.0
+T302  |Ho Duc          |Hoang |0338650408 |20/06/1973 |Nam       | TNC       |PP       | 5.2         |1995    | Dai Hoc  | ielts 8.0
+T303  |Nguyen Trong    |Hoang |0366898411 |13/11/1976 |Nam       | TNC       |NV       | 4.5         |1996    | Cao Dang | TOEIC 800
+T304  |Duong Trung     |Huy   |0794846901 |18/06/1979 |Nam       | TNC       |NV       | 4.2         |1997    | Dai Hoc  | ielts 7.5
+T305  |Phan Phu        |Quy   |0845154919 |16/12/1987 |Nam       | TNC       |NV       | 3.8         |2009    | Dai Hoc  | TOEIC 850
+T306  |Nguyen Dac      |Thai  |0365718545 |17/10/1995 |Nam       | TNC       |NV       | 3.5         |2018    | Dai Hoc  | TOEIC 700
+A401  |Vo Dai          |Khang |0387128521 |14/03/1970 |Nam       | ACT       |TP       | 5.5         |1992    | Dai Hoc  | ielts 8.0
+A402  |Pham Thi Quynh  |Linh  |0702642445 |03/11/1972 |Nu        | ACT       |PP       | 5.2         |1995    | Dai Hoc  | TOEIC 850
+A403  |Hoang Nhat Bao  |Long  |0392043731 |07/01/1974 |Nam       | ACT       |NV       | 4.4         |1997    | Cao Dang | TOEIC 800
+A404  |Tran Van        |Luyt  |0795602928 |22/03/1975 |Nam       | ACT       |NV       | 4.4         |1997    | Cao Dang | TOEIC 750
+A405  |Tran Duc        |Thang |0858134825 |30/10/1993 |Nam       | ACT       |NV       | 3.4         |2015    | Dai Hoc  | ielts 7.5
+A406  |Vo Thi Tuong    |Vy    |0394822372 |29/06/1997 |Nu        | ACT       |NV       | 3.2         |2019    | Cao Dang | TOEIC 7.0 
+P501  |Le Van          |Thinh |0706675355 |30/09/1974 |Nam       | PJT       |TP       | 5.5         |1997    | Dai Hoc  | ielts 8.5
+P502  |Bui Van         |Thong |0384565094 |27/10/1976 |Nam       | PJT       |PP       | 5.2         |1999    | Dai Hoc  | ielts 8.0
+P503  |Le Thi Thuy     |Ngan  |0336578743 |12/03/1980 |Nu        | PJT       |NV       | 4.0         |2004    | Dai Hoc  | TOEIC 900
+P504  |Tran Thi Ngoc   |Anh   |0373695101 |20/08/1989 |Nu        | PJT       |NV       | 3.6         |2012    | Dai Hoc  | ielts 7.5
+P505  |Do Chau         |Trinh |0794531314 |13/10/1997 |Nam       | PJT       |NV       | 3.0         |2019    | Dai Hoc  | TOEIC 800
+P506  |Nguyen Huu      |Tuan  |0344041735 |03/07/1994 |Nam       | PJT       |NV       | 3.2         |2017    | Cao Dang | TOEIC 800  
