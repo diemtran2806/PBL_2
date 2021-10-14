@@ -1,17 +1,16 @@
+#include<iostream>
+#include "Chung.h"
+using namespace std;
+
 #ifndef NHANVIEN_H
 #define NHANVIEN_H
-#include<iostream>
-using namespace std;
 
 class NhanVien{
 private:
     string maNhanVien;
-    string ho;
-    string ten;
     string soDienThoai;
     string ngaySinh;
-    string gioiTinh;
-    string maDonVi;
+    bool gioiTinh;
     string chucVu;
     double heSoLuong;
     double luong;
@@ -23,5 +22,10 @@ private:
     string ngoaiNgu;
 public:
     NhanVien();
+    int tinhLuong(); //tinh luong    
+    friend istream &operator >>(istream &in,NhanVien &);
+    friend ostream &operator <<(ostream &out,const NhanVien &);
+    friend bool operator <(const NhanVien &, const NhanVien &);
+    friend bool operator >(const NhanVien &, const NhanVien &);
 };
 #endif
