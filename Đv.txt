@@ -1,6 +1,6 @@
-LDR       |Ban Giam Doc   |Nguyen Quoc    |Tinh |2	           |1	
-HRS       |Ban Nhan Su    |Le Nguyen Tien |Anh  |4	           |2
-MKT       |Ban Kinh Doanh |Truong Quang   |Chu  |5	           |1
-TNC       |Ban Ki Thuat   |Nguyen Duc     |Duy  |6	           |0
-ACT       |Ban Ke Toan    |Vo Dai         |Khang|4	           |2
-PJT	      |Ban Du An	  |Le Van 	      |Thinh|4	           |2
+L001 |Nguyen Quoc    |Tinh |LDR|Ban Giam Doc   |2	           |1	
+H101 |Le Nguyen Tien |Anh  |HRS|Ban Nhan Su    |4	           |2
+M201 |Truong Quang   |Chu  |MKT|Ban Kinh Doanh |5	           |1
+T301 |Nguyen Duc     |Duy  |TNC|Ban Ki Thuat   |6	           |0
+A401 |Vo Dai         |Khang|ACT|Ban Ke Toan    |4	           |2
+P501 |Le Van 	       |Thinh|PJT|Ban Du An	     |4	           |2
