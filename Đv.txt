@@ -1,4 +1,4 @@
-Ma ĐV |Phong Ban      |Ma NV
+Ma ĐV |Phong Ban      |Ma NV~
 LDR   |Ban Giam Doc   |L001
 HRS   |Ban Nhan Su    |H101
 MKT   |Ban Kinh Doanh |M201
