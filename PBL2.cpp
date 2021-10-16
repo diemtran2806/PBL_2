@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class birthday{                //class ngày tháng năm sinh ddeeer sau này lấy cho dễ
+class birthday{                //class ngày tháng năm sinh để sau này lấy cho dễ
     int day;
     int month;
     int year;
@@ -29,8 +29,8 @@ class birthday{                //class ngày tháng năm sinh ddeeer sau này l�
 class person{
 protected:
     string codeM;     //mã nhân viên
-    string fmname;    //họ và đệm
-    string lastname;  //
+    string mlname;    //họ và đệm
+    string firstname; //
     string codeG;     //mã đơn vị
 public:
     person();
