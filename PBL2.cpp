@@ -1,70 +1,96 @@
 #include <iostream>
 using namespace std;
 
-class Chung{
-private:
-    string ho;
-    string ten;
-    string maDonVi;
-public:
-    Chung();
-    friend class NhanVien;
-    friend class DonVi;    
+class birthday{                //class ngày tháng năm sinh ddeeer sau này lấy cho dễ
+    int day;
+    int month;
+    int year;
+    public:
+      int getDay(){
+          return day;
+      }
+      void setDay(int day){
+          this->day = day;
+      }
+      int getMonth(){
+          return month;
+      }
+      void setMonth(int month){
+          this->month = month;
+      }
+      int getYear(){
+          return year;
+      }
+      void setYear(int year){
+          this->year = year;
+      }
 };
 
-class NhanVien{
-private:
-    string maNhanVien;
-    string soDienThoai;
-    string ngaySinh;
-    bool gioiTinh;
-    string chucVu;
-    double heSoLuong;
-    double luong;
-    double phuCap;
-    double thucLinh;
-    int namVao;
-    int soNamLamViec;
-    string trinhDo;
-    string ngoaiNgu;
+class person{
+protected:
+    string codeM;     //mã nhân viên
+    string fmname;    //họ và đệm
+    string lastname;  //
+    string codeG;     //mã đơn vị
 public:
-    NhanVien();
+    person();
+    virtual void readfile(ifstream &);
+    virtual void display();
+};
+
+class member :public person{
+private:
+    string pnumber;
+    birthday ns;
+    int gender;
+    string position;
+    float C_salary; //hệ số lương
+    int year_in;
+    string degree; //trình độ, cấp bậc
+    string L_certificate; // bẳng ngoại ngữ
+public:
+    member();
+    void readfile(ifstream &);
+    void display();
     int tinhLuong(); //tinh luong    
-    friend istream &operator >>(istream &in,NhanVien &);
-    friend ostream &operator <<(ostream &out,const NhanVien &);
-    friend bool operator <(const NhanVien &, const NhanVien &);
-    friend bool operator >(const NhanVien &, const NhanVien &);
+    friend istream &operator >>(istream &in,member &);
+    friend ostream &operator <<(ostream &out,const member &);
+    friend bool operator <(const member &, const member &);
+    friend bool operator >(const member &, const member &);
 };
 
-class DonVi{
+class group :public person{ //đơn vị
 private:
-    string tenDonVi;
-    int soLuongNam;
-    int soLuongNu;
+    string nameG;
+    int numofM;   //số lượng nam
+    int numofFM;  //số lượng nữ
 public:
-    DonVi();
+    group();
+    void readfile(ifstream &);
+    void display();
 };
 
-class DanhSach{
+class list{
 private:
-    int soLuong_NV;
-    int soLuong_DV;
-    NhanVien *danhSach_NV;
-    DonVi *danhSach_DV;
+    int numofMem;   //sl nv
+    int numofGr;    //sl đơn vị
+    member *list_mem;
+    group *list_gr;
 public:
-    DanhSach(int, int);
-    DanhSach(const DanhSach&);
-    void nhapFile_NV(FILE *fi);                     //nhap danh sach nhan vien tu file 
-    void nhapFile_DV(FILE *fi);                     //nhap danh sach don vi tu file
-    void in_NV();                                   //in danh sach nhan vien
-    void in_DV();                                   //in bang thong ke theo don vi
-    void boSung(NhanVien&, int k);                  //bo sung 1 doi tuong vao vi tri k bat ki
-    void sapXep(bool CompFunc(NhanVien&, NhanVien&));//sap xep danh sach nhan vien theo thu tu tang/giam
-    NhanVien timkiem(NhanVien&);                    //tim kiem 1 nhan vien
-    void xoa(NhanVien&);                            //xoa 1 nhan vien bat ki
-    NhanVien &operator [](int i) const;             //toan tu lay phan tu thu i [] trong danh sach nhan vien
+    list(int, int);
+    list(const list&);
+    void readfile_mem(FILE *fi);                     //nhap danh sach nhan vien tu file 
+    void readfile_gr(FILE *fi);                      //nhap danh sach don vi tu file
+    void display_mem();                              //in danh sach nhan vien
+    void display_gr();                               //in bang thong ke theo don vi
+    void add(member&, int k);                        //bo sung 1 doi tuong vao vi tri k bat ki
+    void sort(bool CompFunc(member&, member&));      //sap xep danh sach nhan vien theo thu tu tang/giam
+    member search(member&);                          //tim kiem 1 nhan vien
+    void delete_mem(member&);                        //xoa 1 nhan vien bat ki
+    member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
 };
 
 int main(){
+    
     return 0;
 }
