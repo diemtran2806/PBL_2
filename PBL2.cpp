@@ -26,20 +26,12 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
       }
 };
 
-class person{
-protected:
-    string codeM;     //mã nhân viên
+class member {
+private:
+    string mID;     //mã nhân viên
     string mlname;    //họ và đệm
     string firstname; //
-    string codeG;     //mã đơn vị
-public:
-    person();
-    virtual void readfile(ifstream &);
-    virtual void display();
-};
-
-class member :public person{
-private:
+    string gID;     //mã đơn vị
     string pnumber;
     birthday ns;
     int gender;
@@ -52,30 +44,45 @@ public:
     member();
     void readfile(ifstream &);
     void display();
-    int tinhLuong(); //tinh luong    
+    int getSalary(); //tinh luong    
     friend istream &operator >>(istream &in,member &);
     friend ostream &operator <<(ostream &out,const member &);
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
 };
 
-class group :public person{ //đơn vị
+class group { //đơn vị
 private:
-    string nameG;
-    int numofM;   //số lượng nam
-    int numofFM;  //số lượng nữ
+    string gID;
+    string gName;
+    string mID;
 public:
     group();
     void readfile(ifstream &);
     void display();
 };
 
+class Position 
+{
+private:
+    int pID;
+    string pName; 
+    int pAllowance;
+public:
+    Position ();
+    void readfile(ifstream &);
+    void display();
+    ~Position ();
+};
+
 class list{
 private:
     int numofMem;   //sl nv
     int numofGr;    //sl đơn vị
+    int numofP;
     member *list_mem;
     group *list_gr;
+    Position *list_p;
 public:
     list(int, int);
     list(const list&);
@@ -88,17 +95,6 @@ public:
     member search(member&);                          //tim kiem 1 nhan vien
     void delete_mem(member&);                        //xoa 1 nhan vien bat ki
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
-};
-
-class Position 
-{
-private:
-    int pID;
-    string pName; 
-    int pAllowance;
-public:
-    Position ();
-    ~Position ();
 };
 
 
