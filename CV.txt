@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-MaCV | Ten chuc vu | He so PC
-=======
 Ma CV| Ten chuc vu | He so PC~
->>>>>>> 1b5d859f0e78a9de3d2ef1e4ec0b4daad8169a4f
-GD   | Giam doc    | 0.5
-PGD  | Pho giam doc| 0.5
+GD   | Giam doc    | 0.50
+PGD  | Pho giam doc| 0.50
 TP   | Truong phong| 0.25
 PP   | Pho phong   | 0.25
-<<<<<<< HEAD
-NV   | Nhan vien   | 0.0
-=======
-NV   | Nhan vien   | 0
->>>>>>> 1b5d859f0e78a9de3d2ef1e4ec0b4daad8169a4f
+NV   | Nhan vien   | 0.00
