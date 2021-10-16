@@ -1,6 +1,7 @@
-L001 |Nguyen Quoc    |Tinh |LDR|Ban Giam Doc   |2	           |1	
-H101 |Le Nguyen Tien |Anh  |HRS|Ban Nhan Su    |4	           |2
-M201 |Truong Quang   |Chu  |MKT|Ban Kinh Doanh |5	           |1
-T301 |Nguyen Duc     |Duy  |TNC|Ban Ki Thuat   |6	           |0
-A401 |Vo Dai         |Khang|ACT|Ban Ke Toan    |4	           |2
-P501 |Le Van 	       |Thinh|PJT|Ban Du An	     |4	           |2
+Ma ĐV |Phong Ban      |Ma NV~
+LDR   |Ban Giam Doc   |L001
+HRS   |Ban Nhan Su    |H101
+MKT   |Ban Kinh Doanh |M201
+TNC   |Ban Ki Thuat   |T301
+ACT   |Ban Ke Toan    |A401
+PJT   |Ban Du An	    |P501
