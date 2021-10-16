@@ -90,6 +90,20 @@ public:
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
 };
 
+class Position 
+{
+private:
+    int pID;
+    string pName; 
+    int pAllowance;
+public:
+    Position ();
+    ~Position ();
+};
+
+
+
+
 int main(){
     
     return 0;
