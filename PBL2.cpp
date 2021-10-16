@@ -26,20 +26,12 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
       }
 };
 
-class person{
-protected:
+class member{
+private:
     string codeM;     //mã nhân viên
     string mlname;    //họ và đệm
     string firstname; //
     string codeG;     //mã đơn vị
-public:
-    person();
-    virtual void readfile(ifstream &);
-    virtual void display();
-};
-
-class member :public person{
-private:
     string pnumber;
     birthday ns;
     int gender;
@@ -52,22 +44,33 @@ public:
     member();
     void readfile(ifstream &);
     void display();
-    int tinhLuong(); //tinh luong    
+    int getSalary(); //tinh luong    
     friend istream &operator >>(istream &in,member &);
     friend ostream &operator <<(ostream &out,const member &);
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
 };
 
-class group :public person{ //đơn vị
+class group { //đơn vị
 private:
-    string nameG;
-    int numofM;   //số lượng nam
-    int numofFM;  //số lượng nữ
+    string codeG; //mã đơn vị
+    string nameG; //tên đơn vị
+    string codeM; //mã nhân viên
 public:
     group();
     void readfile(ifstream &);
     void display();
+};
+
+class position{
+private:
+    string codeP; //mã chức vụ
+    string nameofP; //tên chức vụ
+    string allowance; // hs pc
+public:
+    void readfile(ifstream &);
+    void display();
+
 };
 
 class list{
@@ -76,6 +79,7 @@ private:
     int numofGr;    //sl đơn vị
     member *list_mem;
     group *list_gr;
+    position *list_p; 
 public:
     list(int, int);
     list(const list&);
