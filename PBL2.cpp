@@ -99,6 +99,8 @@ private:
 public:
     Position ();
     ~Position ();
+    void readfile(ifstream &);
+    void display();
 };
 
 
