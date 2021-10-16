@@ -1,6 +1,6 @@
-MaCV | Ten chuc vu | He so PC
-GD   | Giam doc    | 1.0
-PGD  | Pho giam doc| 0.8
-TP   | Truong phong| 0.6
-PP   | Pho phong   | 0.4
-NV   | Nhan vien   | 0.2
+Ma CV| Ten chuc vu | He so PC~
+GD   | Giam doc    | 0.5
+PGD  | Pho giam doc| 0.5
+TP   | Truong phong| 0.25
+PP   | Pho phong   | 0.25
+NV   | Nhan vien   | 0
