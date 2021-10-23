@@ -1,4 +1,4 @@
-Ma CV| Ten chuc vu | He so PC~
+Ma CV| Ten chuc vu | He so PC
 GD   | Giam doc    | 0.50
 PGD  | Pho giam doc| 0.50
 TP   | Truong phong| 0.25

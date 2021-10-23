@@ -76,7 +76,7 @@ class person {                      // class chung
 int main(){
     person *ds[100];
     ifstream filein;
-    filein.open("C:\\Users\\ttdie\\Desktop\\Nv.txt", ios_base::in);
+    filein.open("D:\\code\\PBL_2\\Nv.txt", ios_base::in);
     person *x= new person();
     x->readfile(filein);
     x->xuat();
