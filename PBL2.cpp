@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <iomanip>
 using namespace std;
 
 class birthday{                //class ngày tháng năm sinh để sau này lấy cho dễ
@@ -41,7 +44,7 @@ private:
     string degree; //trình độ, cấp bậc
     string L_certificate; // bẳng ngoại ngữ
 public:
-    member();
+    //member();
     void readfile(ifstream &);
     void display();
     int getSalary(); //tinh luong    
@@ -51,6 +54,41 @@ public:
     friend bool operator >(const member &, const member &);
 };
 
+void member::readfile(ifstream &in) {
+    string s;  //bỏ qua dòng đầu
+    char t;   // đọc kí tự bỏ qua
+    getline(in,s,'\n');
+    getline(in,mID,'|');
+    getline (in, mlname, '|' );
+    getline (in, firstname, '|');
+    getline (in, gID, '|');
+    getline(in,pnumber,'|');
+    int day;
+    in >> day;
+    ns.setDay(day);
+    in >>t;  // đọc |, bỏ qua nó
+    int month;
+    in >> month;
+    ns.setMonth(month);
+    in >>t;
+    int year;
+    in >> year;
+    ns.setYear(year);
+    in >>t;
+    in >> gender;
+    getline(in,s,'|');
+    getline(in,position,'|');
+    in >> C_salary;
+    getline(in,s,'|');
+    in >> year_in;
+    getline(in,s,'|');
+    getline(in,degree,'|');
+    getline(in, L_certificate,'\n');
+}
+void member::display(){
+    cout<<setw(10)<<mID<<setw(20)<<mlname+firstname<<setw(20)<<pnumber<<ns.getDay()<<"/"<<ns.getMonth()<<"/"<<ns.getYear()
+    <<setw(10)<<gender<<setw(10)<<position<<setw(10)<<C_salary<<setw(10)<<year_in<<setw(10)<<degree<<setw(10)<<L_certificate<<endl;
+}
 class group { //đơn vị
 private:
     string gID;
@@ -99,6 +137,14 @@ public:
 
 
 int main(){
-    
+    cout <<left;
+    member *ds;
+    ifstream filein;
+    filein.open("F:\\PBL2_Real\\Nhan Vien.txt", ios_base::in);
+    member *x= new member();
+    x->readfile(filein);
+    x->display();
+
+    filein.close();
     return 0;
 }

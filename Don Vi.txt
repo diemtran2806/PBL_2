@@ -4,4 +4,4 @@ HRS   |Ban Nhan Su    |H101
 MKT   |Ban Kinh Doanh |M201
 TNC   |Ban Ki Thuat   |T301
 ACT   |Ban Ke Toan    |A401
-PJT   |Ban Du An	    |P501
+PJT   |Ban Du An      |P501
