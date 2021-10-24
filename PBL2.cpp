@@ -33,33 +33,53 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
 //nhan vien
 class member {
 private:
-    string mID;     //mã nhân viên
+    string mID;       //mã nhân viên
     string mlname;    //họ và đệm
-    string firstname; //
-    string gID;     //mã đơn vị
+    string firstname; //tên
+    string gID;       //mã đơn vị
     string pnumber;
-    birthday ns;//da_tri
+    birthday ns;      //da_tri
     int gender;
     string position;
-    float C_salary; //hệ số lương
+    float C_salary;   //hệ số lương
     int year_in;
-    string degree; //trình độ, cấp bậc
-    string L_certificate; // bẳng ngoại ngữ
+    string degree;    //trình độ, cấp bậc
+    string L_certificate; // bằng ngoại ngữ
 public:
-    //member();
+    member();
+    member(string , string , string , string , string , birthday , int , string , float , int , string , string );
     void readfile_M(ifstream &);
     int getSalary(); //tinh luong    
     friend istream &operator >>(istream &in, member &);
     friend ostream &operator <<(ostream &out, member &);
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
-
-    //friend
 };
+
+member::member(){
+    mID = "";
+    mlname = "";
+    firstname = "";
+    gID = "";
+    pnumber = "";
+    ns.setDay(0);
+    ns.setMonth(0);
+    ns.setYear(0);
+    gender = 0;
+    position = "";
+    C_salary = 0;
+    year_in = 0;
+    degree = "";
+    L_certificate = "";
+}
+
+member::member(string mID, string mlname, string firstname, string gID, string pnumber, birthday ns, int gender, string pos, float C_salary, int year_in, string degree, string L_cer)
+    :mID(mID),mlname(mlname),firstname(firstname),gID(gID),pnumber(pnumber),ns(ns),gender(gender),position(pos),
+    C_salary(C_salary),year_in(year_in),degree(degree),L_certificate(L_cer){}
 
 void member::readfile_M(ifstream &in) {
     string s;  //bỏ qua dòng đầu
-    char t;   // đọc kí tự bỏ qua
+    char t;    // đọc kí tự bỏ qua
     getline(in,mID,'|');
     getline(in, mlname, '|' );
     getline(in, firstname, '|');
@@ -87,12 +107,61 @@ void member::readfile_M(ifstream &in) {
     getline(in,degree,'|');
     getline(in, L_certificate,'\n');
 }
+
 ostream &operator <<(ostream &out, member &m){
-    //du nguyen
-    
- out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<setw(10)<<m.ns.getYear()
-    <<setw(10)<<m.gender<<setw(10)<<m.position<<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
+    //du nguyen    
+    out<<setw(10)<<m.mID<<setw(25)<<m.mlname+m.firstname<<setw(10)<<m.gID<<setw(15)<<m.pnumber<<right<<setfill('0')<<setw(2)<<m.ns.getDay()
+        <<"/"<<setw(2)<<m.ns.getMonth()<<"/"<<setfill(' ')<<left<<setw(10)<<m.ns.getYear()<<setw(10)<<m.gender<<setw(10)<<m.position
+        <<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
     return out;
+}
+
+istream &operator >>(istream &in, member &m){
+    int temp;
+    int gt=0;
+    string s;
+    cout<<"Nhap ma nhan vien: ";
+    in >> m.mID;
+    cout<<"Nhap ho va ten dem: ";
+    getline(in>>ws,m.mlname);
+    m.mlname+=" ";
+    cout<<"Nhap ten: ";
+    getline(in>>ws,m.firstname);
+    cout<<"Nhap ma don vi: ";
+    in >> m.gID;
+    cout<<"Nhap so dien thoai: ";
+    in >> m.pnumber;
+    cout<<"Nhap ngay/thang/nam sinh: "<<endl;
+    cout<<"Nhap ngay sinh: ";
+    in >> temp;
+    m.ns.setDay(temp);
+    cout<<"Nhap thang sinh: ";
+    in >> temp;
+    m.ns.setMonth(temp);
+    cout<<"Nhap nam sinh: ";
+    in >> temp;
+    m.ns.setYear(temp);
+    while(gt==0){
+        gt=1; //điều kiện dừng
+        cout<<"Nhap gioi tinh (nam/nu): ";
+        in >> s;
+        if(s=="nam") m.gender = 0;
+        else if (s=="nu") m.gender = 1;
+        else {
+            cout<<"Ban da nhap sai!"<<endl;
+            gt=0;
+        }
+    }
+    cout<<"Nhap ma chuc vu: ";
+    in >> m.position;
+    cout<<"Nhap he so luong: ";
+    in >> m.C_salary;
+    cout<<"Nhap nam vao lam viec: ";
+    in >> m.year_in;
+    cout<<"Nhap trinh do cua nhan vien: ";
+    getline(in>>ws,m.degree);
+    cout<<"Nhap trinh do ngoai ngu cua nhan vien: ";
+    getline(in>>ws,m.L_certificate);
 }
 
 //don vi
@@ -102,11 +171,14 @@ private:
     string gName;
     string mID; //ma nhan vien
 public:
-    //group();
+    group(string ="", string ="", string ="");
     void readfile_G(ifstream &);
     void display();
     friend ostream &operator <<(ostream &out, const group&);
 };
+
+group::group(string gID, string gName, string mID)
+    :gID(gID),gName(gName),mID(mID){}
 
 void group::readfile_G(ifstream &in){
     getline(in,gID,'|');
@@ -131,12 +203,14 @@ private:
     string pName; 
     float pAllowance;
 public:
-    //Position ();
+    Position(string ="", string ="", float =0);
     void readfile_P(ifstream &);
     void display();
     friend ostream &operator <<(ostream &out, const Position&);
-    //~Position ();
 };
+
+Position::Position(string pID, string pName, float pAllowance)
+    :pID(pID),pName(pName),pAllowance(pAllowance){}
 
 void Position::readfile_P(ifstream &in){
     string s;
@@ -168,16 +242,19 @@ public:
     list(int = 0, int = 0, int = 0);
     list(const list&);
     ~list();
-    void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
-    void readfile_gr(ifstream& in);                      //nhap danh sach don vi tu file
-    void readfile_p(ifstream& in);                      //Nhap danh sach chuc vu
+    void readfile_mem(ifstream& in);                 //nhap danh sach nhan vien tu file 
+    void readfile_gr(ifstream& in);                  //nhap danh sach don vi tu file
+    void readfile_p(ifstream& in);                   //Nhap danh sach chuc vu
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
+    void display_p();                                //in bang thong ke cac chuc vu
     void add(member&, int k);                        //bo sung 1 doi tuong vao vi tri k bat ki
     void sort(bool CompFunc(member&, member&));      //sap xep danh sach nhan vien theo thu tu tang/giam
     member search(member&);                          //tim kiem 1 nhan vien
     void delete_mem(member&);                        //xoa 1 nhan vien bat ki
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
+    const list &operator =(const list &);
+    friend ostream &operator <<(ostream &out,const list&);
 };
 
 //Khoi tao
@@ -190,13 +267,33 @@ list::list(int NMem, int NGr, int NP)
 
 }
 
+list::list(const list &l){
+    this->numofMem = l.numofMem;
+    this->numofGr = l.numofGr;
+    this->numofP = l.numofP;
+
+    this->list_mem = new member [numofMem];
+    this->list_gr = new group [numofGr];
+    this->list_p = new Position [numofP];
+
+    for(int i=0; i<numofMem; i++){
+        this->list_mem[i] = l.list_mem[i];
+    }
+    for(int i=0; i<numofGr; i++){
+        this->list_gr[i] = l.list_gr[i];
+    }
+    for(int i=0; i<numofP; i++){
+        this->list_p[i] = l.list_p[i];
+    }
+}
+
 list::~list(){
     delete [] list_mem; 
     delete [] list_gr;
     delete [] list_p;
 }
 
-//doc file nhan vien : còn sai nhân viên cuối
+//doc file nhan vien 
 void list::readfile_mem(ifstream& in){
     in.open("Nhan Vien.txt", ios_base::in);
     string s;
@@ -210,22 +307,19 @@ void list::readfile_mem(ifstream& in){
         for (int j = 0; j < numofMem; j++)
 	        newArr[j] = list_mem[j];
         delete[] list_mem;
-        list_mem = newArr;
         numofMem=newSize;
+        list_mem = newArr;
         //doc file
         list_mem[i].readfile_M(in);
-        cout<<list_mem[i]<<endl;
         i++;
-    }
-     
-   
+    } 
     in.close();
 } 
 //doc file don vi : ô kê nuôn 
 void list::readfile_gr(ifstream& in){
     in.open("Don Vi.txt", ios_base::in);
     string s;
-    getline(in,s,'\n');//bỏ dùng đầu
+    getline(in,s,'\n');//bỏ dòng đầu
     int i=0;
     while (!in.eof())
     {
@@ -239,7 +333,6 @@ void list::readfile_gr(ifstream& in){
         numofGr=newSize;
         //doc file
         list_gr[i].readfile_G(in);
-        cout<<list_gr[i]<<endl;
         i++;
     }
     in.close();
@@ -248,7 +341,7 @@ void list::readfile_gr(ifstream& in){
 void list::readfile_p(ifstream& in){
     in.open("Chuc Vu.txt", ios_base::in);
     string s;
-    getline(in,s,'\n');//bỏ dùng đầu    
+    getline(in,s,'\n');//bỏ dòng đầu    
     int i=0;
     while (!in.eof())
     {
@@ -262,11 +355,28 @@ void list::readfile_p(ifstream& in){
         numofP=newSize;
         //doc file
         list_p[i].readfile_P(in);
-        cout<<list_p[i]<<endl;
         i++;
     }
     in.close();
 } 
+
+void list::display_mem(){
+    for(int i=0; i<numofMem; i++){
+        cout<<list_mem[i]<<endl;
+    }
+}
+
+void list::display_gr(){
+    for(int i=0; i<numofGr; i++){
+        cout<<list_gr[i]<<endl;
+    }
+}
+
+void list::display_p(){
+    for(int i=0; i<numofP; i++){
+        cout<<list_p[i]<<endl;
+    }
+}
 
 int main(){
     cout <<left;
@@ -277,9 +387,13 @@ int main(){
     com.readfile_gr(filein_G);
     ifstream filein_p;
     com.readfile_p(filein_p);
+    
+    //com.display_mem();
+    //com.display_gr();
+    //com.display_p();
 
-
+    member m;
+    cin>>m;
+    cout<<m;
     return 0;
 }
-
-
