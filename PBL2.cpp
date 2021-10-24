@@ -96,8 +96,10 @@ void member::display(){
 }
 
 ostream &operator <<(ostream &out, member &m){
-     out<<setw(10)<<"Ma NV"<<setw(20)<<"Ho Ten"<<setw(20)<<"So dien thoai"<<"Ngay sinh"<<setw(10)<<"Gioi tinh"<<setw(10)<<"Ma CV"<<setw(10)<<"He so luong"<<setw(10)<<"Nam vao"<<setw(10)<<"Trinh do"<<setw(10)<<"Ngoai ngu"<<endl;
-    out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<m.ns.getYear()
+    //dua tieu de ve list
+     out<<setw(10)<<"Ma NV"<<setw(20)<<"Ho Ten"<<setw(20)<<"So dien thoai"<<setw(15)<<"Ngay sinh"<<setw(10)<<"Gioi tinh"<<setw(10)<<"Ma CV"<<setw(10)<<"He so luong"<<setw(10)<<"Nam vao"<<setw(10)<<"Trinh do"<<setw(10)<<"Ngoai ngu"<<endl;
+    //du nguyen
+    out<<setw(10)<<m.mID<<setw(20)<<(m.mlname+m.firstname)<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<setw(10)<<m.ns.getYear()
     <<setw(10)<<m.gender<<setw(10)<<m.position<<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
     return out;
 }
@@ -178,7 +180,7 @@ public:
     list(int, int);
     list(const list&);
     ~list();
-    void readfile_mem(FILE *fi);                     //nhap danh sach nhan vien tu file 
+    void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
     void readfile_gr(FILE *fi);                      //nhap danh sach don vi tu file
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
@@ -189,21 +191,37 @@ public:
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
 };
 
+list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
+{
+    list_mem = new member [numofMem];
+    list_gr =new group[numofGr];
+}
+
+void list::readfile_mem(ifstream& in){
+    in.open("Nhan Vien.txt", ios_base::in);
+    list_mem->readfile_M(in);
+    //x->display();
+    cout<<list_mem;
+    in.close();
+} 
 
 int main(){
-    cout <<left;
+    /*cout <<left;
     member *x=new member();
     group gr;
-    Position p;
+    Position p;*/
 
-    ifstream filein_M;
+//doc file
+    /*
     ifstream filein_G;
     ifstream filein_P;
-
-    filein_M.open("Nhan Vien.txt", ios_base::in);
     filein_G.open("Don Vi.txt", ios_base::in);
     filein_P.open("Chuc Vu.txt", ios_base::in);
-
+*/
+    ifstream filein_M;
+    list com(2,3);
+    com.readfile_mem(filein_M);
+/*
     x->readfile_M(filein_M);
     //x->display();
     cout<<*x;
@@ -217,5 +235,6 @@ int main(){
     filein_M.close();
     filein_G.close();
     filein_P.close();
+*/
     return 0;
 }
