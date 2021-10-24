@@ -56,12 +56,13 @@ public:
     friend ostream &operator <<(ostream &out, member &);
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
+
+    //friend
 };
 
 void member::readfile_M(ifstream &in) {
     string s;  //bỏ qua dòng đầu
     char t;   // đọc kí tự bỏ qua
-    getline(in,s,'\n');
     getline(in,mID,'|');
     getline(in, mlname, '|' );
     getline(in, firstname, '|');
@@ -96,8 +97,6 @@ void member::display(){
 }
 
 ostream &operator <<(ostream &out, member &m){
-    //dua tieu de ve list
-     out<<setw(10)<<"Ma NV"<<setw(20)<<"Ho Ten"<<setw(20)<<"So dien thoai"<<setw(15)<<"Ngay sinh"<<setw(10)<<"Gioi tinh"<<setw(10)<<"Ma CV"<<setw(10)<<"He so luong"<<setw(10)<<"Nam vao"<<setw(10)<<"Trinh do"<<setw(10)<<"Ngoai ngu"<<endl;
     //du nguyen
     out<<setw(10)<<m.mID<<setw(20)<<(m.mlname+m.firstname)<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<setw(10)<<m.ns.getYear()
     <<setw(10)<<m.gender<<setw(10)<<m.position<<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
@@ -177,7 +176,7 @@ private:
     group *list_gr;
     Position *list_p;
 public:
-    list(int, int);
+    list(int = 0, int = 0);
     list(const list&);
     ~list();
     void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
@@ -191,17 +190,39 @@ public:
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
 };
 
+//Khoi tao
 list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
 {
     list_mem = new member [numofMem];
-    list_gr =new group[numofGr];
 }
+
+list::~list(){
+    delete [] list_mem; 
+}
+
 
 void list::readfile_mem(ifstream& in){
     in.open("Nhan Vien.txt", ios_base::in);
-    list_mem->readfile_M(in);
-    //x->display();
-    cout<<list_mem;
+    string s;
+    getline(in,s,'\n');
+    int i=0;
+    while (!in.eof())
+    {
+        //tăng mảng lên
+        int newSize = numofMem+1;
+        member* newArr = new member[newSize];
+        for (int i = 0; i < numofMem; i++)
+	        newArr[i] = list_mem[i];
+        delete[] list_mem;
+        list_mem = newArr;
+        numofMem=newSize;
+        //doc file
+        list_mem[i].readfile_M(in);
+        cout<<list_mem[i]<<endl;
+        i++;
+    }
+     
+   
     in.close();
 } 
 
@@ -219,7 +240,7 @@ int main(){
     filein_P.open("Chuc Vu.txt", ios_base::in);
 */
     ifstream filein_M;
-    list com(2,3);
+    list com;
     com.readfile_mem(filein_M);
 /*
     x->readfile_M(filein_M);
