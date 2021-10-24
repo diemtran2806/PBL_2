@@ -162,6 +162,7 @@ istream &operator >>(istream &in, member &m){
     getline(in>>ws,m.degree);
     cout<<"Nhap trinh do ngoai ngu cua nhan vien: ";
     getline(in>>ws,m.L_certificate);
+    return in;
 }
 
 //don vi
