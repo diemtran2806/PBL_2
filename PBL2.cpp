@@ -118,8 +118,6 @@ public:
 };
 
 void group::readfile_G(ifstream &in){
-    string s;
-    getline(in,s,'\n');
     getline(in,gID,'|');
     getline(in,gName,'|');
     getline(in,mID,'\n');
@@ -181,7 +179,7 @@ public:
     list(const list&);
     ~list();
     void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
-    void readfile_gr(FILE *fi);                      //nhap danh sach don vi tu file
+    void readfile_gr(ifstream& in);                      //nhap danh sach don vi tu file
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
     void add(member&, int k);                        //bo sung 1 doi tuong vao vi tri k bat ki
@@ -195,13 +193,17 @@ public:
 list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
 {
     list_mem = new member [numofMem];
+    list_gr = new group [numofGr];
+
+
 }
 
 list::~list(){
     delete [] list_mem; 
+    delete [] list_gr;
 }
 
-
+//doc file nhan vien : còn sai nhân viên cuối
 void list::readfile_mem(ifstream& in){
     in.open("Nhan Vien.txt", ios_base::in);
     string s;
@@ -227,6 +229,32 @@ void list::readfile_mem(ifstream& in){
     in.close();
 } 
 
+void list::readfile_gr(ifstream& in){
+    in.open("Don Vi.txt", ios_base::in);
+    string s;
+    getline(in,s,'\n');//bỏ dùng đầu
+    int i=0;
+    while (!in.eof())
+    {
+        //tăng mảng lên
+        int newSize = numofGr+1;
+        group* newArr = new group[newSize];
+        for (int i = 0; i < numofGr; i++)
+	        newArr[i] = list_gr[i];
+        delete[] list_gr;
+        list_gr = newArr;
+        numofGr=newSize;
+        //doc file
+        list_gr[i].readfile_G(in);
+        cout<<list_gr[i]<<endl;
+        i++;
+    }
+     
+   
+    in.close();
+} 
+
+
 int main(){
     /*cout <<left;
     member *x=new member();
@@ -235,14 +263,19 @@ int main(){
 
 //doc file
     /*
-    ifstream filein_G;
+    
     ifstream filein_P;
     filein_G.open("Don Vi.txt", ios_base::in);
     filein_P.open("Chuc Vu.txt", ios_base::in);
 */
-    ifstream filein_M;
+    
+
     list com;
+    ifstream filein_M;
     com.readfile_mem(filein_M);
+    ifstream filein_G;
+    com.readfile_gr(filein_G);
+
 /*
     x->readfile_M(filein_M);
     //x->display();
@@ -260,3 +293,5 @@ int main(){
 */
     return 0;
 }
+
+
