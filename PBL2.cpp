@@ -5,7 +5,6 @@
 using namespace std;
 
 //
-class member;
 class birthday{                //class ngày tháng năm sinh để sau này lấy cho dễ
     int day;
     int month;
@@ -29,7 +28,6 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
       void setYear(int year){
           this->year = year;
       }
-      friend ostream &operator <<(ostream &out, member &);
 };
 
 //nhan vien
@@ -50,7 +48,6 @@ private:
 public:
     //member();
     void readfile_M(ifstream &);
-    void display();
     int getSalary(); //tinh luong    
     friend istream &operator >>(istream &in, member &);
     friend ostream &operator <<(ostream &out, member &);
@@ -90,12 +87,6 @@ void member::readfile_M(ifstream &in) {
     getline(in,degree,'|');
     getline(in, L_certificate,'\n');
 }
-
-void member::display(){
-    cout<<setw(10)<<mID<<setw(20)<<mlname+firstname<<setw(20)<<pnumber<<ns.getDay()<<"/"<<ns.getMonth()<<"/"<<ns.getYear()
-    <<setw(10)<<gender<<setw(10)<<position<<setw(10)<<C_salary<<setw(10)<<year_in<<setw(10)<<degree<<setw(10)<<L_certificate<<endl;
-}
-
 ostream &operator <<(ostream &out, member &m){
     //du nguyen
     
@@ -216,8 +207,8 @@ void list::readfile_mem(ifstream& in){
         //tăng mảng lên
         int newSize = numofMem+1;
         member* newArr = new member[newSize];
-        for (int i = 0; i < numofMem; i++)
-	        newArr[i] = list_mem[i];
+        for (int j = 0; j < numofMem; j++)
+	        newArr[j] = list_mem[j];
         delete[] list_mem;
         list_mem = newArr;
         numofMem=newSize;
@@ -241,8 +232,8 @@ void list::readfile_gr(ifstream& in){
         //tăng mảng lên
         int newSize = numofGr+1;
         group* newArr = new group[newSize];
-        for (int i = 0; i < numofGr; i++)
-	        newArr[i] = list_gr[i];
+        for (int j = 0; j < numofGr; j++)
+	        newArr[j] = list_gr[j];
         delete[] list_gr;
         list_gr = newArr;
         numofGr=newSize;
@@ -264,8 +255,8 @@ void list::readfile_p(ifstream& in){
         //tăng mảng lên
         int newSize = numofP+1;
         Position* newArr = new Position[newSize];
-        for (int i = 0; i < numofP; i++)
-	        newArr[i] = list_p[i];
+        for (int j = 0; j < numofP; j++)
+	        newArr[j] = list_p[j];
         delete[] list_p;
         list_p = newArr;
         numofP=newSize;
@@ -278,7 +269,7 @@ void list::readfile_p(ifstream& in){
 } 
 
 int main(){
-
+    cout <<left;
     list com;
     ifstream filein_M;
     com.readfile_mem(filein_M);
