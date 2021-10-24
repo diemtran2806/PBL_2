@@ -90,7 +90,7 @@ void member::readfile_M(ifstream &in) {
 ostream &operator <<(ostream &out, member &m){
     //du nguyen
     
- out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<m.ns.getYear()
+ out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<setw(10)<<m.ns.getYear()
     <<setw(10)<<m.gender<<setw(10)<<m.position<<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
     return out;
 }
