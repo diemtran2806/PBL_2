@@ -180,6 +180,7 @@ public:
     ~list();
     void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
     void readfile_gr(ifstream& in);                      //nhap danh sach don vi tu file
+    void readfile_p(ifstream& in);                      //Nhap danh sach chuc vu
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
     void add(member&, int k);                        //bo sung 1 doi tuong vao vi tri k bat ki
@@ -194,13 +195,14 @@ list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
 {
     list_mem = new member [numofMem];
     list_gr = new group [numofGr];
-
+    list_p = new Position [0];
 
 }
 
 list::~list(){
     delete [] list_mem; 
     delete [] list_gr;
+    delete [] list_p;
 }
 
 //doc file nhan vien : còn sai nhân viên cuối
@@ -228,7 +230,7 @@ void list::readfile_mem(ifstream& in){
    
     in.close();
 } 
-
+//doc file don vi : ô kê nuôn 
 void list::readfile_gr(ifstream& in){
     in.open("Don Vi.txt", ios_base::in);
     string s;
@@ -249,11 +251,31 @@ void list::readfile_gr(ifstream& in){
         cout<<list_gr[i]<<endl;
         i++;
     }
-     
-   
     in.close();
 } 
 
+void list::readfile_p(ifstream& in){
+    in.open("Chuc Vu.txt", ios_base::in);
+    string s;
+    getline(in,s,'\n');//bỏ dùng đầu
+    int i=0;
+    while (!in.eof())
+    {
+        //tăng mảng lên
+        int newSize = numofP+1;
+        Position* newArr = new Position[newSize];
+        for (int i = 0; i < numofP; i++)
+	        newArr[i] = list_p[i];
+        delete[] list_p;
+        list_p = newArr;
+        numofP=newSize;
+        //doc file
+        list_p[i].readfile_P(in);
+        cout<<list_p[i]<<endl;
+        i++;
+    }
+    in.close();
+} 
 
 int main(){
     /*cout <<left;
@@ -275,6 +297,8 @@ int main(){
     com.readfile_mem(filein_M);
     ifstream filein_G;
     com.readfile_gr(filein_G);
+    ifstream filein_p;
+    com.readfile_gr(filein_p);
 
 /*
     x->readfile_M(filein_M);
