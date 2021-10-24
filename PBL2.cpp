@@ -149,7 +149,6 @@ public:
 
 void Position::readfile_P(ifstream &in){
     string s;
-    getline(in,s,'\n');
     getline(in,pID,'|');
     getline(in,pName,'|');
     in >> pAllowance;
@@ -175,7 +174,7 @@ private:
     group *list_gr;
     Position *list_p;
 public:
-    list(int = 0, int = 0);
+    list(int = 0, int = 0, int = 0);
     list(const list&);
     ~list();
     void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
@@ -191,11 +190,12 @@ public:
 };
 
 //Khoi tao
-list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
+list::list(int NMem, int NGr, int NP)
+:numofMem(NMem),numofGr(NGr),numofP(NP)
 {
     list_mem = new member [numofMem];
     list_gr = new group [numofGr];
-    list_p = new Position [0];
+    list_p = new Position [numofP];
 
 }
 
@@ -216,8 +216,8 @@ void list::readfile_mem(ifstream& in){
         //tăng mảng lên
         int newSize = numofMem+1;
         member* newArr = new member[newSize];
-        for (int j = 0; j < numofMem; j++)
-	        newArr[j] = list_mem[j];
+        for (int i = 0; i < numofMem; i++)
+	        newArr[i] = list_mem[i];
         delete[] list_mem;
         list_mem = newArr;
         numofMem=newSize;
@@ -241,8 +241,8 @@ void list::readfile_gr(ifstream& in){
         //tăng mảng lên
         int newSize = numofGr+1;
         group* newArr = new group[newSize];
-        for (int j = 0; j < numofGr; j++)
-	        newArr[j] = list_gr[j];
+        for (int i = 0; i < numofGr; i++)
+	        newArr[i] = list_gr[i];
         delete[] list_gr;
         list_gr = newArr;
         numofGr=newSize;
@@ -257,15 +257,15 @@ void list::readfile_gr(ifstream& in){
 void list::readfile_p(ifstream& in){
     in.open("Chuc Vu.txt", ios_base::in);
     string s;
-    getline(in,s,'\n');//bỏ dùng đầu
+    getline(in,s,'\n');//bỏ dùng đầu    
     int i=0;
     while (!in.eof())
     {
         //tăng mảng lên
         int newSize = numofP+1;
         Position* newArr = new Position[newSize];
-        for (int j = 0; j < numofP; j++)
-	        newArr[j] = list_p[j];
+        for (int i = 0; i < numofP; i++)
+	        newArr[i] = list_p[i];
         delete[] list_p;
         list_p = newArr;
         numofP=newSize;
