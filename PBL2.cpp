@@ -40,7 +40,7 @@ private:
     string firstname; //
     string gID;     //mã đơn vị
     string pnumber;
-    birthday ns;
+    birthday ns;//da_tri
     int gender;
     string position;
     float C_salary; //hệ số lương
@@ -56,6 +56,8 @@ public:
     friend ostream &operator <<(ostream &out, member &);
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
+
+    //friend
 };
 
 void member::readfile_M(ifstream &in) {
@@ -95,7 +97,9 @@ void member::display(){
 }
 
 ostream &operator <<(ostream &out, member &m){
-    out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<m.ns.getYear()
+    //du nguyen
+    
+ out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<m.ns.getYear()
     <<setw(10)<<m.gender<<setw(10)<<m.position<<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
     return out;
 }
@@ -145,6 +149,7 @@ public:
 
 void Position::readfile_P(ifstream &in){
     string s;
+    getline(in,s,'\n');
     getline(in,pID,'|');
     getline(in,pName,'|');
     in >> pAllowance;
@@ -170,7 +175,7 @@ private:
     group *list_gr;
     Position *list_p;
 public:
-    list(int = 0, int = 0, int = 0);
+    list(int = 0, int = 0);
     list(const list&);
     ~list();
     void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
@@ -186,8 +191,7 @@ public:
 };
 
 //Khoi tao
-list::list(int NMem, int NGr, int NP)
-:numofMem(NMem),numofGr(NGr),numofP(NP)
+list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
 {
     list_mem = new member [numofMem];
     list_gr = new group [numofGr];
@@ -273,41 +277,18 @@ void list::readfile_p(ifstream& in){
     in.close();
 } 
 
-
 int main(){
-    /*cout <<left;
-    member *x=new member();
-    group gr;
-    Position p;
 
-    ifstream filein_M;
-    ifstream filein_G;
-    ifstream filein_P;
-
-    filein_M.open("Nhan Vien.txt", ios_base::in);
-    filein_G.open("Don Vi.txt", ios_base::in);
-    filein_P.open("Chuc Vu.txt", ios_base::in);
-*/
     list com;
     ifstream filein_M;
     com.readfile_mem(filein_M);
     ifstream filein_G;
     com.readfile_gr(filein_G);
     ifstream filein_p;
-    com.readfile_p(filein_p);
-/*  x->readfile_M(filein_M);
-    //x->display();
-    cout<<*x;
-    gr.readfile_G(filein_G);
-    //gr.display();
-    cout<<gr;
-    p.readfile_P(filein_P);
-    //p.display();
-    cout<<p;
+    com.readfile_gr(filein_p);
 
-    filein_M.close();
-    filein_G.close();
-    filein_P.close();
-*/
+
     return 0;
 }
+
+
