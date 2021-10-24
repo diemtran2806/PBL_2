@@ -40,7 +40,7 @@ private:
     string firstname; //
     string gID;     //mã đơn vị
     string pnumber;
-    birthday ns;
+    birthday ns;//da_tri
     int gender;
     string position;
     float C_salary; //hệ số lương
@@ -96,6 +96,7 @@ void member::display(){
 }
 
 ostream &operator <<(ostream &out, member &m){
+     out<<setw(10)<<"Ma NV"<<setw(20)<<"Ho Ten"<<setw(20)<<"So dien thoai"<<"Ngay sinh"<<setw(10)<<"Gioi tinh"<<setw(10)<<"Ma CV"<<setw(10)<<"He so luong"<<setw(10)<<"Nam vao"<<setw(10)<<"Trinh do"<<setw(10)<<"Ngoai ngu"<<endl;
     out<<setw(10)<<m.mID<<setw(20)<<m.mlname+m.firstname<<setw(20)<<m.pnumber<<m.ns.getDay()<<"/"<<m.ns.getMonth()<<"/"<<m.ns.getYear()
     <<setw(10)<<m.gender<<setw(10)<<m.position<<setw(10)<<m.C_salary<<setw(10)<<m.year_in<<setw(10)<<m.degree<<setw(10)<<m.L_certificate<<endl;
     return out;
