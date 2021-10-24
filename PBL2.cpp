@@ -199,9 +199,9 @@ int main(){
     ifstream filein_G;
     ifstream filein_P;
 
-    filein_M.open("D:\\code\\PBL2_Real\\Nhan Vien.txt", ios_base::in);
-    filein_G.open("D:\\code\\PBL2_Real\\Don Vi.txt", ios_base::in);
-    filein_P.open("D:\\code\\PBL2_Real\\Chuc Vu.txt", ios_base::in);
+    filein_M.open("Nhan Vien.txt", ios_base::in);
+    filein_G.open("Don Vi.txt", ios_base::in);
+    filein_P.open("Chuc Vu.txt", ios_base::in);
 
     x->readfile_M(filein_M);
     //x->display();
