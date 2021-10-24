@@ -149,7 +149,7 @@ public:
 
 void Position::readfile_P(ifstream &in){
     string s;
-    getline(in,s,'\n');
+   
     getline(in,pID,'|');
     getline(in,pName,'|');
     in >> pAllowance;
@@ -175,7 +175,7 @@ private:
     group *list_gr;
     Position *list_p;
 public:
-    list(int = 0, int = 0);
+    list(int = 0, int = 0, int =0);
     list(const list&);
     ~list();
     void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
@@ -191,11 +191,11 @@ public:
 };
 
 //Khoi tao
-list::list(int NMem, int NGr):numofMem(NMem),numofGr(NGr)
+list::list(int NMem, int NGr, int NP):numofMem(NMem),numofGr(NGr), numofP(NP)
 {
     list_mem = new member [numofMem];
     list_gr = new group [numofGr];
-    list_p = new Position [0];
+    list_p = new Position [NP];
 
 }
 
@@ -298,7 +298,7 @@ int main(){
     ifstream filein_G;
     com.readfile_gr(filein_G);
     ifstream filein_p;
-    com.readfile_gr(filein_p);
+    com.readfile_p(filein_p);
 
 /*
     x->readfile_M(filein_M);
