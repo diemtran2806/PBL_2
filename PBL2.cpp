@@ -61,7 +61,6 @@ public:
 void member::readfile_M(ifstream &in) {
     string s;  //bỏ qua dòng đầu
     char t;   // đọc kí tự bỏ qua
-    getline(in,s,'\n');
     getline(in,mID,'|');
     getline(in, mlname, '|' );
     getline(in, firstname, '|');
@@ -115,8 +114,6 @@ public:
 };
 
 void group::readfile_G(ifstream &in){
-    string s;
-    getline(in,s,'\n');
     getline(in,gID,'|');
     getline(in,gName,'|');
     getline(in,mID,'\n');
@@ -148,7 +145,6 @@ public:
 
 void Position::readfile_P(ifstream &in){
     string s;
-    getline(in,s,'\n');
     getline(in,pID,'|');
     getline(in,pName,'|');
     in >> pAllowance;
@@ -174,11 +170,12 @@ private:
     group *list_gr;
     Position *list_p;
 public:
-    list(int, int);
+    list(int = 0, int = 0, int = 0);
     list(const list&);
     ~list();
-    void readfile_mem(FILE *fi);                     //nhap danh sach nhan vien tu file 
-    void readfile_gr(FILE *fi);                      //nhap danh sach don vi tu file
+    void readfile_mem(ifstream& in);                     //nhap danh sach nhan vien tu file 
+    void readfile_gr(ifstream& in);                      //nhap danh sach don vi tu file
+    void readfile_p(ifstream& in);                      //Nhap danh sach chuc vu
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
     void add(member&, int k);                        //bo sung 1 doi tuong vao vi tri k bat ki
@@ -188,9 +185,97 @@ public:
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
 };
 
+//Khoi tao
+list::list(int NMem, int NGr, int NP)
+:numofMem(NMem),numofGr(NGr),numofP(NP)
+{
+    list_mem = new member [numofMem];
+    list_gr = new group [numofGr];
+    list_p = new Position [0];
+
+}
+
+list::~list(){
+    delete [] list_mem; 
+    delete [] list_gr;
+    delete [] list_p;
+}
+
+//doc file nhan vien : còn sai nhân viên cuối
+void list::readfile_mem(ifstream& in){
+    in.open("Nhan Vien.txt", ios_base::in);
+    string s;
+    getline(in,s,'\n');
+    int i=0;
+    while (!in.eof())
+    {
+        //tăng mảng lên
+        int newSize = numofMem+1;
+        member* newArr = new member[newSize];
+        for (int i = 0; i < numofMem; i++)
+	        newArr[i] = list_mem[i];
+        delete[] list_mem;
+        list_mem = newArr;
+        numofMem=newSize;
+        //doc file
+        list_mem[i].readfile_M(in);
+        cout<<list_mem[i]<<endl;
+        i++;
+    }
+     
+   
+    in.close();
+} 
+//doc file don vi : ô kê nuôn 
+void list::readfile_gr(ifstream& in){
+    in.open("Don Vi.txt", ios_base::in);
+    string s;
+    getline(in,s,'\n');//bỏ dùng đầu
+    int i=0;
+    while (!in.eof())
+    {
+        //tăng mảng lên
+        int newSize = numofGr+1;
+        group* newArr = new group[newSize];
+        for (int i = 0; i < numofGr; i++)
+	        newArr[i] = list_gr[i];
+        delete[] list_gr;
+        list_gr = newArr;
+        numofGr=newSize;
+        //doc file
+        list_gr[i].readfile_G(in);
+        cout<<list_gr[i]<<endl;
+        i++;
+    }
+    in.close();
+} 
+
+void list::readfile_p(ifstream& in){
+    in.open("Chuc Vu.txt", ios_base::in);
+    string s;
+    getline(in,s,'\n');//bỏ dùng đầu
+    int i=0;
+    while (!in.eof())
+    {
+        //tăng mảng lên
+        int newSize = numofP+1;
+        Position* newArr = new Position[newSize];
+        for (int i = 0; i < numofP; i++)
+	        newArr[i] = list_p[i];
+        delete[] list_p;
+        list_p = newArr;
+        numofP=newSize;
+        //doc file
+        list_p[i].readfile_P(in);
+        cout<<list_p[i]<<endl;
+        i++;
+    }
+    in.close();
+} 
+
 
 int main(){
-    cout <<left;
+    /*cout <<left;
     member *x=new member();
     group gr;
     Position p;
@@ -199,11 +284,18 @@ int main(){
     ifstream filein_G;
     ifstream filein_P;
 
-    filein_M.open("D:\\code\\PBL2_Real\\Nhan Vien.txt", ios_base::in);
-    filein_G.open("D:\\code\\PBL2_Real\\Don Vi.txt", ios_base::in);
-    filein_P.open("D:\\code\\PBL2_Real\\Chuc Vu.txt", ios_base::in);
-
-    x->readfile_M(filein_M);
+    filein_M.open("Nhan Vien.txt", ios_base::in);
+    filein_G.open("Don Vi.txt", ios_base::in);
+    filein_P.open("Chuc Vu.txt", ios_base::in);
+*/
+    list com;
+    ifstream filein_M;
+    com.readfile_mem(filein_M);
+    ifstream filein_G;
+    com.readfile_gr(filein_G);
+    ifstream filein_p;
+    com.readfile_p(filein_p);
+/*  x->readfile_M(filein_M);
     //x->display();
     cout<<*x;
     gr.readfile_G(filein_G);
@@ -216,5 +308,6 @@ int main(){
     filein_M.close();
     filein_G.close();
     filein_P.close();
+*/
     return 0;
 }
