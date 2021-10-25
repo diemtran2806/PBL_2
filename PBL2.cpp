@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iomanip>
 using namespace std;
+#define A 1500000; //LCB
 
 //
 class birthday{                //class ngày tháng năm sinh để sau này lấy cho dễ
@@ -31,6 +32,7 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
 };
 
 //nhan vien
+//class Position;
 class member {
 private:
     string mID;       //mã nhân viên
@@ -40,7 +42,7 @@ private:
     string pnumber;
     birthday ns;      //da_tri
     int gender;
-    string position;
+    string position;  //mã chức vụ
     float C_salary;   //hệ số lương
     int year_in;
     string degree;    //trình độ, cấp bậc
@@ -49,11 +51,13 @@ public:
     member();
     member(string , string , string , string , string , birthday , int , string , float , int , string , string );
     void readfile_M(ifstream &);
-    int getSalary(); //tinh luong    
+    float getSalary(); //tinh luong    
+    float getNewsalary();//thực lĩnh
     friend istream &operator >>(istream &in, member &);
     friend ostream &operator <<(ostream &out, member &);
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
+   // friend class Position;
 };
 
 member::member(){
@@ -163,6 +167,17 @@ istream &operator >>(istream &in, member &m){
     cout<<"Nhap trinh do ngoai ngu cua nhan vien: ";
     getline(in>>ws,m.L_certificate);
     return in;
+}
+
+float member::getSalary(){
+    return C_salary*A;
+}
+float member::getNewsalary(){
+    if (position.compare("GD")==0||position.compare("PGD")==0){
+        return (getSalary() + 0.5*getSalary());
+    } else if (position.compare("TP")==0||position.compare("PP")==0) {
+        return (getSalary() + 0.25*getSalary());
+    } else return getSalary();
 }
 
 //don vi
@@ -396,5 +411,6 @@ int main(){
     member m;
     cin>>m;
     cout<<m;
+    cout<<"Thuc linh: "<<(size_t)m.getNewsalary()<<endl; // không có size t là ra số e
     return 0;
 }
