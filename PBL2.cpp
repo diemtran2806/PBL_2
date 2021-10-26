@@ -128,7 +128,7 @@ int main(){
     com.display_mem();
     com.display_gr();
     com.display_p();
-
+    cout<<"test github";
     //member m;
     //cin>>m;
     //cout<<m;
