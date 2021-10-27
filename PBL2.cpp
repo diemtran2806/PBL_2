@@ -34,7 +34,7 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
 //nhan vien
 //class Position;
 class member {
-private:
+protected:
     string mID;       //mã nhân viên
     string mlname;    //họ và đệm
     string firstname; //tên
@@ -48,6 +48,12 @@ private:
     string degree;    //trình độ, cấp bậc
     string L_certificate; // bằng ngoại ngữ
 public:
+    string getGID(){
+		return gID;
+	}
+	int getGender(){
+		return gender;
+	}
     member();
     member(string , string , string , string , string , birthday , int , string , float , int , string , string );
     void readfile_M(ifstream &);
@@ -67,6 +73,9 @@ private:
     string gName;
     string mID; //ma nhan vien
 public:
+    string getGID(){
+		return gID;
+	}
     group(string ="", string ="", string ="");
     void readfile_G(ifstream &);
     friend ostream &operator <<(ostream &out, const group&);
@@ -406,10 +415,37 @@ void list::display_mem(){
 }
 
 void list::display_gr(){
-    cout<<setw(10)<<"Ma DV"<<setw(20)<<"Ten don vi"<<setw(10)<<"Ma NV"<<endl<<endl;
-    for(int i=0; i<numofGr; i++){
-        cout<<list_gr[i]<<endl<<endl;
+	int ml=0,fl=0,mh=0,fh=0,mm=0,fm=0,mt=0,ft=0,ma=0,fa=0,mp=0,fp=0;
+    cout<<setw(10)<<"Ma DV"<<setw(20)<<"Ten don vi"<<setw(10)<<"Ma NV"<<setw(20)<<"So luong nam"<<setw(20)<<"So luong nu"<<setw(20)<<endl<<endl;
+    for(int i=0; i<numofMem; i++){
+		if(list_mem[i].getGID().compare("LDR  ")==0) {
+			if(list_mem[i].getGender()==0) ml++;
+			else fl++;
+		} else if(list_mem[i].getGID().compare("HRS  ")==0){
+			if(list_mem[i].getGender()==0) mh++;
+			else fh++;
+		} else if(list_mem[i].getGID().compare("MKT  ")==0){
+			if(list_mem[i].getGender()==0) mm++;
+			else fm++;
+		} else if(list_mem[i].getGID().compare("TNC  ")==0){
+			if(list_mem[i].getGender()==0) mt++;
+			else ft++;
+		} else if(list_mem[i].getGID().compare("ACT  ")==0){
+			if(list_mem[i].getGender()==0) ma++;
+			else fa++;
+		} else if(list_mem[i].getGID().compare("PJT  ")==0){
+			if(list_mem[i].getGender()==0) mp++;
+			else fp++;
+		}
     }
+	for(int i=0;i<numofGr;i++) {
+		if(list_gr[i].getGID().compare("LDR   ")==0) cout<<list_gr[i]<<setw(20)<<ml<<setw(20)<<fl<<endl<<endl;
+		else if(list_gr[i].getGID().compare("HRS   ")==0) cout<<list_gr[i]<<setw(20)<<mh<<setw(20)<<fh<<endl<<endl;
+		else if(list_gr[i].getGID().compare("MKT   ")==0) cout<<list_gr[i]<<setw(20)<<mm<<setw(20)<<fm<<endl<<endl;
+		else if(list_gr[i].getGID().compare("TNC   ")==0) cout<<list_gr[i]<<setw(20)<<mt<<setw(20)<<ft<<endl<<endl;
+		else if(list_gr[i].getGID().compare("ACT   ")==0) cout<<list_gr[i]<<setw(20)<<ma<<setw(20)<<fa<<endl<<endl;
+		else cout<<list_gr[i]<<setw(20)<<mp<<setw(20)<<fp<<endl<<endl;
+	}
 }
 
 void list::display_p(){
