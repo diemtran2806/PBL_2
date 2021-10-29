@@ -140,7 +140,7 @@ int main(){
     com.readfile_gr(filein_G);
     ifstream filein_p;
     com.readfile_p(filein_p);
-
+    //com.ok();
     //com.display_mem();
     //com.display_gr();
     //com.display_p();
@@ -295,7 +295,7 @@ int member::getNewsalary(){
 
 bool member::isEqual(int chon,string s){
     string temp; //chuyển kiểu int/float sang string
-    ostringstream convert;
+    ostringstream convert,convert1,convert2; 
     switch(chon){
         case 1:
             return s.compare(this->mID);
@@ -307,6 +307,14 @@ bool member::isEqual(int chon,string s){
             return s.compare(this->gID);
         case 5:
             return s.compare(this->pnumber);
+        case 6:
+            convert<<this->ns.getDay();
+            temp=convert.str();
+            convert1<<this->ns.getMonth();
+            temp+=convert1.str();
+            convert2<<this->ns.getYear();
+            temp+=convert2.str();
+            return s.compare(temp);
         case 7:
             convert<<this->gender;
             temp=convert.str();
@@ -555,13 +563,14 @@ void list::search(){
 int list::menu_Search(string &tt){
     int chon;
     do{
+        system("cls");
         cout<<"Ban muon tim kiem thong tin theo cach nao:"<<endl;
         cout<<"1: Ma nhan vien"<<endl;
         cout<<"2: Ho va ten dem"<<endl;
         cout<<"3: Ten"<<endl;
         cout<<"4: Ma don vi"<<endl;
         cout<<"5: So dien thoai"<<endl;
-        cout<<"6: Ngay sinh"<<endl;  //chưa làm
+        cout<<"6: Ngay sinh"<<endl; 
         cout<<"7: Gioi tinh"<<endl;
         cout<<"8: Ma chuc vu"<<endl;
         cout<<"9: He so luong"<<endl;
@@ -572,7 +581,20 @@ int list::menu_Search(string &tt){
         cin>>chon;
     }while(chon<1 || chon >12);
     cout<<"Nhap thong tin can tim kiem: ";
-    getline(cin>>ws,tt);
+    if(chon==6){
+        string s;
+        tt=s;
+        cout<<endl<<"Nhap ngay: ";
+        cin>>s;
+        tt+=s;
+        cout<<"Nhap thang: ";
+        cin>>s;
+        tt+=s;
+        cout<<"Nhap nam: ";
+        cin>>s;
+        tt+=s;
+    }
+    else getline(cin>>ws,tt);
     return chon;
 }
 
