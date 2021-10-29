@@ -62,6 +62,7 @@ public:
     bool isEqual(int,string);
     friend istream &operator >>(istream &in, member &);
     friend ostream &operator <<(ostream &out, member &);
+	//const member &operator = (const member &m);  // hàm gán, tham chiếu hằng, hằng
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
 };
@@ -100,6 +101,7 @@ private:
     int numofMem;   //sl nv
     int numofGr;    //sl đơn vị
     int numofP;
+	int ml,fl,mh,fh,mm,fm,mt,ft,ma,fa,mp,fp;
     member *list_mem;
     group *list_gr;
     Position *list_p;
@@ -110,17 +112,18 @@ public:
     void readfile_mem(ifstream& in);                 //nhap danh sach nhan vien tu file 
     void readfile_gr(ifstream& in);                  //nhap danh sach don vi tu file
     void readfile_p(ifstream& in);                   //Nhap danh sach chuc vu
+	void writefile_mem(ofstream& ofs);
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
     void display_p();                                //in bang thong ke cac chuc vu
     void add(member&, int k);                        //bo sung 1 doi tuong vao vi tri k bat ki
     void sort(bool CompFunc(member&, member&));      //sap xep danh sach nhan vien theo thu tu tang/giam
-    int search(int, string, int a[100]);             //tim kiem 1 nhan vien
+    int search(int, string, int a[100]);             //ham tim kiem 1 nhan vien
     void delete_mem(member&);                        //xoa 1 nhan vien bat ki
     member &operator [](int i) const;                //toan tu lay phan tu thu i [] trong danh sach nhan vien
     const list &operator =(const list &);
     friend ostream &operator <<(ostream &out,const list&);
-    void search();
+    void search(); //tim kiem nhan vien tu ten, gioi tinh...
     int menu_Search(string &);
 };
 
@@ -138,10 +141,31 @@ int main(){
     ifstream filein_p;
     com.readfile_p(filein_p);
 
-    com.display_mem();
+    //com.display_mem();
     //com.display_gr();
     //com.display_p();
-    //com.search();
+    com.search();
+    //com.display_gr();
+    //com.display_p();
+    //member m;
+    //cin>>m;
+    //cout<<m;
+    //cout<<"Thuc linh: "<<(size_t)m.getNewsalary()<<endl; // không có size t là ra số e
+	/*member m;
+	cout <<"Nhap nhan vien muon them vao danh sach: "<<endl;
+	cin >> m;
+	cout <<"Nhap vi tri muon them vao danh sach: ";
+	int k;
+	cin >> k;
+	com.add(m,k);
+	com.display_mem();
+    int x;
+	cout <<"Nhap 1 de in lai danh sach "<<endl;
+	cin >> x;
+	if (x==1) {
+		com.display_mem();
+		com.display_gr();  // in ni ra lại để coi só lượng nam hoặc nữ tăng lên khi thêm nv mới vào
+	}*/
     return 0;
 }
 
@@ -220,7 +244,7 @@ istream &operator >>(istream &in, member &m){
     cout<<"Nhap ten: ";
     getline(in>>ws,m.firstname);
     cout<<"Nhap ma don vi: ";
-    in >> m.gID;
+    getline(in>>ws,m.gID);
     cout<<"Nhap so dien thoai: ";
     in >> m.pnumber;
     cout<<"Nhap ngay/thang/nam sinh: "<<endl;
@@ -270,7 +294,7 @@ int member::getNewsalary(){
 }
 
 bool member::isEqual(int chon,string s){
-    string temp;
+    string temp; //chuyển kiểu int/float sang string
     ostringstream convert;
     switch(chon){
         case 1:
@@ -309,13 +333,13 @@ group::group(string gID, string gName, string mID)
     :gID(gID),gName(gName),mID(mID){}
 
 void group::readfile_G(ifstream &in){
-    getline(in,gID,'|');
-    getline(in,gName,'|');
-    getline(in,mID,'\n');
+    getline(in,gID,'|'); del_ws(gID);
+    getline(in,gName,'|'); del_ws(gName);
+    getline(in,mID,'\n'); del_ws(mID);
 }
 
 ostream &operator <<(ostream &out, const group &g){
-    out<<setw(10)<<g.gID<<setw(20)<<g.gName<<setw(10)<<g.mID;
+    out<<setw(10)<<g.gID<<"|"<<setw(19)<<g.gName<<"|"<<setw(9)<<g.mID;
     return out;
 }
 
@@ -325,14 +349,14 @@ Position::Position(string pID, string pName, float pAllowance)
 
 void Position::readfile_P(ifstream &in){
     string s;
-    getline(in,pID,'|');
-    getline(in,pName,'|');
+    getline(in,pID,'|'); del_ws(pID);
+    getline(in,pName,'|'); del_ws(pName);
     in >> pAllowance;
     getline(in,s,'\n');
 }
 
 ostream &operator <<(ostream &out, const Position &p){
-    out<<setw(10)<<p.pID<<setw(20)<<p.pName<<setw(10)<<p.pAllowance;
+    out<<setw(10)<<p.pID<<"|"<<setw(19)<<p.pName<<"|"<<setw(9)<<p.pAllowance;
     return out;
 }
 
@@ -375,7 +399,7 @@ list::~list(){
 
 //doc file nhan vien 
 void list::readfile_mem(ifstream& in){
-    in.open("D:\\code\\PBL2_Real\\Nhan Vien.txt", ios_base::in);
+    in.open("Nhan Vien.txt", ios_base::in);
     string s;
     getline(in,s,'\n');
     int i=0;
@@ -397,7 +421,7 @@ void list::readfile_mem(ifstream& in){
 } 
 //doc file don vi : ô kê nuôn 
 void list::readfile_gr(ifstream& in){
-    in.open("D:\\code\\PBL2_Real\\Don Vi.txt", ios_base::in);
+    in.open("Don Vi.txt", ios_base::in);
     string s;
     getline(in,s,'\n');//bỏ dòng đầu
     int i=0;
@@ -419,7 +443,7 @@ void list::readfile_gr(ifstream& in){
 } 
 
 void list::readfile_p(ifstream& in){
-    in.open("D:\\code\\PBL2_Real\\Chuc Vu.txt", ios_base::in);
+    in.open("Chuc Vu.txt", ios_base::in);
     string s;
     getline(in,s,'\n');//bỏ dòng đầu    
     int i=0;
@@ -440,6 +464,16 @@ void list::readfile_p(ifstream& in){
     in.close();
 } 
 
+void list::writefile_mem(ofstream& ofs){
+	ofs.open("Nhan Vien.txt", ios_base::trunc);
+	ofs <<left<<setw(6)<<"Ma NV"<<setw(17)<<"|Ho"<<setw(7)<<"|Ten"<<setw(6)<<"|Ma DV"<<setw(15)<<"|So dien thoai"<<setw(12)<<"|Ngay sinh"
+        <<setw(10)<<"|Gioi tinh"<<setw(10)<<"|Chuc vu"<<setw(13)<<"|He so luong"<<setw(9)<<"|Nam vao"<<setw(10)<<"|Trinh do"<<setw(12)<<"|Ngoai ngu"<<endl;
+	for(int i=0;i<numofMem;i++) {
+		ofs <<left<<list_mem[i]<<endl;
+	}
+	ofs.close();
+}
+
 void list::display_mem(){
     cout<<setw(6)<<"Ma NV"<<setw(17)<<"|Ho"<<setw(7)<<"|Ten"<<setw(6)<<"|Ma DV"<<setw(15)<<"|So dien thoai"<<setw(12)<<"|Ngay sinh"
         <<setw(10)<<"|Gioi tinh"<<setw(10)<<"|Chuc vu"<<setw(13)<<"|He so luong"<<setw(9)<<"|Nam vao"<<setw(10)<<"|Trinh do"
@@ -450,41 +484,41 @@ void list::display_mem(){
 }
 
 void list::display_gr(){
-	int ml=0,fl=0,mh=0,fh=0,mm=0,fm=0,mt=0,ft=0,ma=0,fa=0,mp=0,fp=0;
-    cout<<setw(10)<<"Ma DV"<<setw(20)<<"Ten don vi"<<setw(10)<<"Ma NV"<<setw(20)<<"So luong nam"<<setw(20)<<"So luong nu"<<setw(20)<<endl<<endl;
+    ml=0,fl=0,mh=0,fh=0,mm=0,fm=0,mt=0,ft=0,ma=0,fa=0,mp=0,fp=0;
+    cout<<setw(10)<<"Ma DV"<<setw(20)<<"|Ten don vi"<<setw(10)<<"|Ma NV"<<setw(21)<<"|So luong nam"<<setw(20)<<"|So luong nu"<<endl<<endl;
     for(int i=0; i<numofMem; i++){
-		if(list_mem[i].getGID().compare("LDR  ")==0) {
+		if(list_mem[i].getGID().compare("LDR")==0) {
 			if(list_mem[i].getGender()==0) ml++;
 			else fl++;
-		} else if(list_mem[i].getGID().compare("HRS  ")==0){
+		} else if(list_mem[i].getGID().compare("HRS")==0){
 			if(list_mem[i].getGender()==0) mh++;
 			else fh++;
-		} else if(list_mem[i].getGID().compare("MKT  ")==0){
+		} else if(list_mem[i].getGID().compare("MKT")==0){
 			if(list_mem[i].getGender()==0) mm++;
 			else fm++;
-		} else if(list_mem[i].getGID().compare("TNC  ")==0){
+		} else if(list_mem[i].getGID().compare("TNC")==0){
 			if(list_mem[i].getGender()==0) mt++;
 			else ft++;
-		} else if(list_mem[i].getGID().compare("ACT  ")==0){
+		} else if(list_mem[i].getGID().compare("ACT")==0){
 			if(list_mem[i].getGender()==0) ma++;
 			else fa++;
-		} else if(list_mem[i].getGID().compare("PJT  ")==0){
+		} else if(list_mem[i].getGID().compare("PJT")==0){
 			if(list_mem[i].getGender()==0) mp++;
 			else fp++;
 		}
     }
 	for(int i=0;i<numofGr;i++) {
-		if(list_gr[i].getGID().compare("LDR   ")==0) cout<<list_gr[i]<<setw(20)<<ml<<setw(20)<<fl<<endl<<endl;
-		else if(list_gr[i].getGID().compare("HRS   ")==0) cout<<list_gr[i]<<setw(20)<<mh<<setw(20)<<fh<<endl<<endl;
-		else if(list_gr[i].getGID().compare("MKT   ")==0) cout<<list_gr[i]<<setw(20)<<mm<<setw(20)<<fm<<endl<<endl;
-		else if(list_gr[i].getGID().compare("TNC   ")==0) cout<<list_gr[i]<<setw(20)<<mt<<setw(20)<<ft<<endl<<endl;
-		else if(list_gr[i].getGID().compare("ACT   ")==0) cout<<list_gr[i]<<setw(20)<<ma<<setw(20)<<fa<<endl<<endl;
-		else cout<<list_gr[i]<<setw(20)<<mp<<setw(20)<<fp<<endl<<endl;
+		if(list_gr[i].getGID().compare("LDR")==0) cout<<list_gr[i]<<"|"<<setw(20)<<ml<<"|"<<setw(20)<<fl<<endl<<endl;
+		else if(list_gr[i].getGID().compare("HRS")==0) cout<<list_gr[i]<<"|"<<setw(20)<<mh<<"|"<<setw(20)<<fh<<endl<<endl;
+		else if(list_gr[i].getGID().compare("MKT")==0) cout<<list_gr[i]<<"|"<<setw(20)<<mm<<"|"<<setw(20)<<fm<<endl<<endl;
+		else if(list_gr[i].getGID().compare("TNC")==0) cout<<list_gr[i]<<"|"<<setw(20)<<mt<<"|"<<setw(20)<<ft<<endl<<endl;
+		else if(list_gr[i].getGID().compare("ACT")==0) cout<<list_gr[i]<<"|"<<setw(20)<<ma<<"|"<<setw(20)<<fa<<endl<<endl;
+		else cout<<list_gr[i]<<"|"<<setw(20)<<mp<<"|"<<setw(20)<<fp<<endl<<endl;
 	}
 }
 
 void list::display_p(){
-    cout<<setw(11)<<"Ma CV"<<setw(20)<<"Ten chuc vu"<<setw(10)<<"He so PC"<<endl<<endl;
+    cout<<setw(10)<<"Ma CV"<<setw(20)<<"|Ten chuc vu"<<setw(10)<<"|He so PC"<<endl<<endl;
     for(int i=0; i<numofP; i++){
         cout<<list_p[i]<<endl<<endl;
     }
@@ -502,7 +536,7 @@ int list::search(int chon, string s, int a[]){
 
 void list::search(){
     int a[100];
-    string tt;
+    string tt; //thông tin
     char chon2;
     do{
         int chon=menu_Search(tt);
@@ -527,7 +561,7 @@ int list::menu_Search(string &tt){
         cout<<"3: Ten"<<endl;
         cout<<"4: Ma don vi"<<endl;
         cout<<"5: So dien thoai"<<endl;
-        cout<<"6: Ngay sinh"<<endl;
+        cout<<"6: Ngay sinh"<<endl;  //chưa làm
         cout<<"7: Gioi tinh"<<endl;
         cout<<"8: Ma chuc vu"<<endl;
         cout<<"9: He so luong"<<endl;
@@ -558,4 +592,21 @@ void del_ws(string &s){
             }
         }
     }
+}
+
+void list::add(member& m, int k){
+	numofMem++;
+    member *b = new member[numofMem];
+    for (int i = 0; i < numofMem-1; i++)
+        b[i] = list_mem[i];
+    for (int i = numofMem - 1; i > k; i--)
+        b[i] = b[i - 1];
+    b[k] = m;
+    /*Tiến hành cấp phát động lại list_mem*/
+    delete [] list_mem;
+    list_mem = new member[numofMem];
+    for (int i = 0; i < numofMem; i++)
+        list_mem[i] = b[i];
+	ofstream ofs;
+	writefile_mem(ofs);
 }
