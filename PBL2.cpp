@@ -61,6 +61,7 @@ public:
     int getNewsalary();//thực lĩnh
     friend istream &operator >>(istream &in, member &);
     friend ostream &operator <<(ostream &out, member &);
+	//const member &operator = (const member &m);  // hàm gán, tham chiếu hằng, hằng
     friend bool operator <(const member &, const member &);
     friend bool operator >(const member &, const member &);
    // friend class Position;
@@ -100,6 +101,7 @@ private:
     int numofMem;   //sl nv
     int numofGr;    //sl đơn vị
     int numofP;
+	int ml,fl,mh,fh,mm,fm,mt,ft,ma,fa,mp,fp;
     member *list_mem;
     group *list_gr;
     Position *list_p;
@@ -110,6 +112,7 @@ public:
     void readfile_mem(ifstream& in);                 //nhap danh sach nhan vien tu file 
     void readfile_gr(ifstream& in);                  //nhap danh sach don vi tu file
     void readfile_p(ifstream& in);                   //Nhap danh sach chuc vu
+	void writefile_mem(ofstream& ofs);
     void display_mem();                              //in danh sach nhan vien
     void display_gr();                               //in bang thong ke theo don vi
     void display_p();                                //in bang thong ke cac chuc vu
@@ -137,11 +140,25 @@ int main(){
     com.display_mem();
     com.display_gr();
     com.display_p();
-    cout<<"test github";
     //member m;
     //cin>>m;
     //cout<<m;
     //cout<<"Thuc linh: "<<(size_t)m.getNewsalary()<<endl; // không có size t là ra số e
+	member m;
+	cout <<"Nhap nhan vien muon them vao danh sach: "<<endl;
+	cin >> m;
+	cout <<"Nhap vi tri muon them vao danh sach: ";
+	int k;
+	cin >> k;
+	com.add(m,k);
+	com.display_mem();
+    int x;
+	cout <<"Nhap 1 de in lai danh sach "<<endl;
+	cin >> x;
+	if (x==1) {
+		com.display_mem();
+		com.display_gr();  // in ni ra lại để coi só lượng nam hoặc nữ tăng lên khi thêm nv mới vào
+	}
     return 0;
 }
 
@@ -220,7 +237,7 @@ istream &operator >>(istream &in, member &m){
     cout<<"Nhap ten: ";
     getline(in>>ws,m.firstname);
     cout<<"Nhap ma don vi: ";
-    in >> m.gID;
+    getline(in>>ws,m.gID);
     cout<<"Nhap so dien thoai: ";
     in >> m.pnumber;
     cout<<"Nhap ngay/thang/nam sinh: "<<endl;
@@ -405,6 +422,16 @@ void list::readfile_p(ifstream& in){
     in.close();
 } 
 
+void list::writefile_mem(ofstream& ofs){
+	ofs.open("Nhan Vien.txt", ios_base::trunc);
+	ofs <<left<<setw(10)<<"Ma NV"<<setw(25)<<"|Ho Ten"<<setw(10)<<"|Ma DV"<<setw(15)<<"|So dien thoai"<<setw(13)<<"|Ngay sinh"
+        <<setw(11)<<"|Gioi tinh"<<setw(9)<<"|Chuc vu"<<setw(13)<<"|He so luong"<<setw(10)<<"|Nam vao"<<setw(10)<<"|Trinh do"<<setw(11)<<"|Ngoai ngu"<<endl;
+	for(int i=0;i<numofMem;i++) {
+		ofs <<left<<list_mem[i]<<endl;
+	}
+	ofs.close();
+}
+
 void list::display_mem(){
     cout<<setw(10)<<"Ma NV"<<setw(25)<<"Ho Ten"<<setw(10)<<"Ma DV"<<setw(15)<<"So dien thoai"<<setw(13)<<"Ngay sinh"
         <<setw(11)<<"Gioi tinh"<<setw(9)<<"Chuc vu"<<setw(13)<<"He so luong"<<setw(10)<<"Nam vao"<<setw(10)<<"Trinh do"
@@ -415,7 +442,7 @@ void list::display_mem(){
 }
 
 void list::display_gr(){
-	int ml=0,fl=0,mh=0,fh=0,mm=0,fm=0,mt=0,ft=0,ma=0,fa=0,mp=0,fp=0;
+    ml=0,fl=0,mh=0,fh=0,mm=0,fm=0,mt=0,ft=0,ma=0,fa=0,mp=0,fp=0;
     cout<<setw(10)<<"Ma DV"<<setw(20)<<"Ten don vi"<<setw(10)<<"Ma NV"<<setw(20)<<"So luong nam"<<setw(20)<<"So luong nu"<<setw(20)<<endl<<endl;
     for(int i=0; i<numofMem; i++){
 		if(list_mem[i].getGID().compare("LDR  ")==0) {
@@ -453,4 +480,21 @@ void list::display_p(){
     for(int i=0; i<numofP; i++){
         cout<<list_p[i]<<endl<<endl;
     }
+}
+
+void list::add(member& m, int k){
+	numofMem++;
+    member *b = new member[numofMem];
+    for (int i = 0; i < numofMem-1; i++)
+        b[i] = list_mem[i];
+    for (int i = numofMem - 1; i > k; i--)
+        b[i] = b[i - 1];
+    b[k] = m;
+    /*Tiến hành cấp phát động lại list_mem*/
+    delete [] list_mem;
+    list_mem = new member[numofMem];
+    for (int i = 0; i < numofMem; i++)
+        list_mem[i] = b[i];
+	ofstream ofs;
+	writefile_mem(ofs);
 }
