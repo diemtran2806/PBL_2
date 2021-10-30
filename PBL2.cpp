@@ -92,6 +92,8 @@ bool operator ==(birthday& d1, birthday& d2){
     return false;
 }
 int monthStrToInt(string a);/////////////////////
+birthday dateNow;//lấy thời gian hiện tại
+
 //nhan vien
 class member {
 protected:
@@ -216,8 +218,8 @@ void del_ws(string &s);
 void list::delete_mem_age(int age){
     //vd: 60(age) năm trước là ngày nào
     birthday dayAge;//năm sinh của người có (age) tuổi tính từ hiện tại
-    dayAge=SystemDate()-age;
-    cout<<dayAge<<endl;
+    dayAge=dateNow-age;////////////////////////////////////////////////////////// ERR
+    cout<<dayAge<<"a"<<endl;
     int run=0;// biết chạy duyệt phần tử
     do
     {
@@ -291,6 +293,7 @@ birthday SystemDate(){
     dateResult.setMonth(imonth);
     cout<<dateResult.getMonth()<<endl;
     //bat dau lay thang
+    cout<<dateResult<<"re"<<endl;   
     return dateResult;
 }
 
@@ -473,6 +476,7 @@ int main(){
     //com.display_gr();
     //com.display_p();
     //com.search();
+    dateNow=SystemDate();
     com.delete_mem();
     //com.display_gr();
     //com.display_p();
