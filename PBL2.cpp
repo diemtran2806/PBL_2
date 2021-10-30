@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include<conio.h>
+#include <conio.h>
 #include <fstream>
 #include <iomanip>
+#include <ctime>
 using namespace std;
 #define A 1500000; //LCB
 
@@ -600,9 +601,10 @@ void list::writefile_mem(ofstream& ofs){
 	ofs.open("Nhan Vien.txt", ios_base::trunc);
 	ofs <<left<<setw(6)<<"Ma NV"<<setw(17)<<"|Ho"<<setw(7)<<"|Ten"<<setw(6)<<"|Ma DV"<<setw(15)<<"|So dien thoai"<<setw(12)<<"|Ngay sinh"
         <<setw(10)<<"|Gioi tinh"<<setw(10)<<"|Chuc vu"<<setw(13)<<"|He so luong"<<setw(9)<<"|Nam vao"<<setw(10)<<"|Trinh do"<<setw(12)<<"|Ngoai ngu"<<endl;
-	for(int i=0;i<numofMem;i++) {
+	for(int i=0;i<numofMem-1;i++) {
 		ofs <<left<<list_mem[i]<<endl;
 	}
+    ofs <<left<<list_mem[numofMem-1];
 	ofs.close();
 }
 
