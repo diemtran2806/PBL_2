@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include<conio.h>
 #include <fstream>
 #include <iomanip>
 using namespace std;
@@ -30,8 +31,16 @@ class birthday{                //class ngày tháng năm sinh để sau này l�
       void setYear(int year){
           this->year = year;
       }
-};
+    const birthday &operator = (const birthday &x);
+    friend bool operator ==(birthday&, birthday&);
+    friend bool operator <(const birthday& d1, const birthday& d2);
+    friend birthday operator - (birthday ,int );
+    friend ostream &operator <<(ostream &out, birthday &);
 
+};
+birthday SystemDate();
+int monthStrToInt(string a);/////////////////////
+birthday dateNow;//lấy thời gian hiện tại
 //nhan vien
 class member {
 protected:
@@ -60,6 +69,8 @@ public:
     int getSalary(); //tinh luong    
     int getNewsalary();//thực lĩnh
     bool isEqual(int,string);
+    birthday getBirthday();
+    string getFullName();
     friend istream &operator >>(istream &in, member &);
     friend ostream &operator <<(ostream &out, member &);
 	//const member &operator = (const member &m);  // hàm gán, tham chiếu hằng, hằng
@@ -125,6 +136,10 @@ public:
     friend ostream &operator <<(ostream &out,const list&);
     void search(); //tim kiem nhan vien tu ten, gioi tinh...
     int menu_Search(string &);
+    //xoas
+    void delete_mem();//main
+    void delete_mem_age(int);//xoa theo tuoi///////////
+
 };
 
 //Ham xoa ki tu trang du thua
@@ -144,7 +159,9 @@ int main(){
     //com.display_mem();
     //com.display_gr();
     //com.display_p();
-    com.search();
+    //com.search();
+    dateNow=SystemDate();//lấy time hiện tại
+    com.delete_mem();
     //com.display_gr();
     //com.display_p();
     //member m;
@@ -168,9 +185,57 @@ int main(){
 	}*/
     return 0;
 }
+//birthday
+ostream &operator <<(ostream &out, birthday & d)//////////////////
+{
+    out<< d.day<<"   "<<d.month<<"   "<<d.year<<endl;
+    return out;
+}
+bool operator <(const birthday& d1, const birthday& d2) {
+    if (d1.year<d2.year)
+    {
+        return true;
+    }
 
+    if (d1.year==d2.year)
+    {
+        if (d1.month<d2.month)
+        {
+            return true;
+        }
+        if (d1.month==d2.month)
+        {
+            if (d1.day<d2.day)
+            {
+                return true;
+            }
+            return false;
+        }
+        
+    }
+    return false;
+}
+const birthday &birthday::operator = (const birthday &x){
+    if (this != &x) {
+        day=x.day;
+        month=x.month;
+        year=x.year;
+    }
+    return *this;
+}
+birthday operator - (birthday d,int x){
+    birthday dateResult=d;
+    dateResult.year-=x;
+    return dateResult;
+ }
+bool operator ==(birthday& d1, birthday& d2){
+    if (d1.day==d2.day&&d1.month==d2.month&&d1.year==d2.year){
+        return true;
+    }
+    return false;
+}
 
-                                                                //member
+//member
 member::member(){
     mID = "";
     mlname = "";
@@ -336,6 +401,57 @@ bool member::isEqual(int chon,string s){
     }
 }
 
+//main_del_mem
+void list::delete_mem()
+{
+    int ktr = 0;
+	do
+	{
+		//system("cls");
+        cout << " 1. Xoa theo ten. (ok)\n";
+	    cout << " 2. Xoa theo ID.\n";
+	    cout << " 3. Xoa theo tuoi.\n";
+	    cout << " 4. Xoa nguoi tren 60 tuoi. (ok)\n";
+        cout << " 5. Hien thi ds.\n";
+	    cout << " 0. exit\n";
+		cout << endl;
+        char key;
+        fflush(stdin);
+        key = getch();
+        ofstream ofs;//ghi vào file
+        switch (key)
+        {
+        case '1':
+            cout << " 1. Xoa theo ten.\n";
+            //this->delete_mem_name();
+            break;
+        case '2':
+            cout << " 2. Xoa theo ID.\n";
+
+            break;
+        case '3':
+            cout << " 3. Xoa theo tuoi.\n";
+            int tempAgeDel;
+            cout<<"Nhap tuoi muon xoa:";
+            cin>>tempAgeDel;
+            this->delete_mem_age(tempAgeDel);
+	        writefile_mem(ofs);
+            break;
+        case '4':
+            cout << " 4. Xoa nguoi tren 60 tuoi.\n";
+            this->delete_mem_age(60);
+	        writefile_mem(ofs);
+            break;
+        case '5':
+            cout << " 5. Hien thi ds.\n";
+            this->display_mem();
+            break;
+        case '0':
+            ktr = -1;
+            break;
+        }
+	} while (ktr!=-1);
+}
                                                                 //group
 group::group(string gID, string gName, string mID)
     :gID(gID),gName(gName),mID(mID){}
@@ -349,6 +465,14 @@ void group::readfile_G(ifstream &in){
 ostream &operator <<(ostream &out, const group &g){
     out<<setw(10)<<g.gID<<"|"<<setw(19)<<g.gName<<"|"<<setw(9)<<g.mID;
     return out;
+}
+birthday member::getBirthday(){
+ return ns;
+}
+
+string member::getFullName()
+{
+    return mlname+" "+firstname;
 }
 
                                                                 //position
@@ -631,4 +755,135 @@ void list::add(member& m, int k){
         list_mem[i] = b[i];
 	ofstream ofs;
 	writefile_mem(ofs);
+}
+void list::delete_mem_age(int age){
+    //vd: 60(age) năm trước là ngày nào
+    birthday dayAge;//năm sinh của người có (age) tuổi tính từ hiện tại
+    dayAge=dateNow-age;////////////////////////////////////////////////////////// ERR
+    int run=0;// biết chạy duyệt phần tử
+    do
+    {
+        if (dayAge<list_mem[run].getBirthday())//nếu chưa đủ 60(age) tuổi thì bỏ qua
+        {
+            run++;
+        }
+        else{//>= 60 tuổi
+            int newSize = numofMem - 1;
+            member *newArr = new member[newSize];
+            int i = 0;
+            int j = 0;
+            //gán phần tử cho mảng mới bỏ qua phần tử muốn xóa
+            while (i < numofMem&&j<newSize)
+            {
+                if (i == run) //Nếu gặp người cần xóa thì tăng i để bỏ qua
+                {
+                    i++;
+                }
+                newArr[j] = list_mem[i];
+                i++;
+                j++;
+            }
+            delete[] list_mem;
+            //trả lại mảng đã xóa
+            numofMem = newSize;//tru 1 vi danh sach bat dau tu 0
+            list_mem = newArr;
+        }
+        
+    } while (run<numofMem);
+    cout << "Da xoa xong!" << endl;
+    cout<<"-----------enter de tiep tuc----------" << endl;
+    getch();
+
+}
+
+//trả về ngày hiện tại
+birthday SystemDate(){
+    birthday dateResult;
+    time_t now = time(0);//hàm trả về thời gian là s
+    char* dt = ctime(&now);//chuyển s thành date
+    //012345678901234567890123 để tìm vị trí ngày cho dễ
+    //Fri Oct 29 21:53:17 2021
+
+    //bắt đầu lấy ngày
+    string date(dt);//chuyển char thành string
+    char sday[2];//ngày có hai chữ số và một kí tự kết thúc \0->chuoi
+    int length=date.copy(sday, 2, 8);
+    sday[length]='\0';//thhêm ký tụ kết thúc để chuyển char thành string
+    int iday;//day kiểu int
+    stringstream(sday) >> iday; //chuyển string thành int
+    dateResult.setDay(iday);
+    
+
+     // //lấy năm
+    string year(dt);
+    char syear[4];
+    length=year.copy(syear, 4, 20);
+    syear[length]='\0';
+    int iyear;
+    stringstream(syear) >> iyear;
+    dateResult.setYear(iyear);
+   
+
+    //bat dau lay thang
+    string month(dt);
+    char cmonth[4];
+    month.copy(cmonth, 3, 4);
+    string smonth(cmonth);
+    int imonth=monthStrToInt(smonth);
+    
+    dateResult.setMonth(imonth);
+    return dateResult;
+}
+
+//chuyển ngày chữ sang ngày số
+int monthStrToInt(string a){
+   if (a=="Jan")
+   {
+       return 1;
+   }
+   if (a=="Feb")
+   {
+       return 2;
+   }
+   if (a=="Mar")
+   {
+       return 3;
+   }
+   if (a=="Apr")
+   {
+       return 4;
+   }
+   if (a=="May")
+   {
+       return 5;
+   }
+   if (a=="Jun")
+   {
+       return 6;
+   }
+   if (a=="Jul")
+   {
+       return 7;
+   }
+   if (a=="Aug")
+   {
+       return 8;
+   }
+   if (a=="Sep")
+   {
+       return 9;
+   }
+   if (a=="Oct")
+   {
+       return 10;
+   }
+   if (a=="Nov")
+   {
+       return 11;
+   }
+   if (a=="Dec")
+   {
+       return 12;
+   }
+   
 }
