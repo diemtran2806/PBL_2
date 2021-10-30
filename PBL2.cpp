@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include<conio.h>
+#include <ctime>
 #include <fstream>
 #include <iomanip>
 using namespace std;
