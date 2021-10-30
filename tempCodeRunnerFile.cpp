@@ -282,7 +282,7 @@ birthday SystemDate(){
     dateResult.setYear(iyear);
    
 
-    //bat dau lay thang
+    //lay thang
     string month(dt);
     char cmonth[4];
     month.copy(cmonth, 3, 4);
@@ -290,6 +290,8 @@ birthday SystemDate(){
     int imonth=monthStrToInt(smonth);
     
     dateResult.setMonth(imonth);
+    cout<<dateResult.getMonth()<<endl;
+    //bat dau lay thang
     return dateResult;
 }
 
