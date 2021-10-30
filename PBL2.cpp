@@ -141,6 +141,7 @@ public:
     //xoas
     void delete_mem();//main
     void delete_mem_age(int);//xoa theo tuoi///////////
+    void menu();
 
 };
 
@@ -157,34 +158,8 @@ int main(){
     com.readfile_gr(filein_G);
     ifstream filein_p;
     com.readfile_p(filein_p);
-    //com.ok();
-    //com.display_mem();
-    //com.display_gr();
-    //com.display_p();
-    //com.search();
     dateNow=SystemDate();//lấy time hiện tại
-    com.delete_mem();
-    //com.display_gr();
-    //com.display_p();
-    //member m;
-    //cin>>m;
-    //cout<<m;
-    //cout<<"Thuc linh: "<<(size_t)m.getNewsalary()<<endl; // không có size t là ra số e
-	/*member m;
-	cout <<"Nhap nhan vien muon them vao danh sach: "<<endl;
-	cin >> m;
-	cout <<"Nhap vi tri muon them vao danh sach: ";
-	int k;
-	cin >> k;
-	com.add(m,k);
-	com.display_mem();
-    int x;
-	cout <<"Nhap 1 de in lai danh sach "<<endl;
-	cin >> x;
-	if (x==1) {
-		com.display_mem();
-		com.display_gr();  // in ni ra lại để coi só lượng nam hoặc nữ tăng lên khi thêm nv mới vào
-	}*/
+    com.menu();
     return 0;
 }
 //birthday
@@ -409,7 +384,7 @@ void list::delete_mem()
     int ktr = 0;
 	do
 	{
-		//system("cls");
+		system("cls");
         cout << " 1. Xoa theo ten. (ok)\n";
 	    cout << " 2. Xoa theo ID.\n";
 	    cout << " 3. Xoa theo tuoi. (ok)\n";
@@ -599,7 +574,7 @@ void list::readfile_p(ifstream& in){
 } 
 
 void list::writefile_mem(ofstream& ofs){
-	ofs.open("Nhan Vien.txt", ios_base::trunc);
+	ofs.open("Nhan Vien_out.txt", ios_base::trunc);
 	ofs <<left<<setw(6)<<"Ma NV"<<setw(17)<<"|Ho"<<setw(7)<<"|Ten"<<setw(6)<<"|Ma DV"<<setw(15)<<"|So dien thoai"<<setw(12)<<"|Ngay sinh"
         <<setw(10)<<"|Gioi tinh"<<setw(10)<<"|Chuc vu"<<setw(13)<<"|He so luong"<<setw(9)<<"|Nam vao"<<setw(10)<<"|Trinh do"<<setw(12)<<"|Ngoai ngu"<<endl;
 	for(int i=0;i<numofMem-1;i++) {
@@ -889,4 +864,45 @@ int monthStrToInt(string a){
        return 12;
    }
    
+}
+
+void list::menu(){
+    int chon;
+    member m;
+    int k,x;
+    do{
+        system("cls");
+        cout<<"--------------MENU---------------"<<endl;
+        cout<<"1: Hien thi danh sach nhan vien"<<endl;
+        cout<<"2: Hien thi danh sach don vi"<<endl;
+        cout<<"3: Hien thi danh sach chuc vu"<<endl;
+        cout<<"4: Them mot nhan vien"<<endl;
+        cout<<"5: Tim kiem nhan vien"<<endl;
+        cout<<"6: Xoa mot nhan vien"<<endl;
+        cout<<"0: Thoat!"<<endl;
+        cout<<"Chon: ";
+        cin>>chon;
+        switch(chon){
+            case 1: display_mem();getch();break;
+            case 2: display_gr();getch();break;
+            case 3: display_p();getch();break;
+            case 4: 
+                cout <<"Nhap nhan vien muon them vao danh sach: "<<endl;
+                cin >> m;
+                cout <<"Nhap vi tri muon them vao danh sach: ";
+                cin >> k;
+                add(m,k);
+                cout <<"Nhap 1 de in lai danh sach "<<endl;
+                cin >> x;
+                if (x==1) {
+                    display_mem();
+                    display_gr();  // in ni ra lại để coi só lượng nam hoặc nữ tăng lên khi thêm nv mới vào
+                }
+                getch();break;
+            case 5: search();getch();break;
+            case 6: delete_mem();getch();break;
+            case 0: break;
+            default: cout<<"Ban da nhap sai!"<<endl;getch();
+        }
+    }while(chon);
 }
