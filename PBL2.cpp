@@ -410,7 +410,7 @@ void list::delete_mem()
 		//system("cls");
         cout << " 1. Xoa theo ten. (ok)\n";
 	    cout << " 2. Xoa theo ID.\n";
-	    cout << " 3. Xoa theo tuoi.\n";
+	    cout << " 3. Xoa theo tuoi. (ok)\n";
 	    cout << " 4. Xoa nguoi tren 60 tuoi. (ok)\n";
         cout << " 5. Hien thi ds.\n";
 	    cout << " 0. exit\n";
