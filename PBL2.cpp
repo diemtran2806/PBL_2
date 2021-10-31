@@ -197,6 +197,7 @@ void list::delete_mem_name_id(char coption)
         {
             if (i == a[t])
             {
+
                 t++;
                 i++;
             }
@@ -210,7 +211,7 @@ void list::delete_mem_name_id(char coption)
         delete[] list_mem;
         numofMem = newSize;
         list_mem = newListMember;
-        cout << "-----------Da xoa xong!------------";
+        cout << "-----------Da xoa xong!------------"<<endl;
         getch();
     }
 }
@@ -505,7 +506,7 @@ void list::delete_mem()
             break;
         case '2':
             cout << " 2. Xoa theo ten.\n";
-            this->delete_mem_name_id(key+1);
+            this->delete_mem_name_id(key);
             break;
         case '3':
             cout << " 3. Xoa theo tuoi.\n";
