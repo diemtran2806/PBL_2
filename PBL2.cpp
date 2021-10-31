@@ -189,18 +189,14 @@ void list::delete_mem_name_id(char coption)
     else
     {
         int newSize = numofMem - n;
-        cout << newSize << " " << numofMem << endl;
-        cout << n << "a" << endl;
         member *newListMember = new member[newSize];
         int i = 0;
         int j = 0;
         int t = 0;
         while (i < numofMem && j < newSize)
         {
-            cout << "ukela";
             if (i == a[t])
             {
-                cout << list_mem[a[t]] << endl;
                 t++;
                 i++;
             }
@@ -507,7 +503,7 @@ void list::delete_mem()
             break;
         case '2':
             cout << " 2. Xoa theo ten.\n";
-            this->delete_mem_name_id(key);
+            this->delete_mem_name_id(key+1);
             break;
         case '3':
             cout << " 3. Xoa theo tuoi.\n";
