@@ -1118,3 +1118,4 @@ void list::menu()
             getch();
         }
     } while (chon);
+}
