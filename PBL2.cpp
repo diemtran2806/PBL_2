@@ -503,7 +503,7 @@ void list::delete_mem()
             break;
         case '2':
             cout << " 2. Xoa theo ten.\n";
-            this->delete_mem_name_id(key+1);
+            this->delete_mem_name_id(key);
             break;
         case '3':
             cout << " 3. Xoa theo tuoi.\n";
