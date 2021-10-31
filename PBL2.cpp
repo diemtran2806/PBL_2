@@ -42,10 +42,10 @@ public:
         this->year = year;
     }
     const birthday &operator=(const birthday &x);
-    friend bool operator==(birthday &, birthday &);
+    friend bool operator==(const birthday &, const birthday &);
     friend bool operator<(const birthday &d1, const birthday &d2);
-    friend birthday operator-(birthday, int);
-    friend ostream &operator<<(ostream &out, birthday &);
+    friend birthday operator-(const birthday &, int);
+    friend ostream &operator<<(ostream &out, const birthday &);
 };
 birthday SystemDate();
 int monthStrToInt(string a); /////////////////////
@@ -172,12 +172,12 @@ void list::delete_mem_name_id(char coption)
     int option = (int)coption - 48;
     if (option == 1)
     {
-        cout << "Nhap ma nhan vien:";
+        cout << "Nhap ma nhan vien: ";
         getline(cin, content);
     }
     else
     {
-        cout << "Nhap ten nhan vien:";
+        cout << "Nhap ten nhan vien: ";
         getline(cin, content);
     }
     int n = search(option, content, a);
@@ -233,7 +233,7 @@ int main()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //birthday
-ostream &operator<<(ostream &out, birthday &d) //////////////////
+ostream &operator<<(ostream &out, const birthday &d) //////////////////
 {
     out << d.day << "   " << d.month << "   " << d.year << endl;
     return out;
@@ -272,13 +272,13 @@ const birthday &birthday::operator=(const birthday &x)
     }
     return *this;
 }
-birthday operator-(birthday d, int x)
+birthday operator-(const birthday &d, int x)
 {
     birthday dateResult = d;
     dateResult.year -= x;
     return dateResult;
 }
-bool operator==(birthday &d1, birthday &d2)
+bool operator==(const birthday &d1, const birthday &d2)
 {
     if (d1.day == d2.day && d1.month == d2.month && d1.year == d2.year)
     {
@@ -474,7 +474,9 @@ bool member::isEqual(int chon, string s)
         return s.compare(this->degree);
     case 12:
         return s.compare(this->L_certificate);
-    }
+    case 13:
+        return s.compare(this->getFullName());
+    } 
 }
 
 //main_del_mem
