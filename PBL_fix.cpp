@@ -169,7 +169,7 @@ void list::delete_mem_name_id(char coption)
 {
     int a[100];
     string content;
-    int option=(int)coption-48;
+    int option = (int)coption - 48;
     if (option == 1)
     {
         cout << "Nhap ma nhan vien:";
@@ -181,43 +181,42 @@ void list::delete_mem_name_id(char coption)
         getline(cin, content);
     }
     int n = search(option, content, a);
-    if (n==0)
+    if (n == 0)
     {
-        cout<<"Khong co nguoi nao co thong tin trung khop!"<<endl;
+        cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
         getch();
     }
     else
     {
         int newSize = numofMem - n;
-        cout<<newSize<<" "<<numofMem<<endl;
-        cout<<n<<"a"<<endl;
+        cout << newSize << " " << numofMem << endl;
+        cout << n << "a" << endl;
         member *newListMember = new member[newSize];
         int i = 0;
         int j = 0;
-        int t=0;
+        int t = 0;
         while (i < numofMem && j < newSize)
         {
-            cout<<"ukela";
-            if (i==a[t])
+            cout << "ukela";
+            if (i == a[t])
             {
-                cout<<list_mem[a[t]]<<endl; 
+                cout << list_mem[a[t]] << endl;
                 t++;
                 i++;
             }
-            else{
-                newListMember[j]=list_mem[i];
+            else
+            {
+                newListMember[j] = list_mem[i];
                 i++;
                 j++;
             }
-            
         }
-        delete [] list_mem;
-        numofMem=newSize;
-        list_mem=newListMember;
-        cout<<"-----------Da xoa xong!------------";
+        delete[] list_mem;
+        numofMem = newSize;
+        list_mem = newListMember;
+        cout << "-----------Da xoa xong!------------";
         getch();
     }
-    
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main
