@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <ctime>
 using namespace std;
-#define A 1500000; //LCB
+#define A 1500000  //LCB
 
 //
 class birthday
@@ -50,6 +50,7 @@ public:
 birthday SystemDate();
 int monthStrToInt(string a); /////////////////////
 birthday dateNow;            //lấy thời gian hiện tại
+
 //nhan vien
 class member
 {
@@ -67,6 +68,10 @@ protected:
     string degree;        //trình độ, cấp bậc
     string L_certificate; // bằng ngoại ngữ
 public:
+    string getMID()
+    {
+        return mID;
+    }
     string getGID()
     {
         return gID;
@@ -77,12 +82,14 @@ public:
     }
     member();
     member(string, string, string, string, string, birthday, int, string, float, int, string, string);
+
     void readfile_M(ifstream &);
     int getSalary();    //tinh luong
     int getNewsalary(); //thực lĩnh
     bool isEqual(int, string);
     birthday getBirthday();
     string getFullName();
+
     friend istream &operator>>(istream &in, member &);
     friend ostream &operator<<(ostream &out, member &);
     //const member &operator = (const member &m);  // hàm gán, tham chiếu hằng, hằng
@@ -128,7 +135,6 @@ private:
     int numofMem; //sl nv
     int numofGr;  //sl đơn vị
     int numofP;
-    int ml, fl, mh, fh, mm, fm, mt, ft, ma, fa, mp, fp;
     member *list_mem;
     group *list_gr;
     Position *list_p;
@@ -137,26 +143,36 @@ public:
     list(int = 0, int = 0, int = 0);
     list(const list &);
     ~list();
+
     void readfile_mem(ifstream &in); //nhap danh sach nhan vien tu file
     void readfile_gr(ifstream &in);  //nhap danh sach don vi tu file
     void readfile_p(ifstream &in);   //Nhap danh sach chuc vu
+    
     void writefile_mem(ofstream &ofs);
     void display_mem();                           //in danh sach nhan vien
+    
     void display_gr();                            //in bang thong ke theo don vi
     void display_p();                             //in bang thong ke cac chuc vu
+    
+    int check(member &);                               
     void add(member &, int k);                    //bo sung 1 doi tuong vao vi tri k bat ki
+    void add_menu();
+
     void sort(bool CompFunc(member &, member &)); //sap xep danh sach nhan vien theo thu tu tang/giam
+
     int search(int, string, int a[100]);          //ham tim kiem 1 nhan vien
-    void delete_mem(member &);                    //xoa 1 nhan vien bat ki
-    member &operator[](int i) const;              //toan tu lay phan tu thu i [] trong danh sach nhan vien
-    const list &operator=(const list &);
-    friend ostream &operator<<(ostream &out, const list &);
     void search(); //tim kiem nhan vien tu ten, gioi tinh...
     int menu_Search(string &);
+    
     //xoas
+    void delete_mem(member &);                    //xoa 1 nhan vien bat ki
     void delete_mem();             //main
     void delete_mem_age(int);      //xoa theo tuoi///////////
     void delete_mem_name_id(char); //xóa theo tên or id
+
+    member &operator[](int i) const;              //toan tu lay phan tu thu i [] trong danh sach nhan vien
+    const list &operator=(const list &);
+    friend ostream &operator<<(ostream &out, const list &);
 
     //menu main
     void menu();
@@ -165,56 +181,6 @@ public:
 //Ham xoa ki tu trang du thua
 void del_ws(string &s);
 
-void list::delete_mem_name_id(char coption)
-{
-    int a[100];
-    string content;
-    int option = (int)coption - 48;
-    if (option == 1)
-    {
-        cout << "Nhap ma nhan vien: ";
-        getline(cin, content);
-    }
-    else
-    {
-        cout << "Nhap ten nhan vien: ";
-        getline(cin, content);
-    }
-    int n = search(option, content, a);
-    if (n == 0)
-    {
-        cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
-        getch();
-    }
-    else
-    {
-        int newSize = numofMem - n;
-        member *newListMember = new member[newSize];
-        int i = 0;
-        int j = 0;
-        int t = 0;
-        while (i < numofMem && j < newSize)
-        {
-            if (i == a[t])
-            {
-
-                t++;
-                i++;
-            }
-            else
-            {
-                newListMember[j] = list_mem[i];
-                i++;
-                j++;
-            }
-        }
-        delete[] list_mem;
-        numofMem = newSize;
-        list_mem = newListMember;
-        cout << "-----------Da xoa xong!------------"<<endl;
-        getch();
-    }
-}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main
 int main()
@@ -232,7 +198,30 @@ int main()
     return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+void del_ws(string &s)            //Hàm xóa khoảng trắng
+{
+    while (s[0] == ' ')
+    {
+        for (int k = 0; k < s.length(); k++)
+        {
+            s[k] = s[k + 1];
+        }
+    }
+    while (s[s.length() - 1] == ' ')
+    {
+        s.resize(s.size() - 1);
+    }
+    for (int i = 0; i < s.length(); i++)
+    {
+        while (s[i] == ' ' && s[i + 1] == ' ')
+        {
+            for (int k = i + 1; k < s.length(); k++)
+            {
+                s[k] = s[k + 1];
+            }
+        }
+    }
+}
 //birthday
 ostream &operator<<(ostream &out, const birthday &d) //////////////////
 {
@@ -416,7 +405,7 @@ istream &operator>>(istream &in, member &m)
 
 int member::getSalary()
 {
-    return (1500000 / 100) * (int(C_salary * 100));
+    return (A/100) * (int(C_salary * 100));
 }
 
 int member::getNewsalary()
@@ -480,57 +469,6 @@ bool member::isEqual(int chon, string s)
     } 
 }
 
-//main_del_mem
-void list::delete_mem()
-{
-    int ktr = 0;
-    do
-    {
-        //system("cls");
-        cout << " 1. Xoa theo ID.\n";
-        cout << " 2. Xoa theo ten.\n";
-        cout << " 3. Xoa theo tuoi. (ok)\n";
-        cout << " 4. Xoa nguoi tren 60 tuoi. (ok)\n";
-        cout << " 5. Hien thi ds.\n";
-        cout << " 0. exit\n";
-        cout << endl;
-        char key;
-        fflush(stdin);
-        key = getch();
-        ofstream ofs; //ghi vào file
-        switch (key)
-        {
-        case '1':
-            cout << " 1. Xoa theo ID.\n";
-            this->delete_mem_name_id(key);
-            break;
-        case '2':
-            cout << " 2. Xoa theo ten.\n";
-            this->delete_mem_name_id(key);
-            break;
-        case '3':
-            cout << " 3. Xoa theo tuoi.\n";
-            int tempAgeDel;
-            cout << "Nhap tuoi muon xoa:";
-            cin >> tempAgeDel;
-            this->delete_mem_age(tempAgeDel);
-            writefile_mem(ofs);
-            break;
-        case '4':
-            cout << " 4. Xoa nguoi tren 60 tuoi.\n";
-            this->delete_mem_age(60);
-            writefile_mem(ofs);
-            break;
-        case '5':
-            cout << " 5. Hien thi ds.\n";
-            this->display_mem();
-            break;
-        case '0':
-            ktr = -1;
-            break;
-        }
-    } while (ktr != -1);
-}
 //group
 group::group(string gID, string gName, string mID)
     : gID(gID), gName(gName), mID(mID) {}
@@ -720,7 +658,7 @@ void list::display_mem()
 
 void list::display_gr()
 {
-    ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
+    int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
     cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" << setw(20) << "|So luong nu" << endl
          << endl;
     for (int i = 0; i < numofMem; i++)
@@ -881,33 +819,22 @@ int list::menu_Search(string &tt)
     return chon;
 }
 
-void del_ws(string &s)
-{
-    while (s[0] == ' ')
-    {
-        for (int k = 0; k < s.length(); k++)
-        {
-            s[k] = s[k + 1];
+int list::check(member &m){
+    int temp=0;
+    for(int i=0;i<numofMem;i++){
+        if(m.getMID().compare(list_mem[i].getMID())==0){
+            temp=-1;
+            break;
         }
     }
-    while (s[s.length() - 1] == ' ')
-    {
-        s.resize(s.size() - 1);
-    }
-    for (int i = 0; i < s.length(); i++)
-    {
-        while (s[i] == ' ' && s[i + 1] == ' ')
-        {
-            for (int k = i + 1; k < s.length(); k++)
-            {
-                s[k] = s[k + 1];
-            }
-        }
-    }
+    if(temp==-1) {
+        cout<<"\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!"<<endl;
+        cout<<"MOI BAN NHAP LAI: "<<endl<<endl;
+        return -1;
+    } else return 0;  
 }
-
 void list::add(member &m, int k)
-{
+{   
     numofMem++;
     member *b = new member[numofMem];
     for (int i = 0; i < numofMem - 1; i++)
@@ -923,6 +850,66 @@ void list::add(member &m, int k)
     ofstream ofs;
     writefile_mem(ofs);
 }
+void list::add_menu()
+{
+    int cv;
+    member m;
+    int k, x;
+    do
+    {
+        //system("cls");
+        cout << "--------------CHUC NANG---------------" << endl;
+        cout << "1: Them nhan vien vao dau danh sach" << endl;
+        cout << "2: Them nhan vien vao cuoi danh sach" << endl;
+        cout << "3: Them vao vi tri bat ki" << endl;
+        cout << "0: Thoat!" << endl;
+        cout << "Chon: ";
+        cin >> cv;
+        switch (cv)
+        {
+        case 1:
+            do{
+            cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
+            cin >> m;
+            }while(check(m)==-1);
+            add(m, 0);
+            cout<<"------------Da them thanh cong!-------------"<<endl;
+            break;
+        case 2:
+            do{
+            cout << "Nhap nhan vien muon them vao cuoi danh sach: " << endl;
+            cin >> m;
+            }while(check(m)==-1);
+            k = --numofMem;
+            add(m, k);
+            cout<<"------------Da them thanh cong!-------------"<<endl;
+            break;
+        case 3:
+            do{
+            cout << "Nhap nhan vien muon them vao vi tri bat ki trong danh sach: " << endl;
+            cin >> m;
+            }while(check(m)==-1);
+            do{ 
+                cout<<"Nhap vi tri muon them:";
+                cin >>k;
+                if(k<0 && k>numofMem) {
+                    cout <<"Ban da nhap vi tri vuot ngoai danh sach, moi ban nhap lai!";
+                    k=-1;
+                }
+
+            } while(k==-1);
+            add(m, k);
+            cout<<"------------Da them thanh cong!-------------"<<endl;
+            break;
+        case 0:
+            break;
+        default:
+            cout << "Ban da nhap sai!" << endl;
+            getch();
+        }
+    } while (cv!=0);
+}
+
 void list::delete_mem_age(int age)
 {
     //vd: 60(age) năm trước là ngày nào
@@ -963,7 +950,107 @@ void list::delete_mem_age(int age)
     cout << "-----------enter de tiep tuc----------" << endl;
     getch();
 }
+void list::delete_mem_name_id(char coption)   //xóa theo tên hoặc id
+{
+    int a[100];
+    string content;
+    int option = (int)coption - 48;
+    if (option == 1)
+    {
+        cout << "Nhap ma nhan vien: ";
+        getline(cin, content);
+    }
+    else
+    {
+        cout << "Nhap ten nhan vien: ";
+        getline(cin, content);
+    }
+    int n = search(option, content, a);
+    if (n == 0)
+    {
+        cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
+        getch();
+    }
+    else
+    {
+        int newSize = numofMem - n;
+        member *newListMember = new member[newSize];
+        int i = 0;
+        int j = 0;
+        int t = 0;
+        while (i < numofMem && j < newSize)
+        {
+            if (i == a[t])
+            {
 
+                t++;
+                i++;
+            }
+            else
+            {
+                newListMember[j] = list_mem[i];
+                i++;
+                j++;
+            }
+        }
+        delete[] list_mem;
+        numofMem = newSize;
+        list_mem = newListMember;
+        cout << "-----------Da xoa xong!------------"<<endl;
+        getch();
+    }
+}
+//main_del_mem
+void list::delete_mem()
+{
+    int ktr = 0;
+    do
+    {
+        //system("cls");
+        cout << " 1. Xoa theo ID.\n";
+        cout << " 2. Xoa theo ten.\n";
+        cout << " 3. Xoa theo tuoi. (ok)\n";
+        cout << " 4. Xoa nguoi tren 60 tuoi. (ok)\n";
+        cout << " 5. Hien thi ds.\n";
+        cout << " 0. exit\n";
+        cout << endl;
+        char key;
+        fflush(stdin);
+        key = getch();
+        ofstream ofs; //ghi vào file
+        switch (key)
+        {
+        case '1':
+            cout << " 1. Xoa theo ID.\n";
+            this->delete_mem_name_id(key);
+            break;
+        case '2':
+            cout << " 2. Xoa theo ten.\n";
+            this->delete_mem_name_id(key);
+            break;
+        case '3':
+            cout << " 3. Xoa theo tuoi.\n";
+            int tempAgeDel;
+            cout << "Nhap tuoi muon xoa:";
+            cin >> tempAgeDel;
+            this->delete_mem_age(tempAgeDel);
+            writefile_mem(ofs);
+            break;
+        case '4':
+            cout << " 4. Xoa nguoi tren 60 tuoi.\n";
+            this->delete_mem_age(60);
+            writefile_mem(ofs);
+            break;
+        case '5':
+            cout << " 5. Hien thi ds.\n";
+            this->display_mem();
+            break;
+        case '0':
+            ktr = -1;
+            break;
+        }
+    } while (ktr != -1);
+}
 //trả về ngày hiện tại
 birthday SystemDate()
 {
@@ -1088,18 +1175,7 @@ void list::menu()
             getch();
             break;
         case 4:
-            cout << "Nhap nhan vien muon them vao danh sach: " << endl;
-            cin >> m;
-            cout << "Nhap vi tri muon them vao danh sach: ";
-            cin >> k;
-            add(m, k);
-            cout << "Nhap 1 de in lai danh sach " << endl;
-            cin >> x;
-            if (x == 1)
-            {
-                display_mem();
-                display_gr(); // in ni ra lại để coi só lượng nam hoặc nữ tăng lên khi thêm nv mới vào
-            }
+            add_menu();
             getch();
             break;
         case 5:
