@@ -135,6 +135,7 @@ private:
     int numofMem; //sl nv
     int numofGr;  //sl đơn vị
     int numofP;
+    int ml, fl, mh, fh, mm , fm, mt, ft, ma , fa, mp , fp;
     member *list_mem;
     group *list_gr;
     Position *list_p;
@@ -150,7 +151,7 @@ public:
     
     void writefile_mem(ofstream &ofs);
     void display_mem();                           //in danh sach nhan vien
-    
+    void count_gender(int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&);
     void display_gr();                            //in bang thong ke theo don vi
     void display_p();                             //in bang thong ke cac chuc vu
     
@@ -183,10 +184,10 @@ void del_ws(string &s);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main
+list com;
 int main()
 {
     cout << left;
-    list com;
     ifstream filein_M;
     com.readfile_mem(filein_M);
     ifstream filein_G;
@@ -351,11 +352,18 @@ ostream &operator<<(ostream &out, member &m)
 
 istream &operator>>(istream &in, member &m)
 {
-    int temp;
+    int temp,check =0;
     int gt = 0;
-    string s;
+    string s; int a[100];
+    do{
     cout << "Nhap ma nhan vien: ";
     in >> m.mID;
+    check = com.search(1,m.mID,a);
+    if (check >0) {
+        cout<<"\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!"<<endl;
+        cout<<"MOI BAN NHAP LAI: "<<endl<<endl;
+    }
+    }while(check>0);
     cout << "Nhap ho va ten dem: ";
     getline(in >> ws, m.mlname);
     m.mlname += " ";
@@ -656,12 +664,8 @@ void list::display_mem()
     }
 }
 
-void list::display_gr()
-{
-    int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
-    cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" << setw(20) << "|So luong nu" << endl
-         << endl;
-    for (int i = 0; i < numofMem; i++)
+void list::count_gender(int&ml, int&fl, int&mh, int&fh, int&mm, int&fm, int&mt, int&ft, int&ma, int&fa, int&mp, int&fp){
+     for (int i = 0; i < numofMem; i++)
     {
         if (list_mem[i].getGID().compare("LDR") == 0)
         {
@@ -706,6 +710,13 @@ void list::display_gr()
                 fp++;
         }
     }
+}
+void list::display_gr()
+{
+    int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
+    count_gender(ml,fl,mh,fh,mm,fm,mt,ft,ma,fa,mp,fp);
+    cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" << setw(20) << "|So luong nu" << endl
+         << endl;
     for (int i = 0; i < numofGr; i++)
     {
         if (list_gr[i].getGID().compare("LDR") == 0)
@@ -774,6 +785,8 @@ void list::search()
         cin >> chon2;
         chon2 = toupper(chon2);
     } while (chon2 != 'K');
+    cout <<"Nhan Enter de tro ve Menu!"<<endl;
+
 }
 
 int list::menu_Search(string &tt)
@@ -868,27 +881,21 @@ void list::add_menu()
         switch (cv)
         {
         case 1:
-            do{
             cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
             cin >> m;
-            }while(check(m)==-1);
             add(m, 0);
             cout<<"------------Da them thanh cong!-------------"<<endl;
             break;
         case 2:
-            do{
             cout << "Nhap nhan vien muon them vao cuoi danh sach: " << endl;
             cin >> m;
-            }while(check(m)==-1);
             k = --numofMem;
             add(m, k);
             cout<<"------------Da them thanh cong!-------------"<<endl;
             break;
         case 3:
-            do{
             cout << "Nhap nhan vien muon them vao vi tri bat ki trong danh sach: " << endl;
             cin >> m;
-            }while(check(m)==-1);
             do{ 
                 cout<<"Nhap vi tri muon them:";
                 cin >>k;
@@ -902,9 +909,11 @@ void list::add_menu()
             cout<<"------------Da them thanh cong!-------------"<<endl;
             break;
         case 0:
+            cout <<"Nhan Enter de nhap lai chuc nang!"<<endl;
             break;
         default:
             cout << "Ban da nhap sai!" << endl;
+            cout <<"Nhan Enter de tiep tuc!"<<endl;
             getch();
         }
     } while (cv!=0);
@@ -946,8 +955,8 @@ void list::delete_mem_age(int age)
         }
 
     } while (run < numofMem);
-    cout << "Da xoa xong!" << endl;
-    cout << "-----------enter de tiep tuc----------" << endl;
+    cout << "------------Da xoa xong!--------------" << endl;
+    cout << "-----------Enter de tiep tuc----------" << endl;
     getch();
 }
 void list::delete_mem_name_id(char coption)   //xóa theo tên hoặc id
@@ -1012,7 +1021,7 @@ void list::delete_mem()
         cout << " 3. Xoa theo tuoi. (ok)\n";
         cout << " 4. Xoa nguoi tren 60 tuoi. (ok)\n";
         cout << " 5. Hien thi ds.\n";
-        cout << " 0. exit\n";
+        cout << " 0. Ket Thuc\n";
         cout << endl;
         char key;
         fflush(stdin);
@@ -1092,54 +1101,18 @@ birthday SystemDate()
 //chuyển ngày chữ sang ngày số
 int monthStrToInt(string a)
 {
-    if (a == "Jan")
-    {
-        return 1;
-    }
-    if (a == "Feb")
-    {
-        return 2;
-    }
-    if (a == "Mar")
-    {
-        return 3;
-    }
-    if (a == "Apr")
-    {
-        return 4;
-    }
-    if (a == "May")
-    {
-        return 5;
-    }
-    if (a == "Jun")
-    {
-        return 6;
-    }
-    if (a == "Jul")
-    {
-        return 7;
-    }
-    if (a == "Aug")
-    {
-        return 8;
-    }
-    if (a == "Sep")
-    {
-        return 9;
-    }
-    if (a == "Oct")
-    {
-        return 10;
-    }
-    if (a == "Nov")
-    {
-        return 11;
-    }
-    if (a == "Dec")
-    {
-        return 12;
-    }
+    if (a == "Jan") return 1;
+    if (a == "Feb") return 2;
+    if (a == "Mar") return 3;
+    if (a == "Apr") return 4;
+    if (a == "May") return 5;
+    if (a == "Jun") return 6;
+    if (a == "Jul") return 7;
+    if (a == "Aug") return 8;
+    if (a == "Sep") return 9;
+    if (a == "Oct") return 10;
+    if (a == "Nov") return 11;
+    if (a == "Dec") return 12;
 }
 
 void list::menu()
@@ -1164,14 +1137,17 @@ void list::menu()
         {
         case 1:
             display_mem();
+            cout <<"Nhan Enter de tiep tuc!"<<endl;
             getch();
             break;
         case 2:
             display_gr();
+            cout <<"Nhan Enter de tiep tuc!"<<endl;
             getch();
             break;
         case 3:
             display_p();
+            cout <<"Nhan Enter de tiep tuc!"<<endl;
             getch();
             break;
         case 4:
@@ -1190,6 +1166,7 @@ void list::menu()
             break;
         default:
             cout << "Ban da nhap sai!" << endl;
+            cout <<"Nhan Enter de nhap lai chuc nang!"<<endl;
             getch();
         }
     } while (chon);
