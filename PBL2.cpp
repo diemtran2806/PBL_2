@@ -8,7 +8,6 @@
 #include <ctime>
 using namespace std;
 #define A 1500000 //LCB
-
 //
 class birthday
 { //class ngày tháng năm sinh để sau này lấy cho dễ
@@ -169,10 +168,10 @@ public:
     int menu_Search(string &);
 
     //xoas
-    void delete_mem(member &);     //xoa 1 nhan vien bat ki
-    void delete_mem();             //main
-    void delete_mem_age(char);     //xoa theo tuoi///////////
-    void delete_mem_name_id(char); //xóa theo tên or id
+    void delete_mem(member &);    //xoa 1 nhan vien bat ki
+    void delete_mem();            //main
+    void delete_mem_age(int);     //xoa theo tuoi///////////
+    void delete_mem_name_id(int); //xóa theo tên or id
 
     member &operator[](int i) const; //toan tu lay phan tu thu i [] trong danh sach nhan vien
     const list &operator=(const list &);
@@ -945,13 +944,13 @@ void list::add_menu()
     } while (cv != 0);
 }
 
-void list::delete_mem_age(char key)
+void list::delete_mem_age(int key)
 {
     birthday dayAge;
     bool checkdel = false;
     int run = 0;
     int age = 60;
-    if (key == '3')
+    if (key == 4)
     {
         int nam;
         cout << "Nhap nam sinh:";
@@ -959,13 +958,13 @@ void list::delete_mem_age(char key)
         dayAge = dateNow;
         dayAge.setYear(nam);
     }
-    else if (key == '4')
+    else if (key == 5)
     {
         cout << "Nhap tuoi muon xoa:";
         cin >> age;
         dayAge = dateNow - age;
     }
-    else if (key == '5')
+    else if (key == 6)
     {
 
         dayAge = dateNow - age;
@@ -974,7 +973,7 @@ void list::delete_mem_age(char key)
     do
     {
         //tim diem xoa
-        if (key == '4' || key == '5')
+        if (key == 5 || key == 6)
         {
             while (dayAge < list_mem[run].getBirthday() && run < numofMem) //nếu chưa đủ 60(age) tuổi thì bỏ qua
             {
@@ -982,7 +981,7 @@ void list::delete_mem_age(char key)
             }
         }
         //tim diem xoa
-        if (key == '3')
+        if (key == 4)
         {
             while (dayAge.getYear() != list_mem[run].getBirthday().getYear() && run < numofMem) //nếu chưa đủ 60(age) tuổi thì bỏ qua
             {
@@ -1017,39 +1016,49 @@ void list::delete_mem_age(char key)
         }
 
     } while (run < numofMem);
-    if (checkdel)
+    if (checkdel == true)
     {
         cout << "------------Da xoa xong!--------------" << endl;
         cout << "-----------Enter de tiep tuc----------" << endl;
+        getch();
     }
     else
     {
         cout << "Khong co nhan vien nao trung thong tin can xoa!" << endl;
-        cout << "-----------Enter de tiep tuc----------" << endl;
+        cout << "---------------Enter de tiep tuc--------------" << endl;
+        getch();
     }
-
-    getch();
+    if (numofMem > 0)
+    {
+        ofstream ofs;
+        writefile_mem(ofs);
+    }
 }
-void list::delete_mem_name_id(char coption) //xóa theo tên hoặc id
+void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
 {
     int a[100];
     string content;
-    int option = (int)coption - 48;
+    
     if (option == 1)
     {
         cout << "Nhap ma nhan vien: ";
-        getline(cin, content);
     }
-    else
+    else if (option == 3)
     {
         option+=11;
         cout << "Nhap ten nhan vien: ";
-        getline(cin, content);
     }
+    else if (option == 13)
+    {
+        cout << "Nhap ho ten nhan vien: ";
+    }
+    cin.ignore();
+    getline(cin, content);
     int n = search(option, content, a);
     if (n == 0)
     {
         cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
+        cout << "----------Nhan Enter de tiep tuc!---------" << endl;
         getch();
     }
     else
@@ -1077,7 +1086,17 @@ void list::delete_mem_name_id(char coption) //xóa theo tên hoặc id
         delete[] list_mem;
         numofMem = newSize;
         list_mem = newListMember;
+        for (int i = 0; i < numofMem; i++)
+        {
+            list_mem[i];
+        }
+        if (numofMem > 0)
+        {
+            ofstream ofs;
+            writefile_mem(ofs);
+        }
         cout << "-----------Da xoa xong!------------" << endl;
+        cout << "------Nhan Enter de tiep tuc!------" << endl;
         getch();
     }
 }
@@ -1090,48 +1109,56 @@ void list::delete_mem()
         //system("cls");
         cout << " 1. Xoa theo ID.\n";
         cout << " 2. Xoa theo ten.\n";
-        cout << " 3. Xoa theo nam sinh. \n";
-        cout << " 4. Xoa lon hon tuoi. (ok)\n";
-        cout << " 5. Xoa nguoi tren 60 tuoi. (ok)\n";
-        cout << " 6. Hien thi ds.\n";
+        cout << " 3. Xoa theo ho ten.\n";
+        cout << " 4. Xoa theo nam sinh. \n";
+        cout << " 5. Xoa lon hon tuoi.\n";
+        cout << " 6. Xoa nguoi tren 60 tuoi.\n";
+        cout << " 7. Hien thi ds.\n";
         cout << " 0. Ket Thuc\n";
-        cout << endl;
-        char key;
-        fflush(stdin);
-        key = getch();
-        ofstream ofs; //ghi vào file
+        cout << "Chon chuc nang: ";
+        int key;
+        cin >> key;
         switch (key)
         {
-        case '1':
+        case 1:
             cout << " 1. Xoa theo ID.\n";
-            this->delete_mem_name_id(key);
+            this->delete_mem_name_id(1);
             break;
-        case '2':
+        case 2:
             cout << " 2. Xoa theo ten.\n";
-            this->delete_mem_name_id(key);
+            this->delete_mem_name_id(3);
             break;
-        case '3':
-            cout << " 3. Xoa theo nam sinh. \n";
+        case 3:
+            cout << "3. Xoa theo ho ten.\n";
+            this->delete_mem_name_id(13);
+            break;
+        case 4:
+            cout << " 4. Xoa theo nam sinh. \n";
             this->delete_mem_age(key);
             break;
-        case '4':
-            cout << " 3. Xoa theo tuoi.\n";
+        case 5:
+            cout << " 5. Xoa theo tuoi.\n";
             this->delete_mem_age(key);
-            writefile_mem(ofs);
             break;
-        case '5':
-            cout << " 4. Xoa nguoi tren 60 tuoi.\n";
+        case 6:
+            cout << " 6. Xoa nguoi tren 60 tuoi.\n";
             this->delete_mem_age(key);
-            writefile_mem(ofs);
             break;
-        case '6':
-            cout << " 6. Hien thi ds.\n";
+        case 7:
+            cout << " 7. Hien thi ds.\n";
             this->display_mem();
+            cout << "Nhan Enter de tiep tuc!" << endl;
+            getch();
             break;
-        case '0':
+        case 0:
             ktr = -1;
             break;
+        default:
+            cout << "Khong co chuc nang nay. Moi nhap lai!" << endl;
+            cout << "-------Nhan Enter de tiep tuc!-------" << endl;
+            getch();
         }
+
     } while (ktr != -1);
 }
 //trả về ngày hiện tại
@@ -1246,7 +1273,6 @@ void list::menu()
             break;
         case 6:
             delete_mem();
-            getch();
             break;
         case 0:
             break;
