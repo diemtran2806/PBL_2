@@ -7,11 +7,14 @@
 #include <iomanip>
 #include <ctime>
 using namespace std;
+#define nhanvientxt "Nhan Vien.txt"
+#define nhanvienouttxt "Nhan Vien_out.txt"
+#define nhanviensearch "NhanVien_search.txt"
 #define A 1500000 //LCB
 //
-string nhanvientxt = "Nhan Vien.txt"; //main !
+/*string nhanvientxt = "Nhan Vien.txt"; //main !
 string nhavienouttxt = "Nhan Vien_out.txt";
-string nhanviensearch = "NhanVien_search.txt";
+string nhanviensearch = "NhanVien_search.txt";*/
 class birthday
 { //class ngày tháng năm sinh để sau này lấy cho dễ
     int day;
@@ -762,7 +765,7 @@ void list::readfile_p(ifstream &in)
 
 void list::writefile_mem(ofstream &ofs, string txt)
 {
-    ofs.open(txt, ios_base::trunc);
+    ofs.open(txt.c_str(), ios_base::trunc);
     ofs << left << setw(6) << "Ma NV" << setw(17) << "|Ho" << setw(7) << "|Ten" << setw(6) << "|Ma DV" << setw(15) << "|So dien thoai" << setw(12) << "|Ngay sinh"
         << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao" << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << endl;
     for (int i = 0; i < numofMem - 1; i++)
@@ -1162,7 +1165,7 @@ void list::delete_mem_age(int key)
     if (numofMem > 0)
     {
         ofstream ofs;
-        writefile_mem(ofs, nhavienouttxt);
+        writefile_mem(ofs, nhanvienouttxt);
     }
 }
 
@@ -1177,7 +1180,6 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     }
     else if (option == 3)
     {
-        option += 11;
         cout << "Nhap ten nhan vien: ";
     }
     else if (option == 13)
@@ -1225,7 +1227,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
         if (numofMem > 0)
         {
             ofstream ofs;
-            writefile_mem(ofs, nhavienouttxt);
+            writefile_mem(ofs, nhanvienouttxt);
         }
         cout << "-----------Da xoa xong!------------" << endl;
         cout << "------Nhan Enter de tiep tuc!------" << endl;
@@ -1429,7 +1431,8 @@ void list::sort()
         cout << "2: Giam dan" << endl;
         cout << "Chon: ";
         cin >> key;
-    } while (key == 1 || key == 2);
+
+    } while (key!=1 && key!=2);
     if (key == 1)
         sort(ascending);
     else if (key == 2)
