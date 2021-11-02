@@ -944,6 +944,7 @@ void list::add_menu()
 void list::delete_mem_age(char key)
 {
     birthday dayAge;
+    bool checkdel = false;
     int run = 0;
     int age = 60;
     if (key == '3')
@@ -988,6 +989,7 @@ void list::delete_mem_age(char key)
         //gán lại mảng để xóa
         if (run < numofMem)
         {
+            checkdel = true;
             //>= 60 tuổi
             int newSize = numofMem - 1;
             member *newArr = new member[newSize];
@@ -1011,8 +1013,17 @@ void list::delete_mem_age(char key)
         }
 
     } while (run < numofMem);
-    cout << "------------Da xoa xong!--------------" << endl;
-    cout << "-----------Enter de tiep tuc----------" << endl;
+    if (checkdel)
+    {
+        cout << "------------Da xoa xong!--------------" << endl;
+        cout << "-----------Enter de tiep tuc----------" << endl;
+    }
+    else
+    {
+        cout << "Khong co nhan vien nao trung thong tin can xoa!" << endl;
+        cout << "-----------Enter de tiep tuc----------" << endl;
+    }
+
     getch();
 }
 void list::delete_mem_name_id(char coption) //xóa theo tên hoặc id
