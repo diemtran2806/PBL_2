@@ -70,7 +70,7 @@ protected:
 public:
     member();
     member(string, string, string, string, string, birthday, int, string, float, int, string, string);
-
+    //hàm getter
     string getMID() const;
     string getGID() const;
     int getGender() const;
@@ -155,8 +155,8 @@ public:
     void add(member &, int k); //bo sung 1 doi tuong vao vi tri k bat ki
     void add_menu();
 
-    void sort(); //sap xep danh sach nhan vien theo thu tu tang/giam
-    void sort(bool CompFunc(const member &, const member &, int)); 
+    void sort(); //sap xep danh sach nhan vien theo thu tu tang/giam -> hàm chính
+    void sort(bool CompFunc(const member &, const member &, int)); //hàm phụ
     void QuickSort(int l,int r,int key,bool CompFunc(const member &, const member &, int));
     void menu_Sort(int &);
 
@@ -228,15 +228,24 @@ void del_ws(string &s) //Hàm xóa khoảng trắng
 bool ascending(const member &m1, const member &m2, int key){
     birthday ns1=m1.getBirthday();
     birthday ns2=m2.getBirthday();
-    switch(key){
+    switch(key)
+    {
         case 1: return m1.getMID().compare(m2.getMID()) > 0 ? true : false;
         case 2:
+            //so sánh nếu tên giống nhau thì so sánh họ
             if (m1.getFirstname().compare(m2.getFirstname()) != 0) 
                 return m1.getFirstname().compare(m2.getFirstname()) > 0 ? true : false;
+            //int compare (size_t pos, size_t len, const string& str,size_t subpos, size_t sublen) const;
+            //pos vị trí kí tự đầu tiên trong chuỗi ss -> m1
+            //len độ dài chuỗi ss -> m1
+            //subpos, sublen tương tự pos, len ->m2
+            //ss 2 kí tự đầu trong họ (vd: lí, lê chỉ có 2 kí tự)
             else return m1.getMlname().compare(0,2,m2.getMlname(),0,2) > 0 ? true :false;
         case 3: return m1.getGID().compare(m2.getGID()) > 0 ? true : false;
         case 4: 
+            //ss nếu năm bằng nhau thì ss tháng
             if(ns1.getYear()!=ns2.getYear()) return ns1.getYear() > ns2.getYear();
+            //nếu tháng bằng nhau thì ss ngày
             else if(ns1.getMonth()!= ns2.getMonth()) return ns1.getMonth() > ns2.getMonth();
             return ns1.getDay() > ns2.getDay();
         case 5:  return m1.getC_salary() > m2.getC_salary();
@@ -1380,10 +1389,11 @@ void list::sort(){
 
 void list::sort(bool CompFunc(const member &, const member &, int)){
     int key;
-    do{
+    do
+    {
         menu_Sort(key);
         if(key==7) display_mem();
-        else if(key!=0) QuickSort(0,numofMem-1,key,CompFunc);
+        else if(key!=0) QuickSort(0, numofMem-1, key, CompFunc); //nếu kp đk dừng(key=0) thì tiếp tục
         cout << "-----------Da sap xep xong!------------" << endl;
         cout<<"Nhan Enter de tiep tuc!"<<endl;
         getch();
@@ -1391,16 +1401,20 @@ void list::sort(bool CompFunc(const member &, const member &, int)){
 }
 
 void list::QuickSort(int l,int r,int key,bool CompFunc(const member &, const member &, int)){
-    int i=l,j=r;
-    member q=list_mem[(l+r)/2];
-    while(i<j){
+    //key -> trong menu_Sort 
+    int i=l, j=r;
+    member q = list_mem[(l+r)/2]; //lấy phần tử ở giữa ds
+    while(i<j)
+    {
         while((CompFunc)(q,list_mem[i],key)) i++;
         while((CompFunc)(list_mem[j],q,key)) j--;
-        if(i<=j){
-            member temp =list_mem[i];
-            list_mem[i]=list_mem[j]; 
-            list_mem[j]=temp; 
-            i++;j--;
+        if(i<=j)
+        {
+            member temp = list_mem[i];
+            list_mem[i] = list_mem[j]; 
+            list_mem[j] = temp; 
+            i++;
+            j--;
         }
     }
     if(i<r) QuickSort(i,r,key,CompFunc);
@@ -1408,7 +1422,8 @@ void list::QuickSort(int l,int r,int key,bool CompFunc(const member &, const mem
 }
 
 void list::menu_Sort(int &key){
-    do{
+    do
+    {
         cout<<"Ban muon sap xep theo cach nao: "<<endl;
         cout<<"1: Ma nhan vien"<<endl;
         cout<<"2: Ho va ten"<<endl;
