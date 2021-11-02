@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <ctime>
 using namespace std;
-#define A 1500000  //LCB
+#define A 1500000 //LCB
 
 //
 class birthday
@@ -44,6 +44,7 @@ public:
     const birthday &operator=(const birthday &x);
     friend bool operator==(const birthday &, const birthday &);
     friend bool operator<(const birthday &d1, const birthday &d2);
+    friend bool operator!=(const birthday &d1, const birthday &d2);
     friend birthday operator-(const birthday &, int);
     friend ostream &operator<<(ostream &out, const birthday &);
 };
@@ -137,7 +138,7 @@ private:
     int numofMem; //sl nv
     int numofGr;  //sl đơn vị
     int numofP;
-    int ml, fl, mh, fh, mm , fm, mt, ft, ma , fa, mp , fp;
+    int ml, fl, mh, fh, mm, fm, mt, ft, ma, fa, mp, fp;
     member *list_mem;
     group *list_gr;
     Position *list_p;
@@ -150,30 +151,30 @@ public:
     void readfile_mem(ifstream &in); //nhap danh sach nhan vien tu file
     void readfile_gr(ifstream &in);  //nhap danh sach don vi tu file
     void readfile_p(ifstream &in);   //Nhap danh sach chuc vu
-    
+
     void writefile_mem(ofstream &ofs);
-    void display_mem();                           //in danh sach nhan vien
-    void count_gender(int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&);
-    void display_gr();                            //in bang thong ke theo don vi
-    void display_p();                             //in bang thong ke cac chuc vu
-    
-    int check(member &);                               
-    void add(member &, int k);                    //bo sung 1 doi tuong vao vi tri k bat ki
+    void display_mem(); //in danh sach nhan vien
+    void count_gender(int &, int &, int &, int &, int &, int &, int &, int &, int &, int &, int &, int &);
+    void display_gr(); //in bang thong ke theo don vi
+    void display_p();  //in bang thong ke cac chuc vu
+
+    int check(member &);
+    void add(member &, int k); //bo sung 1 doi tuong vao vi tri k bat ki
     void add_menu();
 
     void sort(bool CompFunc(member &, member &)); //sap xep danh sach nhan vien theo thu tu tang/giam
 
-    int search(int, string, int a[100]);          //ham tim kiem 1 nhan vien
-    void search(); //tim kiem nhan vien tu ten, gioi tinh...
+    int search(int, string, int a[100]); //ham tim kiem 1 nhan vien
+    void search();                       //tim kiem nhan vien tu ten, gioi tinh...
     int menu_Search(string &);
-    
+
     //xoas
-    void delete_mem(member &);                    //xoa 1 nhan vien bat ki
+    void delete_mem(member &);     //xoa 1 nhan vien bat ki
     void delete_mem();             //main
-    void delete_mem_age(int);      //xoa theo tuoi///////////
+    void delete_mem_age(char);     //xoa theo tuoi///////////
     void delete_mem_name_id(char); //xóa theo tên or id
 
-    member &operator[](int i) const;              //toan tu lay phan tu thu i [] trong danh sach nhan vien
+    member &operator[](int i) const; //toan tu lay phan tu thu i [] trong danh sach nhan vien
     const list &operator=(const list &);
     friend ostream &operator<<(ostream &out, const list &);
 
@@ -203,7 +204,7 @@ int main()
     return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void del_ws(string &s)            //Hàm xóa khoảng trắng
+void del_ws(string &s) //Hàm xóa khoảng trắng
 {
     while (s[0] == ' ')
     {
@@ -256,6 +257,14 @@ bool operator<(const birthday &d1, const birthday &d2)
         }
     }
     return false;
+}
+bool operator!=(const birthday &d1, const birthday &d2)
+{
+    if (d1.year == d2.year && d1.month == d2.month && d1.day == d2.day)
+    {
+        return false;
+    }
+    return true;
 }
 const birthday &birthday::operator=(const birthday &x)
 {
@@ -356,18 +365,22 @@ ostream &operator<<(ostream &out, member &m)
 
 istream &operator>>(istream &in, member &m)
 {
-    int temp,check =0;
+    int temp, check = 0;
     int gt = 0;
-    string s; int a[100];
-    do{
-    cout << "Nhap ma nhan vien: ";
-    in >> m.mID;
-    check = com.search(1,m.mID,a);
-    if (check >0) {
-        cout<<"\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!"<<endl;
-        cout<<"MOI BAN NHAP LAI: "<<endl<<endl;
-    }
-    }while(check>0);
+    string s;
+    int a[100];
+    do
+    {
+        cout << "Nhap ma nhan vien: ";
+        in >> m.mID;
+        check = com.search(1, m.mID, a);
+        if (check > 0)
+        {
+            cout << "\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
+            cout << "MOI BAN NHAP LAI: " << endl
+                 << endl;
+        }
+    } while (check > 0);
     cout << "Nhap ho va ten dem: ";
     getline(in >> ws, m.mlname);
     m.mlname += " ";
@@ -417,7 +430,7 @@ istream &operator>>(istream &in, member &m)
 
 int member::getSalary()
 {
-    return (A/100) * (int(C_salary * 100));
+    return (A / 100) * (int(C_salary * 100));
 }
 
 int member::getNewsalary()
@@ -478,7 +491,7 @@ bool member::isEqual(int chon, string s)
         return s.compare(this->L_certificate);
     case 13:
         return s.compare(this->getFullName());
-    } 
+    }
 }
 
 //group
@@ -668,8 +681,9 @@ void list::display_mem()
     }
 }
 
-void list::count_gender(int&ml, int&fl, int&mh, int&fh, int&mm, int&fm, int&mt, int&ft, int&ma, int&fa, int&mp, int&fp){
-     for (int i = 0; i < numofMem; i++)
+void list::count_gender(int &ml, int &fl, int &mh, int &fh, int &mm, int &fm, int &mt, int &ft, int &ma, int &fa, int &mp, int &fp)
+{
+    for (int i = 0; i < numofMem; i++)
     {
         if (list_mem[i].getGID().compare("LDR") == 0)
         {
@@ -718,7 +732,7 @@ void list::count_gender(int&ml, int&fl, int&mh, int&fh, int&mm, int&fm, int&mt, 
 void list::display_gr()
 {
     int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
-    count_gender(ml,fl,mh,fh,mm,fm,mt,ft,ma,fa,mp,fp);
+    count_gender(ml, fl, mh, fh, mm, fm, mt, ft, ma, fa, mp, fp);
     cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" << setw(20) << "|So luong nu" << endl
          << endl;
     for (int i = 0; i < numofGr; i++)
@@ -789,8 +803,7 @@ void list::search()
         cin >> chon2;
         chon2 = toupper(chon2);
     } while (chon2 != 'K');
-    cout <<"Nhan Enter de tro ve Menu!"<<endl;
-
+    cout << "Nhan Enter de tro ve Menu!" << endl;
 }
 
 int list::menu_Search(string &tt)
@@ -836,22 +849,29 @@ int list::menu_Search(string &tt)
     return chon;
 }
 
-int list::check(member &m){
-    int temp=0;
-    for(int i=0;i<numofMem;i++){
-        if(m.getMID().compare(list_mem[i].getMID())==0){
-            temp=-1;
+int list::check(member &m)
+{
+    int temp = 0;
+    for (int i = 0; i < numofMem; i++)
+    {
+        if (m.getMID().compare(list_mem[i].getMID()) == 0)
+        {
+            temp = -1;
             break;
         }
     }
-    if(temp==-1) {
-        cout<<"\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!"<<endl;
-        cout<<"MOI BAN NHAP LAI: "<<endl<<endl;
+    if (temp == -1)
+    {
+        cout << "\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
+        cout << "MOI BAN NHAP LAI: " << endl
+             << endl;
         return -1;
-    } else return 0;  
+    }
+    else
+        return 0;
 }
 void list::add(member &m, int k)
-{   
+{
     numofMem++;
     member *b = new member[numofMem];
     for (int i = 0; i < numofMem - 1; i++)
@@ -888,55 +908,91 @@ void list::add_menu()
             cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
             cin >> m;
             add(m, 0);
-            cout<<"------------Da them thanh cong!-------------"<<endl;
+            cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 2:
             cout << "Nhap nhan vien muon them vao cuoi danh sach: " << endl;
             cin >> m;
             k = --numofMem;
             add(m, k);
-            cout<<"------------Da them thanh cong!-------------"<<endl;
+            cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 3:
             cout << "Nhap nhan vien muon them vao vi tri bat ki trong danh sach: " << endl;
             cin >> m;
-            do{ 
-                cout<<"Nhap vi tri muon them:";
-                cin >>k;
-                if(k<0 && k>numofMem) {
-                    cout <<"Ban da nhap vi tri vuot ngoai danh sach, moi ban nhap lai!";
-                    k=-1;
+            do
+            {
+                cout << "Nhap vi tri muon them:";
+                cin >> k;
+                if (k < 0 && k > numofMem)
+                {
+                    cout << "Ban da nhap vi tri vuot ngoai danh sach, moi ban nhap lai!";
+                    k = -1;
                 }
 
-            } while(k==-1);
+            } while (k == -1);
             add(m, k);
-            cout<<"------------Da them thanh cong!-------------"<<endl;
+            cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 0:
-            cout <<"Nhan Enter de nhap lai chuc nang!"<<endl;
+            cout << "Nhan Enter de nhap lai chuc nang!" << endl;
             break;
         default:
             cout << "Ban da nhap sai!" << endl;
-            cout <<"Nhan Enter de tiep tuc!"<<endl;
+            cout << "Nhan Enter de tiep tuc!" << endl;
             getch();
         }
-    } while (cv!=0);
+    } while (cv != 0);
 }
 
-void list::delete_mem_age(int age)
+void list::delete_mem_age(char key)
 {
-    //vd: 60(age) năm trước là ngày nào
-    birthday dayAge;        //năm sinh của người có (age) tuổi tính từ hiện tại
-    dayAge = dateNow - age; ////////////////////////////////////////////////////////// ERR
-    int run = 0;            // biết chạy duyệt phần tử
+    birthday dayAge;
+    int run = 0;
+    int age = 60;
+    if (key == '3')
+    {
+        int nam;
+        cout << "Nhap nam sinh:";
+        cin >> nam;
+        dayAge = dateNow;
+        dayAge.setYear(nam);
+    }
+    else if (key == '4')
+    {
+        cout << "Nhap tuoi muon xoa:";
+        cin >> age;
+        dayAge = dateNow - age;
+    }
+    else if (key == '5')
+    {
+
+        dayAge = dateNow - age;
+    }
+
     do
     {
-        if (dayAge < list_mem[run].getBirthday()) //nếu chưa đủ 60(age) tuổi thì bỏ qua
+        //tim diem xoa
+        if (key == '4' || key == '5')
         {
-            run++;
+            while (dayAge < list_mem[run].getBirthday() && run < numofMem) //nếu chưa đủ 60(age) tuổi thì bỏ qua
+            {
+                run++;
+            }
         }
-        else
-        { //>= 60 tuổi
+        //tim diem xoa
+        if (key == '3')
+        {
+            while (dayAge.getYear() != list_mem[run].getBirthday().getYear() && run < numofMem) //nếu chưa đủ 60(age) tuổi thì bỏ qua
+            {
+                run++;
+            }
+        }
+
+        //gán lại mảng để xóa
+        if (run < numofMem)
+        {
+            //>= 60 tuổi
             int newSize = numofMem - 1;
             member *newArr = new member[newSize];
             int i = 0;
@@ -963,7 +1019,7 @@ void list::delete_mem_age(int age)
     cout << "-----------Enter de tiep tuc----------" << endl;
     getch();
 }
-void list::delete_mem_name_id(char coption)   //xóa theo tên hoặc id
+void list::delete_mem_name_id(char coption) //xóa theo tên hoặc id
 {
     int a[100];
     string content;
@@ -975,6 +1031,7 @@ void list::delete_mem_name_id(char coption)   //xóa theo tên hoặc id
     }
     else
     {
+        option+=11;
         cout << "Nhap ten nhan vien: ";
         getline(cin, content);
     }
@@ -1009,7 +1066,7 @@ void list::delete_mem_name_id(char coption)   //xóa theo tên hoặc id
         delete[] list_mem;
         numofMem = newSize;
         list_mem = newListMember;
-        cout << "-----------Da xoa xong!------------"<<endl;
+        cout << "-----------Da xoa xong!------------" << endl;
         getch();
     }
 }
@@ -1022,9 +1079,10 @@ void list::delete_mem()
         //system("cls");
         cout << " 1. Xoa theo ID.\n";
         cout << " 2. Xoa theo ten.\n";
-        cout << " 3. Xoa theo tuoi. (ok)\n";
-        cout << " 4. Xoa nguoi tren 60 tuoi. (ok)\n";
-        cout << " 5. Hien thi ds.\n";
+        cout << " 3. Xoa theo nam sinh. \n";
+        cout << " 4. Xoa lon hon tuoi. (ok)\n";
+        cout << " 5. Xoa nguoi tren 60 tuoi. (ok)\n";
+        cout << " 6. Hien thi ds.\n";
         cout << " 0. Ket Thuc\n";
         cout << endl;
         char key;
@@ -1042,20 +1100,21 @@ void list::delete_mem()
             this->delete_mem_name_id(key);
             break;
         case '3':
-            cout << " 3. Xoa theo tuoi.\n";
-            int tempAgeDel;
-            cout << "Nhap tuoi muon xoa:";
-            cin >> tempAgeDel;
-            this->delete_mem_age(tempAgeDel);
-            writefile_mem(ofs);
+            cout << " 3. Xoa theo nam sinh. \n";
+            this->delete_mem_age(key);
             break;
         case '4':
-            cout << " 4. Xoa nguoi tren 60 tuoi.\n";
-            this->delete_mem_age(60);
+            cout << " 3. Xoa theo tuoi.\n";
+            this->delete_mem_age(key);
             writefile_mem(ofs);
             break;
         case '5':
-            cout << " 5. Hien thi ds.\n";
+            cout << " 4. Xoa nguoi tren 60 tuoi.\n";
+            this->delete_mem_age(key);
+            writefile_mem(ofs);
+            break;
+        case '6':
+            cout << " 6. Hien thi ds.\n";
             this->display_mem();
             break;
         case '0':
@@ -1105,18 +1164,30 @@ birthday SystemDate()
 //chuyển ngày chữ sang ngày số
 int monthStrToInt(string a)
 {
-    if (a == "Jan") return 1;
-    if (a == "Feb") return 2;
-    if (a == "Mar") return 3;
-    if (a == "Apr") return 4;
-    if (a == "May") return 5;
-    if (a == "Jun") return 6;
-    if (a == "Jul") return 7;
-    if (a == "Aug") return 8;
-    if (a == "Sep") return 9;
-    if (a == "Oct") return 10;
-    if (a == "Nov") return 11;
-    if (a == "Dec") return 12;
+    if (a == "Jan")
+        return 1;
+    if (a == "Feb")
+        return 2;
+    if (a == "Mar")
+        return 3;
+    if (a == "Apr")
+        return 4;
+    if (a == "May")
+        return 5;
+    if (a == "Jun")
+        return 6;
+    if (a == "Jul")
+        return 7;
+    if (a == "Aug")
+        return 8;
+    if (a == "Sep")
+        return 9;
+    if (a == "Oct")
+        return 10;
+    if (a == "Nov")
+        return 11;
+    if (a == "Dec")
+        return 12;
 }
 
 void list::menu()
@@ -1141,17 +1212,17 @@ void list::menu()
         {
         case 1:
             display_mem();
-            cout <<"Nhan Enter de tiep tuc!"<<endl;
+            cout << "Nhan Enter de tiep tuc!" << endl;
             getch();
             break;
         case 2:
             display_gr();
-            cout <<"Nhan Enter de tiep tuc!"<<endl;
+            cout << "Nhan Enter de tiep tuc!" << endl;
             getch();
             break;
         case 3:
             display_p();
-            cout <<"Nhan Enter de tiep tuc!"<<endl;
+            cout << "Nhan Enter de tiep tuc!" << endl;
             getch();
             break;
         case 4:
@@ -1170,7 +1241,7 @@ void list::menu()
             break;
         default:
             cout << "Ban da nhap sai!" << endl;
-            cout <<"Nhan Enter de nhap lai chuc nang!"<<endl;
+            cout << "Nhan Enter de nhap lai chuc nang!" << endl;
             getch();
         }
     } while (chon);
@@ -1182,7 +1253,7 @@ bool ascending(const member &m1, const member &m2, int key){
         case 2: return m1.mlname.compare(m2.mlname);
         case 3: return m1.firstname.compare(m2.firstname);
         case 4: return m1.gID.compare(m2.gID);
-        case 5: return;
+        //case 5: return;
         case 6:  return m1.C_salary>m2.C_salary;
         case 7: return m1.year_in>m2.year_in;
     }
