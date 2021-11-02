@@ -60,7 +60,7 @@ protected:
     string firstname; //tên
     string gID;       //mã đơn vị
     string pnumber;
-    birthday ns; //da_tri
+    birthday ns; 
     int gender;
     string position; //mã chức vụ
     float C_salary;  //hệ số lương
@@ -68,35 +68,29 @@ protected:
     string degree;        //trình độ, cấp bậc
     string L_certificate; // bằng ngoại ngữ
 public:
-    string getMID()
-    {
-        return mID;
-    }
-    string getGID()
-    {
-        return gID;
-    }
-    int getGender()
-    {
-        return gender;
-    }
     member();
     member(string, string, string, string, string, birthday, int, string, float, int, string, string);
+
+    string getMID() const;
+    string getGID() const;
+    int getGender() const;
+    birthday getBirthday() const;
+    string getFullName() const;
+    string getMlname() const;
+    string getFirstname() const;
+    float getC_salary() const;
+    int getYear_in() const;
 
     void readfile_M(ifstream &);
     int getSalary();    //tinh luong
     int getNewsalary(); //thực lĩnh
     bool isEqual(int, string);
-    birthday getBirthday();
-    string getFullName();
-
+    
     friend istream &operator>>(istream &in, member &);
     friend ostream &operator<<(ostream &out, member &);
     //const member &operator = (const member &m);  // hàm gán, tham chiếu hằng, hằng
     friend bool operator<(const member &, const member &);
     friend bool operator>(const member &, const member &);
-    friend bool ascending(const member &m1, const member &m2, int key);
-    friend bool descending(const member &m1, const member &m2, int key);
 };
 
 //don vi
@@ -161,13 +155,16 @@ public:
     void add(member &, int k); //bo sung 1 doi tuong vao vi tri k bat ki
     void add_menu();
 
-    void sort(bool CompFunc(member &, member &)); //sap xep danh sach nhan vien theo thu tu tang/giam
+    void sort(); //sap xep danh sach nhan vien theo thu tu tang/giam
+    void sort(bool CompFunc(const member &, const member &, int)); 
+    void QuickSort(int l,int r,int key,bool CompFunc(const member &, const member &, int));
+    void menu_Sort(int &);
 
     int search(int, string, int a[100]); //ham tim kiem 1 nhan vien
     void search();                       //tim kiem nhan vien tu ten, gioi tinh...
     int menu_Search(string &);
 
-    //xoas
+    //xoa
     void delete_mem(member &);    //xoa 1 nhan vien bat ki
     void delete_mem();            //main
     void delete_mem_age(int);     //xoa theo tuoi///////////
@@ -183,8 +180,8 @@ public:
 
 //Ham xoa ki tu trang du thua
 void del_ws(string &s);
-bool ascending(const member &m1, const member &m2, int key);
-bool descending(const member &m1, const member &m2, int key);
+bool ascending(const member &m1, const member &m2, int key);  //tang dan
+bool descending(const member &m1, const member &m2, int key); //giam dan
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main
@@ -227,12 +224,52 @@ void del_ws(string &s) //Hàm xóa khoảng trắng
         }
     }
 }
+
+bool ascending(const member &m1, const member &m2, int key){
+    birthday ns1=m1.getBirthday();
+    birthday ns2=m2.getBirthday();
+    switch(key){
+        case 1: return m1.getMID().compare(m2.getMID()) > 0 ? true : false;
+        case 2:
+            if (m1.getFirstname().compare(m2.getFirstname()) != 0) 
+                return m1.getFirstname().compare(m2.getFirstname()) > 0 ? true : false;
+            else return m1.getMlname().compare(0,2,m2.getMlname(),0,2) > 0 ? true :false;
+        case 3: return m1.getGID().compare(m2.getGID()) > 0 ? true : false;
+        case 4: 
+            if(ns1.getYear()!=ns2.getYear()) return ns1.getYear() > ns2.getYear();
+            else if(ns1.getMonth()!= ns2.getMonth()) return ns1.getMonth() > ns2.getMonth();
+            return ns1.getDay() > ns2.getDay();
+        case 5:  return m1.getC_salary() > m2.getC_salary();
+        case 6: return m1.getYear_in() > m2.getYear_in();
+    }
+}
+
+bool descending(const member &m1, const member &m2, int key){
+    birthday ns1=m1.getBirthday();
+    birthday ns2=m2.getBirthday();
+    switch(key){
+        case 1: return m1.getMID().compare(m2.getMID()) < 0 ? true : false;
+        case 2:
+            if (m1.getFirstname().compare(m2.getFirstname()) != 0) 
+                return m1.getFirstname().compare(m2.getFirstname()) < 0 ? true : false;
+            else return m1.getMlname().compare(0,2,m2.getMlname(),0,2) < 0 ? true :false;
+        case 3: return m1.getGID().compare(m2.getGID()) < 0 ? true : false;
+        case 4: 
+            if(ns1.getYear()!=ns2.getYear()) return ns1.getYear() < ns2.getYear();
+            else if(ns1.getMonth()!= ns2.getMonth()) return ns1.getMonth() < ns2.getMonth();
+            return ns1.getDay() < ns2.getDay();
+        case 5:  return m1.getC_salary() < m2.getC_salary();
+        case 6: return m1.getYear_in() < m2.getYear_in();
+    }
+}
+
 //birthday
 ostream &operator<<(ostream &out, const birthday &d) //////////////////
 {
     out << d.day << "   " << d.month << "   " << d.year << endl;
     return out;
 }
+
 bool operator<(const birthday &d1, const birthday &d2)
 {
     if (d1.year < d2.year)
@@ -257,6 +294,7 @@ bool operator<(const birthday &d1, const birthday &d2)
     }
     return false;
 }
+
 bool operator!=(const birthday &d1, const birthday &d2)
 {
     if (d1.year == d2.year && d1.month == d2.month && d1.day == d2.day)
@@ -265,6 +303,7 @@ bool operator!=(const birthday &d1, const birthday &d2)
     }
     return true;
 }
+
 const birthday &birthday::operator=(const birthday &x)
 {
     if (this != &x)
@@ -275,12 +314,14 @@ const birthday &birthday::operator=(const birthday &x)
     }
     return *this;
 }
+
 birthday operator-(const birthday &d, int x)
 {
     birthday dateResult = d;
     dateResult.year -= x;
     return dateResult;
 }
+
 bool operator==(const birthday &d1, const birthday &d2)
 {
     if (d1.day == d2.day && d1.month == d2.month && d1.year == d2.year)
@@ -313,6 +354,48 @@ member::member(string mID, string mlname, string firstname, string gID, string p
     : mID(mID), mlname(mlname), firstname(firstname), gID(gID), pnumber(pnumber), ns(ns), gender(gender), position(pos),
       C_salary(C_salary), year_in(year_in), degree(degree), L_certificate(L_cer) {}
 
+//member::getter
+string member::getMID() const
+{
+    return mID;
+}
+
+string member::getGID() const
+{
+    return gID;
+}
+
+int member::getGender() const
+{
+    return gender;
+}
+
+string member::getMlname()const {
+    return mlname; 
+}
+
+string member::getFirstname() const{
+    return firstname;
+}
+
+float member::getC_salary() const{
+    return C_salary;
+}
+
+int member::getYear_in() const{
+    return year_in;
+}
+
+birthday member::getBirthday() const
+{
+    return ns;
+}
+
+string member::getFullName() const
+{
+    return mlname + " " + firstname;
+}
+//
 void member::readfile_M(ifstream &in)
 {
     string s; //bỏ qua dòng đầu
@@ -511,15 +594,6 @@ ostream &operator<<(ostream &out, const group &g)
 {
     out << setw(10) << g.gID << "|" << setw(19) << g.gName << "|" << setw(9) << g.mID;
     return out;
-}
-birthday member::getBirthday()
-{
-    return ns;
-}
-
-string member::getFullName()
-{
-    return mlname + " " + firstname;
 }
 
 //position
@@ -728,6 +802,7 @@ void list::count_gender(int &ml, int &fl, int &mh, int &fh, int &mm, int &fm, in
         }
     }
 }
+
 void list::display_gr()
 {
     int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
@@ -767,7 +842,7 @@ void list::display_p()
              << endl;
     }
 }
-
+//list::search
 int list::search(int chon, string s, int a[])
 {
     int n = 0;
@@ -847,7 +922,7 @@ int list::menu_Search(string &tt)
         getline(cin >> ws, tt);
     return chon;
 }
-
+//list::add
 int list::check(member &m)
 {
     int temp = 0;
@@ -869,6 +944,7 @@ int list::check(member &m)
     else
         return 0;
 }
+
 void list::add(member &m, int k)
 {
     numofMem++;
@@ -886,6 +962,7 @@ void list::add(member &m, int k)
     ofstream ofs;
     writefile_mem(ofs);
 }
+
 void list::add_menu()
 {
     int cv;
@@ -943,7 +1020,7 @@ void list::add_menu()
         }
     } while (cv != 0);
 }
-
+//list::delete
 void list::delete_mem_age(int key)
 {
     birthday dayAge;
@@ -1034,6 +1111,7 @@ void list::delete_mem_age(int key)
         writefile_mem(ofs);
     }
 }
+
 void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
 {
     int a[100];
@@ -1243,6 +1321,7 @@ void list::menu()
         cout << "4: Them mot nhan vien" << endl;
         cout << "5: Tim kiem nhan vien" << endl;
         cout << "6: Xoa mot nhan vien" << endl;
+        cout << "7: Sap xep danh sach nhan vien"<<endl;
         cout << "0: Thoat!" << endl;
         cout << "Chon: ";
         cin >> chon;
@@ -1274,6 +1353,9 @@ void list::menu()
         case 6:
             delete_mem();
             break;
+        case 7:
+            sort();
+            break;
         case 0:
             break;
         default:
@@ -1283,15 +1365,60 @@ void list::menu()
         }
     } while (chon);
 }
+//list::sort
+void list::sort(){
+    int key;
+    do{
+        cout<<"1: Tang dan"<<endl;
+        cout<<"2: Giam dan"<<endl;
+        cout<<"Chon: ";
+        cin>>key;
+    }while(key==1 || key==2);
+    if(key==1) sort(ascending);
+    else if(key==2) sort(descending);
+}
 
-bool ascending(const member &m1, const member &m2, int key){
-    switch(key){
-        case 1: return m1.mID.compare(m2.mID);
-        case 2: return m1.mlname.compare(m2.mlname);
-        case 3: return m1.firstname.compare(m2.firstname);
-        case 4: return m1.gID.compare(m2.gID);
-        //case 5: return;
-        case 6:  return m1.C_salary>m2.C_salary;
-        case 7: return m1.year_in>m2.year_in;
+void list::sort(bool CompFunc(const member &, const member &, int)){
+    int key;
+    do{
+        menu_Sort(key);
+        if(key==7) display_mem();
+        else if(key!=0) QuickSort(0,numofMem-1,key,CompFunc);
+        cout << "-----------Da sap xep xong!------------" << endl;
+        cout<<"Nhan Enter de tiep tuc!"<<endl;
+        getch();
+    }while(key);
+}
+
+void list::QuickSort(int l,int r,int key,bool CompFunc(const member &, const member &, int)){
+    int i=l,j=r;
+    member q=list_mem[(l+r)/2];
+    while(i<j){
+        while((CompFunc)(q,list_mem[i],key)) i++;
+        while((CompFunc)(list_mem[j],q,key)) j--;
+        if(i<=j){
+            member temp =list_mem[i];
+            list_mem[i]=list_mem[j]; 
+            list_mem[j]=temp; 
+            i++;j--;
+        }
     }
+    if(i<r) QuickSort(i,r,key,CompFunc);
+    if(j>l) QuickSort(l,j,key,CompFunc);
+}
+
+void list::menu_Sort(int &key){
+    do{
+        cout<<"Ban muon sap xep theo cach nao: "<<endl;
+        cout<<"1: Ma nhan vien"<<endl;
+        cout<<"2: Ho va ten"<<endl;
+        cout<<"3: Ma don vi"<<endl;
+        cout<<"4: Ngay sinh"<<endl;
+        cout<<"5: He so luong"<<endl;
+        cout<<"6: Nam vao"<<endl;
+        cout<<"7: Hien thi danh sach nhan vien"<<endl;
+        cout<<"0: Thoat!"<<endl;
+        cout<<"Chon: ";
+        cin>>key;
+    }while(key<0 || key>7);
 }
