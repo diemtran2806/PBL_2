@@ -1489,7 +1489,7 @@ void list::menu_Sort(int &key)
         cout << "4: Ngay sinh" << endl;
         cout << "5: He so luong" << endl;
         cout << "6: Nam vao" << endl;
-        cout << "7: Hien thi danh sach nhan vien" << endl;
+        cout << "7: Hien thi danh sach nhan vien " << endl;
         cout << "0: Thoat!" << endl;
         cout << "Chon: ";
         cin >> key;
