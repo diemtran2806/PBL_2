@@ -157,7 +157,7 @@ public:
     void display_p();  //in bang thong ke cac chuc vu
 
     int check(member &);
-    void add(member &, int k, string txt ); //bo sung 1 doi tuong vao vi tri k bat ki
+    void add(member &, int k, string txt); //bo sung 1 doi tuong vao vi tri k bat ki
     void add_menu();
 
     void sort();                                                   //sap xep danh sach nhan vien theo thu tu tang/giam -> hàm chính
@@ -187,6 +187,7 @@ public:
 void del_ws(string &s);
 bool ascending(const member &m1, const member &m2, int key);  //tang dan
 bool descending(const member &m1, const member &m2, int key); //giam dan
+bool checkFile(string path);                                  //check file path có tồn tại ko?
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main
@@ -292,6 +293,12 @@ bool descending(const member &m1, const member &m2, int key)
     case 6:
         return m1.getYear_in() < m2.getYear_in();
     }
+}
+
+bool checkFile(string path)
+{
+    ifstream isf(path);
+    return isf.good();
 }
 
 //birthday
@@ -907,7 +914,7 @@ void list::search()
             for (int i = 0; i < k; i++)
             {
                 cout << list_mem[a[i]] << endl;
-                fileSearchResult.add(list_mem[a[i]], 0,nhanviensearch);
+                fileSearchResult.add(list_mem[a[i]], 0, nhanviensearch);
             }
             //chon nhap file
             char key;
@@ -922,9 +929,51 @@ void list::search()
                 }
             } while (key != 'K' && key != 'C');
             if (key == 'C')
-            {
+            { //xuất file
                 ofstream ofs;
-                fileSearchResult.writefile_mem(ofs, nhanviensearch);
+                string fileNameResult; //trả về tên file xuất
+                string tempFileName;   // lưu tên file tạm
+                do                     //chạy cho đến khi không nhập gì hoặc nhâp đúng tên file chưa tồn tại
+                {
+                    cout << "Nhap ten file hoac enter de luu vs ten mac dinh!";
+                    cin.ignore();
+                    getline(cin, tempFileName);
+                    tempFileName = tempFileName + ".txt";
+
+                    if (tempFileName == ".txt") //lưu mặc định/////////////////////////////////
+                    {
+                        fileNameResult = nhanviensearch;                      //gán tên file gốc vào tên file xuất
+                        int i = 0;                                            //file xuất có tên là fileNameResult + (i).txt
+                        fileNameResult.erase(fileNameResult.length() - 4, 4); //xoa .txt
+                        do                                                    //thực hiện cho đến khi tạo được file chưa tồn tại
+                        {
+                            tempFileName = fileNameResult + "(" + to_string(i) + ").txt"; // tạo một file tạm để kiểm tra. đỡ tạo cái xóa txt nhiều lần
+
+                            if (checkFile(tempFileName) == true)
+                            { //nếu tồn tại thì tăng i lên tạo tên khác
+                                i++;
+                            }
+                            else
+                            { //nếu không tồn tại thì trả tên file cho fileNameResult
+                                fileNameResult = tempFileName;
+                                break;
+                            }
+                        } while (1);
+                    }
+
+                    else //luu theo tên người nhập////////////////////////////
+                        if (checkFile(tempFileName) == true)
+                    {
+                        cout << "Tep nay da ton tai!. Moi nhap lại!" << endl;
+                    }
+                    else
+                    {
+                        fileNameResult = tempFileName;
+                    }
+
+                } while (checkFile(tempFileName) == true);
+                cout << "Da luu file voi ten:" << fileNameResult << endl;
+                fileSearchResult.writefile_mem(ofs, fileNameResult); //xuất file
             }
         }
         else
@@ -1015,9 +1064,8 @@ void list::add(member &m, int k, string txt)
     list_mem = new member[numofMem];
     for (int i = 0; i < numofMem; i++)
         list_mem[i] = b[i];
-    ofstream ofs;    
+    ofstream ofs;
     writefile_mem(ofs, txt);
-
 }
 
 void list::add_menu()
@@ -1040,7 +1088,7 @@ void list::add_menu()
         case 1:
             cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
             cin >> m;
-            add(m, 0,nhanvientxt);
+            add(m, 0, nhanvientxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 2:
@@ -1432,7 +1480,7 @@ void list::sort()
         cout << "Chon: ";
         cin >> key;
 
-    } while (key!=1 && key!=2);
+    } while (key != 1 && key != 2);
     if (key == 1)
         sort(ascending);
     else if (key == 2)
