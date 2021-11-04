@@ -264,6 +264,7 @@ bool ascending(const member &m1, const member &m2, int key)
         return m1.getC_salary() > m2.getC_salary();
     case 6:
         return m1.getYear_in() > m2.getYear_in();
+    default: return false;
     }
 }
 
@@ -292,6 +293,7 @@ bool descending(const member &m1, const member &m2, int key)
         return m1.getC_salary() < m2.getC_salary();
     case 6:
         return m1.getYear_in() < m2.getYear_in();
+    default: return false;
     }
 }
 
@@ -615,6 +617,7 @@ bool member::isEqual(int chon, string s)
         return s.compare(this->L_certificate);
     case 13:
         return s.compare(this->getFullName());
+    default: return false;
     }
 }
 
@@ -935,7 +938,7 @@ void list::search()
                 string tempFileName;   // lưu tên file tạm
                 do                     //chạy cho đến khi không nhập gì hoặc nhâp đúng tên file chưa tồn tại
                 {
-                    cout << "Nhap ten file hoac enter de luu vs ten mac dinh!";
+                    cout << "Nhap ten file hoac enter de luu vs ten mac dinh!: ";
                     cin.ignore();
                     getline(cin, tempFileName);
                     tempFileName = tempFileName + ".txt";
@@ -1408,6 +1411,7 @@ int monthStrToInt(string a)
         return 11;
     if (a == "Dec")
         return 12;
+        else return 0;
 }
 
 void list::menu()
