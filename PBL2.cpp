@@ -175,6 +175,9 @@ public:
     void delete_mem_age(int);     //xoa theo tuoi///////////
     void delete_mem_name_id(int); //xóa theo tên or id
 
+    //tính tổng lương, tổng thực lĩnh
+    void getSumOfSalary(int&,int&,int&, int&, int&,int&, int&,int&,int&,int&, int&,int&);
+
     member &operator[](int i) const; //toan tu lay phan tu thu i [] trong danh sach nhan vien
     const list &operator=(const list &);
     friend ostream &operator<<(ostream &out, const list &);
@@ -788,10 +791,9 @@ void list::writefile_mem(ofstream &ofs, string txt)
 
 void list::display_mem()
 {
-    cout << setw(6) << "Ma NV" << setw(17) << "|Ho" << setw(7) << "|Ten" << setw(6) << "|Ma DV" << setw(15) << "|So dien thoai" << setw(12) << "|Ngay sinh"
-         << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao" << setw(10) << "|Trinh do"
-         << setw(12) << "|Ngoai ngu" << setw(10) << "|Luong" << setw(10) << "|Thuc linh" << endl
-         << endl;
+    cout << setw(6) << "Ma NV" << setw(17) << "|Ho" << setw(7) << "|Ten" << setw(6) << "|Ma DV" << setw(15) << "|So dien thoai" << setw(12)
+        << "|Ngay sinh" << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao"
+        << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << setw(10) << "|Luong" << setw(10) << "|Thuc linh" << endl << endl;
     for (int i = 0; i < numofMem; i++)
     {
         cout << list_mem[i] << "|" << setw(9) << list_mem[i].getSalary() << "|" << setw(9) << list_mem[i].getNewsalary() << endl
@@ -848,43 +850,71 @@ void list::count_gender(int &ml, int &fl, int &mh, int &fh, int &mm, int &fm, in
     }
 }
 
+void list::getSumOfSalary(int &sumL,int& sumNL,int& sumH, int&sumNH, int& sumM,int& sumNM, int& sumT,int& sumNT,int& sumA,int& sumNA, int& sumP,int& sumNP){
+    for(int i=0;i<numofMem;i++){
+        if(list_mem[i].getGID().compare("LDR")==0) {
+            sumL+=list_mem[i].getSalary();
+            sumNL+=list_mem[i].getNewsalary();
+        }
+        else if (list_mem[i].getGID().compare("HRS")==0) {
+            sumH+=list_mem[i].getSalary();
+            sumNH+=list_mem[i].getNewsalary();
+        }
+        else if (list_mem[i].getGID().compare("MKT")==0) {
+            sumM+=list_mem[i].getSalary();
+            sumNM+=list_mem[i].getNewsalary();
+        } 
+        else if (list_mem[i].getGID().compare("TNC")==0) {
+            sumT+=list_mem[i].getSalary();
+            sumNT+=list_mem[i].getNewsalary();
+        }
+        else if (list_mem[i].getGID().compare("ACT")==0) {
+            sumA+=list_mem[i].getSalary();
+            sumNA+=list_mem[i].getNewsalary();
+        } else {
+            sumP+=list_mem[i].getSalary();
+            sumNP+=list_mem[i].getNewsalary();
+        }
+    }
+}
+
 void list::display_gr()
 {
     int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
+    int sumL = 0,sumNL=0 ,sumH=0 ,sumNH=0 ,sumM=0 ,sumNM=0 ,sumT=0,sumNT =0,sumA=0 ,sumNA=0 ,sumP=0 ,sumNP=0;  
     count_gender(ml, fl, mh, fh, mm, fm, mt, ft, ma, fa, mp, fp);
-    cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" << setw(20) << "|So luong nu" << endl
-         << endl;
+    getSumOfSalary(sumL,sumNL,sumH,sumNH,sumM,sumNM,sumT,sumNT,sumA,sumNA,sumP,sumNP);
+    cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" 
+        << setw(21) << "|So luong nu" <<setw(21)<<"|Tong luong"<<setw(20)<<"|Tong thuc linh"<< endl<< endl;
     for (int i = 0; i < numofGr; i++)
     {
         if (list_gr[i].getGID().compare("LDR") == 0)
-            cout << list_gr[i] << "|" << setw(20) << ml << "|" << setw(20) << fl << endl
-                 << endl;
+            cout << list_gr[i] << "|" << setw(20) << ml << "|" << setw(20) << fl <<"|"<<setw(20)<< sumL <<"|"<<setw(20) << sumNL 
+            << endl << endl;
         else if (list_gr[i].getGID().compare("HRS") == 0)
-            cout << list_gr[i] << "|" << setw(20) << mh << "|" << setw(20) << fh << endl
-                 << endl;
+            cout << list_gr[i] << "|" << setw(20) << mh << "|" << setw(20) << fh <<"|"<<setw(20)<< sumH <<"|"<<setw(20) << sumNH
+            << endl << endl;
         else if (list_gr[i].getGID().compare("MKT") == 0)
-            cout << list_gr[i] << "|" << setw(20) << mm << "|" << setw(20) << fm << endl
-                 << endl;
+            cout << list_gr[i] << "|" << setw(20) << mm << "|" << setw(20) << fm <<"|"<<setw(20)<< sumM <<"|"<<setw(20) << sumNM
+            << endl << endl;
         else if (list_gr[i].getGID().compare("TNC") == 0)
-            cout << list_gr[i] << "|" << setw(20) << mt << "|" << setw(20) << ft << endl
-                 << endl;
+            cout << list_gr[i] << "|" << setw(20) << mt << "|" << setw(20) << ft <<"|"<<setw(20)<< sumT <<"|"<<setw(20) << sumNT
+            << endl<< endl;
         else if (list_gr[i].getGID().compare("ACT") == 0)
-            cout << list_gr[i] << "|" << setw(20) << ma << "|" << setw(20) << fa << endl
-                 << endl;
+            cout << list_gr[i] << "|" << setw(20) << ma << "|" << setw(20) << fa <<"|"<<setw(20)<< sumA <<"|"<<setw(20) << sumNA
+            << endl << endl;
         else
-            cout << list_gr[i] << "|" << setw(20) << mp << "|" << setw(20) << fp << endl
-                 << endl;
+            cout << list_gr[i] << "|" << setw(20) << mp << "|" << setw(20) << fp <<"|"<<setw(20)<< sumP <<"|"<<setw(20) << sumNP
+            << endl << endl;
     }
 }
 
 void list::display_p()
 {
-    cout << setw(10) << "Ma CV" << setw(20) << "|Ten chuc vu" << setw(10) << "|He so PC" << endl
-         << endl;
+    cout << setw(10) << "Ma CV" << setw(20) << "|Ten chuc vu" << setw(10) << "|He so PC" << endl << endl;
     for (int i = 0; i < numofP; i++)
     {
-        cout << list_p[i] << endl
-             << endl;
+        cout << list_p[i] << endl << endl;
     }
 }
 //list::search
@@ -1091,14 +1121,14 @@ void list::add_menu()
         case 1:
             cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
             cin >> m;
-            add(m, 0, nhanvientxt);
+            add(m, 0, nhanvienouttxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 2:
             cout << "Nhap nhan vien muon them vao cuoi danh sach: " << endl;
             cin >> m;
             k = --numofMem;
-            add(m, k, nhanvientxt);
+            add(m, k, nhanvienouttxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 3:
@@ -1115,7 +1145,7 @@ void list::add_menu()
                 }
 
             } while (k == -1);
-            add(m, k, nhanvientxt);
+            add(m, k, nhanvienouttxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 0:
@@ -1411,7 +1441,87 @@ int monthStrToInt(string a)
         return 11;
     if (a == "Dec")
         return 12;
-        else return 0;
+    else return 0;
+}
+
+//list::sort
+void list::sort()
+{
+    int key;
+    do
+    {
+        cout << "1: Tang dan" << endl;
+        cout << "2: Giam dan" << endl;
+        cout << "Chon: ";
+        cin >> key;
+
+    } while (key != 1 && key != 2);
+    if (key == 1)
+        sort(ascending);
+    else if (key == 2)
+        sort(descending);
+}
+
+void list::sort(bool CompFunc(const member &, const member &, int))
+{
+    int key;
+    do
+    {
+        menu_Sort(key);
+        if (key == 7)
+            display_mem();
+        else if (key != 0)
+            QuickSort(0, numofMem - 1, key, CompFunc); //nếu kp đk dừng(key=0) thì tiếp tục
+            ofstream ofs;
+            writefile_mem(ofs, nhanvienouttxt);
+        cout << "-----------Da sap xep xong!------------" << endl;
+        cout << "Nhan Enter de tiep tuc!" << endl;
+        getch();
+    } while (key);
+}
+
+void list::QuickSort(int l, int r, int key, bool CompFunc(const member &, const member &, int))
+{
+    //key -> trong menu_Sort
+    int i = l, j = r;
+    member q = list_mem[(l + r) / 2]; //lấy phần tử ở giữa ds
+    while (i < j)
+    {
+        while ((CompFunc)(q, list_mem[i], key))
+            i++;
+        while ((CompFunc)(list_mem[j], q, key))
+            j--;
+        if (i <= j)
+        {
+            member temp = list_mem[i];
+            list_mem[i] = list_mem[j];
+            list_mem[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    if (i < r)
+        QuickSort(i, r, key, CompFunc);
+    if (j > l)
+        QuickSort(l, j, key, CompFunc);
+}
+
+void list::menu_Sort(int &key)
+{
+    do
+    {
+        cout << "Ban muon sap xep theo cach nao: " << endl;
+        cout << "1: Ma nhan vien" << endl;
+        cout << "2: Ho va ten" << endl;
+        cout << "3: Ma don vi" << endl;
+        cout << "4: Ngay sinh" << endl;
+        cout << "5: He so luong" << endl;
+        cout << "6: Nam vao" << endl;
+        cout << "7: Hien thi danh sach nhan vien " << endl;
+        cout << "0: Thoat!" << endl;
+        cout << "Chon: ";
+        cin >> key;
+    } while (key < 0 || key > 7);
 }
 
 void list::menu()
@@ -1472,81 +1582,4 @@ void list::menu()
             getch();
         }
     } while (chon);
-}
-//list::sort
-void list::sort()
-{
-    int key;
-    do
-    {
-        cout << "1: Tang dan" << endl;
-        cout << "2: Giam dan" << endl;
-        cout << "Chon: ";
-        cin >> key;
-
-    } while (key != 1 && key != 2);
-    if (key == 1)
-        sort(ascending);
-    else if (key == 2)
-        sort(descending);
-}
-
-void list::sort(bool CompFunc(const member &, const member &, int))
-{
-    int key;
-    do
-    {
-        menu_Sort(key);
-        if (key == 7)
-            display_mem();
-        else if (key != 0)
-            QuickSort(0, numofMem - 1, key, CompFunc); //nếu kp đk dừng(key=0) thì tiếp tục
-        cout << "-----------Da sap xep xong!------------" << endl;
-        cout << "Nhan Enter de tiep tuc!" << endl;
-        getch();
-    } while (key);
-}
-
-void list::QuickSort(int l, int r, int key, bool CompFunc(const member &, const member &, int))
-{
-    //key -> trong menu_Sort
-    int i = l, j = r;
-    member q = list_mem[(l + r) / 2]; //lấy phần tử ở giữa ds
-    while (i < j)
-    {
-        while ((CompFunc)(q, list_mem[i], key))
-            i++;
-        while ((CompFunc)(list_mem[j], q, key))
-            j--;
-        if (i <= j)
-        {
-            member temp = list_mem[i];
-            list_mem[i] = list_mem[j];
-            list_mem[j] = temp;
-            i++;
-            j--;
-        }
-    }
-    if (i < r)
-        QuickSort(i, r, key, CompFunc);
-    if (j > l)
-        QuickSort(l, j, key, CompFunc);
-}
-
-void list::menu_Sort(int &key)
-{
-    do
-    {
-        cout << "Ban muon sap xep theo cach nao: " << endl;
-        cout << "1: Ma nhan vien" << endl;
-        cout << "2: Ho va ten" << endl;
-        cout << "3: Ma don vi" << endl;
-        cout << "4: Ngay sinh" << endl;
-        cout << "5: He so luong" << endl;
-        cout << "6: Nam vao" << endl;
-        cout << "7: Hien thi danh sach nhan vien " << endl;
-        cout << "0: Thoat!" << endl;
-        cout << "Chon: ";
-        cin >> key;
-    } while (key < 0 || key > 7);
 }
