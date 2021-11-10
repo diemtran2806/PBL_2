@@ -358,7 +358,7 @@ void login(){
     }while(t!=1 && d!=3);
     if (t==1){ 
         cout <<"DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..."<<endl;
-        d++;
+        d--;
         Sleep(1500);
     } else cout <<"BAN DA NHAP SAI QUA 3 LAN, VUI LONG THU LAI SAU!!"<<endl;
 }
