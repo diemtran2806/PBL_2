@@ -11,7 +11,6 @@ using namespace std;
 #define nhanvienouttxt "Nhan Vien_out.txt"
 #define nhanviensearch "NhanVien_search.txt"
 #define A 1500000 //LCB
-//
 /*string nhanvientxt = "Nhan Vien.txt"; //main !
 string nhavienouttxt = "Nhan Vien_out.txt";
 string nhanviensearch = "NhanVien_search.txt";*/
