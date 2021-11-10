@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <ctime>
+#include <windows.h>
 using namespace std;
 #define nhanvientxt "Nhan Vien.txt"
 #define nhanvienouttxt "Nhan Vien_out.txt"
@@ -14,6 +15,31 @@ using namespace std;
 /*string nhanvientxt = "Nhan Vien.txt"; //main !
 string nhavienouttxt = "Nhan Vien_out.txt";
 string nhanviensearch = "NhanVien_search.txt";*/
+
+//class đọc thông tin tài khoản mật khẩu
+class account {
+    string name;
+    string password;
+    public:
+    string getName(){
+        return name;
+    }
+    string getPassword(){
+        return password;
+    }
+    void readAccount(ifstream &);
+};
+class list_account{
+    int numOfAcount;
+    account *la;
+    public:
+    list_account(int =0);
+    void readfile_account(ifstream &in);
+    int check(string s);
+    string tranpass();
+    ~list_account();
+};
+
 class birthday
 { //class ngày tháng năm sinh để sau này lấy cho dễ
     int day;
@@ -194,11 +220,19 @@ bool descending(const member &m1, const member &m2, int key); //giam dan
 bool checkFile(string path);                                  //check file path có tồn tại ko?
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//main
+
+string tk,mk;
+int test =0, d;
+void login();
+
+list_account acc;
 list com;
+//main
 int main()
 {
     cout << left;
+    login();
+    if (d!=3) {
     ifstream filein_M;
     com.readfile_mem(filein_M);
     ifstream filein_G;
@@ -207,8 +241,10 @@ int main()
     com.readfile_p(filein_p);
     dateNow = SystemDate(); //lấy time hiện tại
     com.menu();
+    }
     return 0;
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void del_ws(string &s) //Hàm xóa khoảng trắng
 {
@@ -234,7 +270,100 @@ void del_ws(string &s) //Hàm xóa khoảng trắng
         }
     }
 }
+//phần class của chức năng đăng nhập
+void account::readAccount(ifstream &in)
+{
+    getline(in, name, '|');
+    del_ws(name);
+    getline(in, password, '\n');
+    del_ws(password);
+}
+//phần đọc file vào list_account
+list_account::list_account(int numA) : numOfAcount(numA){
+    la = new account[numOfAcount];
+}
+list_account::~list_account(){
+    delete [] la;
+}
+int list_account::check(string s){    //check tk mk có tồn tại hay khum
+    int temp=0;
+    for(int i=0;i<numOfAcount;i++){
+        if(s.compare(la[i].getName())==0) {
+            temp =1;
+            break;
+        }
+    }
+    for(int i=0;i<numOfAcount;i++){
+        if(s.compare(la[i].getPassword())==0) {
+            temp =1;
+            break;
+        }
+    }
+    if(temp==1) return 1;
+    else return 0;
+}
+void list_account::readfile_account(ifstream &in){
+    in.open("Tai Khoan.txt",ios_base::in);
+    int i=0;
+    while(!in.eof()){
+        int newSize = numOfAcount+1;
+        account *newArr = new account[newSize];
+        for(int j=0;j<numOfAcount;j++)
+        newArr[j] = la[j];
+        delete [] la;
+        numOfAcount = newSize;
+        la = newArr;
+        la[i].readAccount(in);
+        i++;
+    }
+    in.close();
+}
+//hàm chuyển chữ nhập vào thành dấu *
+string list_account::tranpass(){          
+    string pw;
+    for (char c; (c = getch()); )
+    {
+        if (c == '\n' || c == '\r') { //phím enter
+            cout << "\n";
+            break;
+        } else if (c == '\b') {        //phím xóa
+            cout << "\b \b";           //\b là lùi con nháy về trái 1 ký tự, dấu cách để “xóa” ký tự đó rồi \b nữa để lùi lại vị trí sau khi xóa.
+            if (!pw.empty()) pw.erase(pw.size()-1);
+       } else if (c == -32) {          //phím mũi tên
+            _getch();                  //bỏ qua k hiển thị gì khi nhập vào phím mũi tên
+        } else if (isprint(c)) {       //isprint tức là chỉ nhận những ký tự in ra được
+            cout << '*';
+            pw += c;
+        }
+    }
+    return pw;
+}
+//hàm login chính
+void login(){            
+    ifstream filein_A;
+    int t;
+    d=0;
+    acc.readfile_account(filein_A);
+    do {
+    cout <<"Nhap ten tai khoan: ";
+    getline(cin,tk);
+    if(acc.check(tk)!=1) cout <<"TEN TAI KHOAN KHONG TON TAI, VUI LONG NHAP LAI!"<<endl;
+    }while(acc.check(tk)!=1);
+    do {
+    cout <<"Nhap mat khau: ";
+    string mk = acc.tranpass();
+    d++;
+    t = acc.check(mk);
+    if(t!=1 && d!=3) cout <<"MAT KHAU KHONG DUNG, VUI LONG NHAP LAI!"<<endl;
+    }while(t!=1 && d!=3);
+    if (t==1){ 
+        cout <<"DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..."<<endl;
+        d++;
+        Sleep(1500);
+    } else cout <<"BAN DA NHAP SAI QUA 3 LAN, VUI LONG THU LAI SAU!!"<<endl;
+}
 
+//hàm sắp xếp
 bool ascending(const member &m1, const member &m2, int key)
 {
     birthday ns1 = m1.getBirthday();
