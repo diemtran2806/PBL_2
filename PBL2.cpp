@@ -150,10 +150,12 @@ public:
     void readfile_gr(ifstream &in);  //nhap danh sach don vi tu file
     void readfile_p(ifstream &in);   //Nhap danh sach chuc vu
     void writefile_mem(ofstream &ofs, string txt);
+
     void display_mem(); //in danh sach nhan vien
     void count_gender(int &, int &, int &, int &, int &, int &, int &, int &, int &, int &, int &, int &);
     void display_gr(); //in bang thong ke theo don vi
     void display_p();  //in bang thong ke cac chuc vu
+    void menu_dis();
 
     int check(member &);
     void add(member &, int k, string txt); //bo sung 1 doi tuong vao vi tri k bat ki
@@ -485,9 +487,10 @@ void member::readfile_M(ifstream &in)
 ostream &operator<<(ostream &out, member &m)
 {
     //du nguyen
-    out << setw(6) << m.mID << setw(17) << "|" + m.mlname << setw(7) << "|" + m.firstname << setw(6) << "|" + m.gID << setw(15) << "|" + m.pnumber << right << setfill('0') << "|" << setw(2) << m.ns.getDay()
-        << "/" << setw(2) << m.ns.getMonth() << "/" << setfill(' ') << left << setw(5) << m.ns.getYear() << "|" << setw(9) << m.gender << setw(10) << "|" + m.position << "|"
-        << setw(12) << m.C_salary << "|" << setw(8) << m.year_in << setw(10) << "|" + m.degree << setw(12) << "|" + m.L_certificate;
+    out << setw(6) << m.mID << setw(17) << "|" + m.mlname << setw(7) << "|" + m.firstname << setw(6) << "|" + m.gID << setw(15) 
+        << "|" + m.pnumber << right << setfill('0') << "|" << setw(2) << m.ns.getDay() << "/" << setw(2) << m.ns.getMonth() << "/" 
+        << setfill(' ') << left << setw(5) << m.ns.getYear() << "|" << setw(9) << (m.gender==1?"Nu":"Nam") << setw(10) << "|" + m.position 
+        << "|" << setw(12) << m.C_salary << "|" << setw(8) << m.year_in << setw(10) << "|" + m.degree << setw(12) << "|" + m.L_certificate;
     return out;
 }
 
@@ -916,6 +919,35 @@ void list::display_p()
         cout << list_p[i] << endl << endl;
     }
 }
+
+void list::menu_dis()
+{
+    int key;
+    do{
+        system("cls");
+        cout<<"Hien thi theo danh sach"<<endl;
+        cout<<"1: Nhan vien"<<endl;
+        cout<<"2: Don vi"<<endl;
+        cout<<"3: Chuc vu"<<endl;
+        cout<<"0: Thoat!"<<endl;
+        cout<<"Chon: ";
+        cin>>key;
+        switch(key){
+            case 1:
+                display_mem();
+                system("pause");
+                break;
+            case 2:
+                display_gr();
+                system("pause");
+                break;
+            case 3:
+                display_p();
+                system("pause");
+                break;
+        }
+    }while(key);
+}
 //list::search
 int list::search(int chon, string s, int a[])
 {
@@ -1025,7 +1057,7 @@ int list::menu_Search(string &tt)
         system("cls");
         cout << "Ban muon tim kiem thong tin theo cach nao:" << endl;
         cout << "1: Ma nhan vien" << endl;
-        cout << "2: Ho va ten dem" << endl;
+        cout << "2: Ho va ten" << endl;
         cout << "3: Ten" << endl;
         cout << "4: Ma don vi" << endl;
         cout << "5: So dien thoai" << endl;
@@ -1039,13 +1071,11 @@ int list::menu_Search(string &tt)
         cout << "Chon: ";
         cin >> chon;
     } while (chon < 1 || chon > 12);
-    cout << "Nhap thong tin can tim kiem: ";
     if (chon == 6)
     {
         string s;
         tt = s;
-        cout << endl
-             << "Nhap ngay: ";
+        cout << "Nhap ngay: ";
         cin >> s;
         tt += s;
         cout << "Nhap thang: ";
@@ -1055,8 +1085,16 @@ int list::menu_Search(string &tt)
         cin >> s;
         tt += s;
     }
-    else
+    else if(chon == 7){
+        cout<<"Nhap gioi tinh(0:nam/1:nu): ";
         getline(cin >> ws, tt);
+    }
+    else
+    {
+        if(chon == 2) chon += 11;
+        cout << "Nhap thong tin can tim kiem: ";
+        getline(cin >> ws, tt);
+    }
     return chon;
 }
 //list::add
@@ -1107,7 +1145,7 @@ void list::add_menu()
     int k, x;
     do
     {
-        //system("cls");
+        system("cls");
         cout << "--------------CHUC NANG---------------" << endl;
         cout << "1: Them nhan vien vao dau danh sach" << endl;
         cout << "2: Them nhan vien vao cuoi danh sach" << endl;
@@ -1120,14 +1158,14 @@ void list::add_menu()
         case 1:
             cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
             cin >> m;
-            add(m, 0, nhanvienouttxt);
+            add(m, 0, nhanvientxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 2:
             cout << "Nhap nhan vien muon them vao cuoi danh sach: " << endl;
             cin >> m;
             k = --numofMem;
-            add(m, k, nhanvienouttxt);
+            add(m, k, nhanvientxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 3:
@@ -1144,7 +1182,7 @@ void list::add_menu()
                 }
 
             } while (k == -1);
-            add(m, k, nhanvienouttxt);
+            add(m, k, nhanvientxt);
             cout << "------------Da them thanh cong!-------------" << endl;
             break;
         case 0:
@@ -1320,7 +1358,7 @@ void list::delete_mem()
     int ktr = 0;
     do
     {
-        //system("cls");
+        system("cls");
         cout << " 1. Xoa theo ID.\n";
         cout << " 2. Xoa theo ten.\n";
         cout << " 3. Xoa theo ho ten.\n";
@@ -1361,8 +1399,7 @@ void list::delete_mem()
         case 7:
             cout << " 7. Hien thi ds.\n";
             this->display_mem();
-            cout << "Nhan Enter de tiep tuc!" << endl;
-            getch();
+            system("pause");
             break;
         case 0:
             ktr = -1;
@@ -1449,6 +1486,7 @@ void list::sort()
     int key;
     do
     {
+        system("cls");
         cout << "1: Tang dan" << endl;
         cout << "2: Giam dan" << endl;
         cout << "Chon: ";
@@ -1473,9 +1511,10 @@ void list::sort(bool CompFunc(const member &, const member &, int))
             QuickSort(0, numofMem - 1, key, CompFunc); //nếu kp đk dừng(key=0) thì tiếp tục
             ofstream ofs;
             writefile_mem(ofs, nhanvienouttxt);
-        cout << "-----------Da sap xep xong!------------" << endl;
-        cout << "Nhan Enter de tiep tuc!" << endl;
-        getch();
+        if(key != 0){
+            cout << "-----------Da sap xep xong!------------" << endl;
+            system("pause");
+        }
     } while (key);
 }
 
@@ -1508,7 +1547,7 @@ void list::QuickSort(int l, int r, int key, bool CompFunc(const member &, const 
 void list::menu_Sort(int &key)
 {
     do
-    {
+    {   system("cls");
         cout << "Ban muon sap xep theo cach nao: " << endl;
         cout << "1: Ma nhan vien" << endl;
         cout << "2: Ho va ten" << endl;
@@ -1530,11 +1569,11 @@ void list::menu()
     int k, x;
     do
     {
-        //system("cls");
+        system("cls");
         cout << "--------------MENU---------------" << endl;
-        cout << "1: Hien thi danh sach nhan vien" << endl;
-        cout << "2: Hien thi danh sach don vi" << endl;
-        cout << "3: Hien thi danh sach chuc vu" << endl;
+        cout << "1: Hien thi" << endl;
+        cout << "2: Thong ke" << endl;
+        cout << "3: Sua thong tin nhan vien" << endl;
         cout << "4: Them mot nhan vien" << endl;
         cout << "5: Tim kiem nhan vien" << endl;
         cout << "6: Xoa mot nhan vien" << endl;
@@ -1545,19 +1584,13 @@ void list::menu()
         switch (chon)
         {
         case 1:
-            display_mem();
-            cout << "Nhan Enter de tiep tuc!" << endl;
-            getch();
+            menu_dis();
             break;
         case 2:
-            display_gr();
-            cout << "Nhan Enter de tiep tuc!" << endl;
-            getch();
+            
             break;
         case 3:
-            display_p();
-            cout << "Nhan Enter de tiep tuc!" << endl;
-            getch();
+            
             break;
         case 4:
             add_menu();
