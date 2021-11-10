@@ -117,6 +117,7 @@ public:
     int getNewsalary(); //thực lĩnh
     bool isEqual(int, string);
 
+    void display();
     friend istream &operator>>(istream &in, member &);
     friend ostream &operator<<(ostream &out, member &);
     //const member &operator = (const member &m);  // hàm gán, tham chiếu hằng, hằng
@@ -614,12 +615,19 @@ void member::readfile_M(ifstream &in)
     del_ws(L_certificate);
 }
 
+void member::display(){
+    cout << setw(6) << mID << setw(17) << "|" + mlname << setw(7) << "|" + firstname << setw(6) << "|" + gID << setw(15) 
+        << "|" + pnumber << right << setfill('0') << "|" << setw(2) << ns.getDay() << "/" << setw(2) << ns.getMonth() << "/" 
+        << setfill(' ') << left << setw(5) << ns.getYear() << "|" << setw(9) << (gender==1?"Nu":"Nam") << setw(10) << "|" + position 
+        << "|" << setw(12) << C_salary << "|" << setw(8) << year_in << setw(10) << "|" + degree << setw(12) << "|" + L_certificate;
+}
+
 ostream &operator<<(ostream &out, member &m)
 {
     //du nguyen
     out << setw(6) << m.mID << setw(17) << "|" + m.mlname << setw(7) << "|" + m.firstname << setw(6) << "|" + m.gID << setw(15) 
         << "|" + m.pnumber << right << setfill('0') << "|" << setw(2) << m.ns.getDay() << "/" << setw(2) << m.ns.getMonth() << "/" 
-        << setfill(' ') << left << setw(5) << m.ns.getYear() << "|" << setw(9) << (m.gender==1?"Nu":"Nam") << setw(10) << "|" + m.position 
+        << setfill(' ') << left << setw(5) << m.ns.getYear() << "|" << setw(9) << m.gender << setw(10) << "|" + m.position 
         << "|" << setw(12) << m.C_salary << "|" << setw(8) << m.year_in << setw(10) << "|" + m.degree << setw(12) << "|" + m.L_certificate;
     return out;
 }
@@ -928,7 +936,8 @@ void list::display_mem()
         << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << setw(10) << "|Luong" << setw(10) << "|Thuc linh" << endl << endl;
     for (int i = 0; i < numofMem; i++)
     {
-        cout << list_mem[i] << "|" << setw(9) << list_mem[i].getSalary() << "|" << setw(9) << list_mem[i].getNewsalary() << endl
+        list_mem[i].display();
+        cout << "|" << setw(9) << list_mem[i].getSalary() << "|" << setw(9) << list_mem[i].getNewsalary() << endl
              << endl;
     }
 }
