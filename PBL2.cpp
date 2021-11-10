@@ -344,6 +344,7 @@ void login(){
     int t;
     d=0;
     acc.readfile_account(filein_A);
+    cout <<endl<<"NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)"<<endl<<endl;
     do {
     cout <<"Nhap ten tai khoan: ";
     getline(cin,tk);
