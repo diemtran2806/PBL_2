@@ -17,23 +17,29 @@ string nhavienouttxt = "Nhan Vien_out.txt";
 string nhanviensearch = "NhanVien_search.txt";*/
 
 //class đọc thông tin tài khoản mật khẩu
-class account {
+class account
+{
     string name;
     string password;
-    public:
-    string getName(){
+
+public:
+    string getName()
+    {
         return name;
     }
-    string getPassword(){
+    string getPassword()
+    {
         return password;
     }
     void readAccount(ifstream &);
 };
-class list_account{
+class list_account
+{
     int numOfAcount;
     account *la;
-    public:
-    list_account(int =0);
+
+public:
+    list_account(int = 0);
     void readfile_account(ifstream &in);
     int check(string s);
     string tranpass();
@@ -111,6 +117,19 @@ public:
     string getFirstname() const;
     float getC_salary() const;
     int getYear_in() const;
+
+    void setmID();
+    void setmlname();
+    void setfirstname();
+    void setgID();
+    void setpnumber();
+    void setns();
+    void setgender();
+    void setposition();
+    void setC_salary();
+    void setyear_in();
+    void setdegree();
+    void setL_certificate();
 
     void readfile_M(ifstream &);
     int getSalary();    //tinh luong
@@ -204,12 +223,13 @@ public:
     void delete_mem_name_id(int); //xóa theo tên or id
 
     //tính tổng lương, tổng thực lĩnh
-    void getSumOfSalary(int&,int&,int&, int&, int&,int&, int&,int&,int&,int&, int&,int&);
+    void getSumOfSalary(int &, int &, int &, int &, int &, int &, int &, int &, int &, int &, int &, int &);
 
     member &operator[](int i) const; //toan tu lay phan tu thu i [] trong danh sach nhan vien
     const list &operator=(const list &);
     friend ostream &operator<<(ostream &out, const list &);
-
+    //sửa thông tin nhân viên
+    void Edit_mem_inf();
     //menu main
     void menu();
 };
@@ -222,8 +242,8 @@ bool checkFile(string path);                                  //check file path 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-string tk,mk;
-int test =0, d;
+string tk, mk;
+int test = 0, d;
 void login();
 
 list_account acc;
@@ -233,15 +253,16 @@ int main()
 {
     cout << left;
     login();
-    if (d!=3) {
-    ifstream filein_M;
-    com.readfile_mem(filein_M);
-    ifstream filein_G;
-    com.readfile_gr(filein_G);
-    ifstream filein_p;
-    com.readfile_p(filein_p);
-    dateNow = SystemDate(); //lấy time hiện tại
-    com.menu();
+    if (d != 3)
+    {
+        ifstream filein_M;
+        com.readfile_mem(filein_M);
+        ifstream filein_G;
+        com.readfile_gr(filein_G);
+        ifstream filein_p;
+        com.readfile_p(filein_p);
+        dateNow = SystemDate(); //lấy time hiện tại
+        com.menu();
     }
     return 0;
 }
@@ -280,38 +301,49 @@ void account::readAccount(ifstream &in)
     del_ws(password);
 }
 //phần đọc file vào list_account
-list_account::list_account(int numA) : numOfAcount(numA){
+list_account::list_account(int numA) : numOfAcount(numA)
+{
     la = new account[numOfAcount];
 }
-list_account::~list_account(){
-    delete [] la;
+list_account::~list_account()
+{
+    delete[] la;
 }
-int list_account::check(string s){    //check tk mk có tồn tại hay khum
-    int temp=0;
-    for(int i=0;i<numOfAcount;i++){
-        if(s.compare(la[i].getName())==0) {
-            temp =1;
+int list_account::check(string s)
+{ //check tk mk có tồn tại hay khum
+    int temp = 0;
+    for (int i = 0; i < numOfAcount; i++)
+    {
+        if (s.compare(la[i].getName()) == 0)
+        {
+            temp = 1;
             break;
         }
     }
-    for(int i=0;i<numOfAcount;i++){
-        if(s.compare(la[i].getPassword())==0) {
-            temp =1;
+    for (int i = 0; i < numOfAcount; i++)
+    {
+        if (s.compare(la[i].getPassword()) == 0)
+        {
+            temp = 1;
             break;
         }
     }
-    if(temp==1) return 1;
-    else return 0;
+    if (temp == 1)
+        return 1;
+    else
+        return 0;
 }
-void list_account::readfile_account(ifstream &in){
-    in.open("Tai Khoan.txt",ios_base::in);
-    int i=0;
-    while(!in.eof()){
-        int newSize = numOfAcount+1;
+void list_account::readfile_account(ifstream &in)
+{
+    in.open("Tai Khoan.txt", ios_base::in);
+    int i = 0;
+    while (!in.eof())
+    {
+        int newSize = numOfAcount + 1;
         account *newArr = new account[newSize];
-        for(int j=0;j<numOfAcount;j++)
-        newArr[j] = la[j];
-        delete [] la;
+        for (int j = 0; j < numOfAcount; j++)
+            newArr[j] = la[j];
+        delete[] la;
         numOfAcount = newSize;
         la = newArr;
         la[i].readAccount(in);
@@ -320,19 +352,28 @@ void list_account::readfile_account(ifstream &in){
     in.close();
 }
 //hàm chuyển chữ nhập vào thành dấu *
-string list_account::tranpass(){          
+string list_account::tranpass()
+{
     string pw;
-    for (char c; (c = getch()); )
+    for (char c; (c = getch());)
     {
-        if (c == '\n' || c == '\r') { //phím enter
+        if (c == '\n' || c == '\r')
+        { //phím enter
             cout << "\n";
             break;
-        } else if (c == '\b') {        //phím xóa
-            cout << "\b \b";           //\b là lùi con nháy về trái 1 ký tự, dấu cách để “xóa” ký tự đó rồi \b nữa để lùi lại vị trí sau khi xóa.
-            if (!pw.empty()) pw.erase(pw.size()-1);
-       } else if (c == -32) {          //phím mũi tên
-            _getch();                  //bỏ qua k hiển thị gì khi nhập vào phím mũi tên
-        } else if (isprint(c)) {       //isprint tức là chỉ nhận những ký tự in ra được
+        }
+        else if (c == '\b')
+        {                    //phím xóa
+            cout << "\b \b"; //\b là lùi con nháy về trái 1 ký tự, dấu cách để “xóa” ký tự đó rồi \b nữa để lùi lại vị trí sau khi xóa.
+            if (!pw.empty())
+                pw.erase(pw.size() - 1);
+        }
+        else if (c == -32)
+        {             //phím mũi tên
+            _getch(); //bỏ qua k hiển thị gì khi nhập vào phím mũi tên
+        }
+        else if (isprint(c))
+        { //isprint tức là chỉ nhận những ký tự in ra được
             cout << '*';
             pw += c;
         }
@@ -340,29 +381,39 @@ string list_account::tranpass(){
     return pw;
 }
 //hàm login chính
-void login(){            
+void login()
+{
     ifstream filein_A;
     int t;
-    d=0;
+    d = 0;
     acc.readfile_account(filein_A);
-    cout <<endl<<"NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)"<<endl<<endl;
-    do {
-    cout <<"Nhap ten tai khoan: ";
-    getline(cin,tk);
-    if(acc.check(tk)!=1) cout <<"TEN TAI KHOAN KHONG TON TAI, VUI LONG NHAP LAI!"<<endl;
-    }while(acc.check(tk)!=1);
-    do {
-    cout <<"Nhap mat khau: ";
-    string mk = acc.tranpass();
-    d++;
-    t = acc.check(mk);
-    if(t!=1 && d!=3) cout <<"MAT KHAU KHONG DUNG, VUI LONG NHAP LAI!"<<endl;
-    }while(t!=1 && d!=3);
-    if (t==1){ 
-        cout <<"DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..."<<endl;
+    cout << endl
+         << "NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)" << endl
+         << endl;
+    do
+    {
+        cout << "Nhap ten tai khoan: ";
+        getline(cin, tk);
+        if (acc.check(tk) != 1)
+            cout << "TEN TAI KHOAN KHONG TON TAI, VUI LONG NHAP LAI!" << endl;
+    } while (acc.check(tk) != 1);
+    do
+    {
+        cout << "Nhap mat khau: ";
+        string mk = acc.tranpass();
+        d++;
+        t = acc.check(mk);
+        if (t != 1 && d != 3)
+            cout << "MAT KHAU KHONG DUNG, VUI LONG NHAP LAI!" << endl;
+    } while (t != 1 && d != 3);
+    if (t == 1)
+    {
+        cout << "DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..." << endl;
         d--;
         Sleep(1500);
-    } else cout <<"BAN DA NHAP SAI QUA 3 LAN, VUI LONG THU LAI SAU!!"<<endl;
+    }
+    else
+        cout << "BAN DA NHAP SAI QUA 3 LAN, VUI LONG THU LAI SAU!!" << endl;
 }
 
 //hàm sắp xếp
@@ -399,7 +450,8 @@ bool ascending(const member &m1, const member &m2, int key)
         return m1.getC_salary() > m2.getC_salary();
     case 6:
         return m1.getYear_in() > m2.getYear_in();
-    default: return false;
+    default:
+        return false;
     }
 }
 
@@ -428,7 +480,8 @@ bool descending(const member &m1, const member &m2, int key)
         return m1.getC_salary() < m2.getC_salary();
     case 6:
         return m1.getYear_in() < m2.getYear_in();
-    default: return false;
+    default:
+        return false;
     }
 }
 
@@ -574,6 +627,112 @@ string member::getFullName() const
 {
     return mlname + " " + firstname;
 }
+
+//setMem
+void member::setmID()
+{
+    int temp, check = 0;
+    int a[100];
+    do
+    {
+        cout << "Nhap ma nhan vien: ";
+        string tempmID;
+        cin >> tempmID;
+        check = com.search(1, tempmID, a);
+        if (check > 0)
+        {
+            cout << "\nBAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
+            cout << "MOI BAN NHAP LAI: " << endl
+                 << endl;
+        }
+        else
+        {
+            mID = tempmID;
+        }
+    } while (check > 0);
+};
+
+void member::setmlname()
+{
+    cout << "Nhap ho va ten dem: ";
+    getline(cin >> ws, mlname);
+    mlname += " ";
+};
+void member::setfirstname()
+{
+    cout << "Nhap ten: ";
+    getline(cin >> ws, firstname);
+};
+void member::setgID()
+{
+    cout << "Nhap ma don vi: ";
+    getline(cin >> ws, gID);
+};
+void member::setpnumber()
+{
+    cout << "Nhap so dien thoai: ";
+    cin >> pnumber;
+};
+void member::setns()
+{
+    int temp;
+    cout << "Nhap ngay/thang/nam sinh: " << endl;
+    cout << "Nhap ngay sinh: ";
+    cin >> temp;
+    ns.setDay(temp);
+    cout << "Nhap thang sinh: ";
+    cin >> temp;
+    ns.setMonth(temp);
+    cout << "Nhap nam sinh: ";
+    cin >> temp;
+    ns.setYear(temp);
+};
+void member::setgender()
+{
+    string s;
+    int gt = 0;
+    while (gt == 0)
+    {
+        gt = 1; //điều kiện dừng
+        cout << "Nhap gioi tinh (nam/nu): ";
+        cin >> s;
+        if (s == "nam")
+            gender = 0;
+        else if (s == "nu")
+            gender = 1;
+        else
+        {
+            cout << "Ban da nhap sai!" << endl;
+            gt = 0;
+        }
+    }
+};
+void member::setposition()
+{
+    cout << "Nhap ma chuc vu: ";
+    cin >> position;
+};
+void member::setC_salary()
+{
+    cout << "Nhap he so luong: ";
+    cin >> C_salary;
+};
+void member::setyear_in()
+{
+    cout << "Nhap nam vao lam viec: ";
+    cin >> year_in;
+};
+void member::setdegree()
+{
+    cout << "Nhap trinh do cua nhan vien: ";
+    getline(cin >> ws, degree);
+};
+void member::setL_certificate()
+{
+    cout << "Nhap trinh do ngoai ngu cua nhan vien: ";
+    getline(cin >> ws, L_certificate);
+};
+
 //
 void member::readfile_M(ifstream &in)
 {
@@ -615,19 +774,20 @@ void member::readfile_M(ifstream &in)
     del_ws(L_certificate);
 }
 
-void member::display(){
-    cout << setw(6) << mID << setw(17) << "|" + mlname << setw(7) << "|" + firstname << setw(6) << "|" + gID << setw(15) 
-        << "|" + pnumber << right << setfill('0') << "|" << setw(2) << ns.getDay() << "/" << setw(2) << ns.getMonth() << "/" 
-        << setfill(' ') << left << setw(5) << ns.getYear() << "|" << setw(9) << (gender==1?"Nu":"Nam") << setw(10) << "|" + position 
-        << "|" << setw(12) << C_salary << "|" << setw(8) << year_in << setw(10) << "|" + degree << setw(12) << "|" + L_certificate;
+void member::display()
+{
+    cout << setw(6) << mID << setw(17) << "|" + mlname << setw(7) << "|" + firstname << setw(6) << "|" + gID << setw(15)
+         << "|" + pnumber << right << setfill('0') << "|" << setw(2) << ns.getDay() << "/" << setw(2) << ns.getMonth() << "/"
+         << setfill(' ') << left << setw(5) << ns.getYear() << "|" << setw(9) << (gender == 1 ? "Nu" : "Nam") << setw(10) << "|" + position
+         << "|" << setw(12) << C_salary << "|" << setw(8) << year_in << setw(10) << "|" + degree << setw(12) << "|" + L_certificate;
 }
 
 ostream &operator<<(ostream &out, member &m)
 {
     //du nguyen
-    out << setw(6) << m.mID << setw(17) << "|" + m.mlname << setw(7) << "|" + m.firstname << setw(6) << "|" + m.gID << setw(15) 
-        << "|" + m.pnumber << right << setfill('0') << "|" << setw(2) << m.ns.getDay() << "/" << setw(2) << m.ns.getMonth() << "/" 
-        << setfill(' ') << left << setw(5) << m.ns.getYear() << "|" << setw(9) << m.gender << setw(10) << "|" + m.position 
+    out << setw(6) << m.mID << setw(17) << "|" + m.mlname << setw(7) << "|" + m.firstname << setw(6) << "|" + m.gID << setw(15)
+        << "|" + m.pnumber << right << setfill('0') << "|" << setw(2) << m.ns.getDay() << "/" << setw(2) << m.ns.getMonth() << "/"
+        << setfill(' ') << left << setw(5) << m.ns.getYear() << "|" << setw(9) << m.gender << setw(10) << "|" + m.position
         << "|" << setw(12) << m.C_salary << "|" << setw(8) << m.year_in << setw(10) << "|" + m.degree << setw(12) << "|" + m.L_certificate;
     return out;
 }
@@ -651,11 +811,14 @@ istream &operator>>(istream &in, member &m)
         }
     } while (check > 0);
     cout << "Nhap ho va ten dem: ";
+    cin.ignore();
     getline(in >> ws, m.mlname);
     m.mlname += " ";
     cout << "Nhap ten: ";
+    cin.ignore();
     getline(in >> ws, m.firstname);
     cout << "Nhap ma don vi: ";
+    cin.ignore();
     getline(in >> ws, m.gID);
     cout << "Nhap so dien thoai: ";
     in >> m.pnumber;
@@ -691,8 +854,10 @@ istream &operator>>(istream &in, member &m)
     cout << "Nhap nam vao lam viec: ";
     in >> m.year_in;
     cout << "Nhap trinh do cua nhan vien: ";
+    cin.ignore();
     getline(in >> ws, m.degree);
     cout << "Nhap trinh do ngoai ngu cua nhan vien: ";
+    cin.ignore();
     getline(in >> ws, m.L_certificate);
     return in;
 }
@@ -760,7 +925,8 @@ bool member::isEqual(int chon, string s)
         return s.compare(this->L_certificate);
     case 13:
         return s.compare(this->getFullName());
-    default: return false;
+    default:
+        return false;
     }
 }
 
@@ -932,8 +1098,9 @@ void list::writefile_mem(ofstream &ofs, string txt)
 void list::display_mem()
 {
     cout << setw(6) << "Ma NV" << setw(17) << "|Ho" << setw(7) << "|Ten" << setw(6) << "|Ma DV" << setw(15) << "|So dien thoai" << setw(12)
-        << "|Ngay sinh" << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao"
-        << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << setw(10) << "|Luong" << setw(10) << "|Thuc linh" << endl << endl;
+         << "|Ngay sinh" << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao"
+         << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << setw(10) << "|Luong" << setw(10) << "|Thuc linh" << endl
+         << endl;
     for (int i = 0; i < numofMem; i++)
     {
         list_mem[i].display();
@@ -991,30 +1158,39 @@ void list::count_gender(int &ml, int &fl, int &mh, int &fh, int &mm, int &fm, in
     }
 }
 
-void list::getSumOfSalary(int &sumL,int& sumNL,int& sumH, int&sumNH, int& sumM,int& sumNM, int& sumT,int& sumNT,int& sumA,int& sumNA, int& sumP,int& sumNP){
-    for(int i=0;i<numofMem;i++){
-        if(list_mem[i].getGID().compare("LDR")==0) {
-            sumL+=list_mem[i].getSalary();
-            sumNL+=list_mem[i].getNewsalary();
+void list::getSumOfSalary(int &sumL, int &sumNL, int &sumH, int &sumNH, int &sumM, int &sumNM, int &sumT, int &sumNT, int &sumA, int &sumNA, int &sumP, int &sumNP)
+{
+    for (int i = 0; i < numofMem; i++)
+    {
+        if (list_mem[i].getGID().compare("LDR") == 0)
+        {
+            sumL += list_mem[i].getSalary();
+            sumNL += list_mem[i].getNewsalary();
         }
-        else if (list_mem[i].getGID().compare("HRS")==0) {
-            sumH+=list_mem[i].getSalary();
-            sumNH+=list_mem[i].getNewsalary();
+        else if (list_mem[i].getGID().compare("HRS") == 0)
+        {
+            sumH += list_mem[i].getSalary();
+            sumNH += list_mem[i].getNewsalary();
         }
-        else if (list_mem[i].getGID().compare("MKT")==0) {
-            sumM+=list_mem[i].getSalary();
-            sumNM+=list_mem[i].getNewsalary();
-        } 
-        else if (list_mem[i].getGID().compare("TNC")==0) {
-            sumT+=list_mem[i].getSalary();
-            sumNT+=list_mem[i].getNewsalary();
+        else if (list_mem[i].getGID().compare("MKT") == 0)
+        {
+            sumM += list_mem[i].getSalary();
+            sumNM += list_mem[i].getNewsalary();
         }
-        else if (list_mem[i].getGID().compare("ACT")==0) {
-            sumA+=list_mem[i].getSalary();
-            sumNA+=list_mem[i].getNewsalary();
-        } else {
-            sumP+=list_mem[i].getSalary();
-            sumNP+=list_mem[i].getNewsalary();
+        else if (list_mem[i].getGID().compare("TNC") == 0)
+        {
+            sumT += list_mem[i].getSalary();
+            sumNT += list_mem[i].getNewsalary();
+        }
+        else if (list_mem[i].getGID().compare("ACT") == 0)
+        {
+            sumA += list_mem[i].getSalary();
+            sumNA += list_mem[i].getNewsalary();
+        }
+        else
+        {
+            sumP += list_mem[i].getSalary();
+            sumNP += list_mem[i].getNewsalary();
         }
     }
 }
@@ -1022,70 +1198,81 @@ void list::getSumOfSalary(int &sumL,int& sumNL,int& sumH, int&sumNH, int& sumM,i
 void list::display_gr()
 {
     int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
-    int sumL = 0,sumNL=0 ,sumH=0 ,sumNH=0 ,sumM=0 ,sumNM=0 ,sumT=0,sumNT =0,sumA=0 ,sumNA=0 ,sumP=0 ,sumNP=0;  
+    int sumL = 0, sumNL = 0, sumH = 0, sumNH = 0, sumM = 0, sumNM = 0, sumT = 0, sumNT = 0, sumA = 0, sumNA = 0, sumP = 0, sumNP = 0;
     count_gender(ml, fl, mh, fh, mm, fm, mt, ft, ma, fa, mp, fp);
-    getSumOfSalary(sumL,sumNL,sumH,sumNH,sumM,sumNM,sumT,sumNT,sumA,sumNA,sumP,sumNP);
-    cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam" 
-        << setw(21) << "|So luong nu" <<setw(21)<<"|Tong luong"<<setw(20)<<"|Tong thuc linh"<< endl<< endl;
+    getSumOfSalary(sumL, sumNL, sumH, sumNH, sumM, sumNM, sumT, sumNT, sumA, sumNA, sumP, sumNP);
+    cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam"
+         << setw(21) << "|So luong nu" << setw(21) << "|Tong luong" << setw(20) << "|Tong thuc linh" << endl
+         << endl;
     for (int i = 0; i < numofGr; i++)
     {
         if (list_gr[i].getGID().compare("LDR") == 0)
-            cout << list_gr[i] << "|" << setw(20) << ml << "|" << setw(20) << fl <<"|"<<setw(20)<< sumL <<"|"<<setw(20) << sumNL 
-            << endl << endl;
+            cout << list_gr[i] << "|" << setw(20) << ml << "|" << setw(20) << fl << "|" << setw(20) << sumL << "|" << setw(20) << sumNL
+                 << endl
+                 << endl;
         else if (list_gr[i].getGID().compare("HRS") == 0)
-            cout << list_gr[i] << "|" << setw(20) << mh << "|" << setw(20) << fh <<"|"<<setw(20)<< sumH <<"|"<<setw(20) << sumNH
-            << endl << endl;
+            cout << list_gr[i] << "|" << setw(20) << mh << "|" << setw(20) << fh << "|" << setw(20) << sumH << "|" << setw(20) << sumNH
+                 << endl
+                 << endl;
         else if (list_gr[i].getGID().compare("MKT") == 0)
-            cout << list_gr[i] << "|" << setw(20) << mm << "|" << setw(20) << fm <<"|"<<setw(20)<< sumM <<"|"<<setw(20) << sumNM
-            << endl << endl;
+            cout << list_gr[i] << "|" << setw(20) << mm << "|" << setw(20) << fm << "|" << setw(20) << sumM << "|" << setw(20) << sumNM
+                 << endl
+                 << endl;
         else if (list_gr[i].getGID().compare("TNC") == 0)
-            cout << list_gr[i] << "|" << setw(20) << mt << "|" << setw(20) << ft <<"|"<<setw(20)<< sumT <<"|"<<setw(20) << sumNT
-            << endl<< endl;
+            cout << list_gr[i] << "|" << setw(20) << mt << "|" << setw(20) << ft << "|" << setw(20) << sumT << "|" << setw(20) << sumNT
+                 << endl
+                 << endl;
         else if (list_gr[i].getGID().compare("ACT") == 0)
-            cout << list_gr[i] << "|" << setw(20) << ma << "|" << setw(20) << fa <<"|"<<setw(20)<< sumA <<"|"<<setw(20) << sumNA
-            << endl << endl;
+            cout << list_gr[i] << "|" << setw(20) << ma << "|" << setw(20) << fa << "|" << setw(20) << sumA << "|" << setw(20) << sumNA
+                 << endl
+                 << endl;
         else
-            cout << list_gr[i] << "|" << setw(20) << mp << "|" << setw(20) << fp <<"|"<<setw(20)<< sumP <<"|"<<setw(20) << sumNP
-            << endl << endl;
+            cout << list_gr[i] << "|" << setw(20) << mp << "|" << setw(20) << fp << "|" << setw(20) << sumP << "|" << setw(20) << sumNP
+                 << endl
+                 << endl;
     }
 }
 
 void list::display_p()
 {
-    cout << setw(10) << "Ma CV" << setw(20) << "|Ten chuc vu" << setw(10) << "|He so PC" << endl << endl;
+    cout << setw(10) << "Ma CV" << setw(20) << "|Ten chuc vu" << setw(10) << "|He so PC" << endl
+         << endl;
     for (int i = 0; i < numofP; i++)
     {
-        cout << list_p[i] << endl << endl;
+        cout << list_p[i] << endl
+             << endl;
     }
 }
 
 void list::menu_dis()
 {
     int key;
-    do{
+    do
+    {
         system("cls");
-        cout<<"Hien thi theo danh sach"<<endl;
-        cout<<"1: Nhan vien"<<endl;
-        cout<<"2: Don vi"<<endl;
-        cout<<"3: Chuc vu"<<endl;
-        cout<<"0: Thoat!"<<endl;
-        cout<<"Chon: ";
-        cin>>key;
-        switch(key){
-            case 1:
-                display_mem();
-                system("pause");
-                break;
-            case 2:
-                display_gr();
-                system("pause");
-                break;
-            case 3:
-                display_p();
-                system("pause");
-                break;
+        cout << "Hien thi theo danh sach" << endl;
+        cout << "1: Nhan vien" << endl;
+        cout << "2: Don vi" << endl;
+        cout << "3: Chuc vu" << endl;
+        cout << "0: Thoat!" << endl;
+        cout << "Chon: ";
+        cin >> key;
+        switch (key)
+        {
+        case 1:
+            display_mem();
+            system("pause");
+            break;
+        case 2:
+            display_gr();
+            system("pause");
+            break;
+        case 3:
+            display_p();
+            system("pause");
+            break;
         }
-    }while(key);
+    } while (key);
 }
 //list::search
 int list::search(int chon, string s, int a[])
@@ -1224,13 +1411,15 @@ int list::menu_Search(string &tt)
         cin >> s;
         tt += s;
     }
-    else if(chon == 7){
-        cout<<"Nhap gioi tinh(0:nam/1:nu): ";
+    else if (chon == 7)
+    {
+        cout << "Nhap gioi tinh(0:nam/1:nu): ";
         getline(cin >> ws, tt);
     }
     else
     {
-        if(chon == 2) chon += 11;
+        if (chon == 2)
+            chon += 11;
         cout << "Nhap thong tin can tim kiem: ";
         getline(cin >> ws, tt);
     }
@@ -1616,7 +1805,8 @@ int monthStrToInt(string a)
         return 11;
     if (a == "Dec")
         return 12;
-    else return 0;
+    else
+        return 0;
 }
 
 //list::sort
@@ -1648,9 +1838,10 @@ void list::sort(bool CompFunc(const member &, const member &, int))
             display_mem();
         else if (key != 0)
             QuickSort(0, numofMem - 1, key, CompFunc); //nếu kp đk dừng(key=0) thì tiếp tục
-            ofstream ofs;
-            writefile_mem(ofs, nhanvienouttxt);
-        if(key != 0){
+        ofstream ofs;
+        writefile_mem(ofs, nhanvienouttxt);
+        if (key != 0)
+        {
             cout << "-----------Da sap xep xong!------------" << endl;
             system("pause");
         }
@@ -1686,7 +1877,8 @@ void list::QuickSort(int l, int r, int key, bool CompFunc(const member &, const 
 void list::menu_Sort(int &key)
 {
     do
-    {   system("cls");
+    {
+        system("cls");
         cout << "Ban muon sap xep theo cach nao: " << endl;
         cout << "1: Ma nhan vien" << endl;
         cout << "2: Ho va ten" << endl;
@@ -1726,10 +1918,10 @@ void list::menu()
             menu_dis();
             break;
         case 2:
-            
+
             break;
         case 3:
-            
+            Edit_mem_inf();
             break;
         case 4:
             add_menu();
@@ -1753,4 +1945,153 @@ void list::menu()
             getch();
         }
     } while (chon);
+}
+
+void list::Edit_mem_inf()
+{
+    int key, nCase = 13;
+    bool ktKey;
+    string mID;
+    cout << "Nhap ma nhan vien muon chinh sua:";
+    cin >> mID;
+    int a[100];
+    int k;
+    k = search(1, mID, a);
+
+    if (k > 0) //123
+    {
+        do
+        {
+            do
+            {
+                system("cls");
+                if (key < 0 && key > 12)
+                {
+                    cout << "Khong co tuy chon nay. Moi nhap lai!" << endl;
+                    cout << "Enter de tiep tuc!" << endl;
+                    getch();
+                }
+                system("cls");
+                cout << "Chon thong tin muon chinh sua!" << endl;
+                cout << "1. Ma nhan vien." << endl;
+                cout << "2. Ho." << endl;
+                cout << "3. Ten" << endl;
+                cout << "4. Ma don vi." << endl;
+                cout << "5. So dien thoai." << endl;
+                cout << "6. Ngay sinh." << endl;
+                cout << "7. Gioi tinh." << endl;
+                cout << "8. Ma chuc vu." << endl;
+                cout << "9. He so luong." << endl;
+                cout << "10. Nam vao cong ty." << endl;
+                cout << "11. Trinh do." << endl;
+                cout << "12. Ngoai ngu." << endl;
+                cout << "13. Hien thi nhan vien dang sua." << endl;
+                cout << "0. Exit!" << endl;
+                cout << "Chon: ";
+                cin >> key;
+
+            } while (key < 0 && key > nCase);
+
+            switch (key)
+            {
+            case 1:
+                list_mem[a[0]].setmID();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 2:
+                list_mem[a[0]].setmlname();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 3:
+                list_mem[a[0]].setfirstname();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 4:
+                list_mem[a[0]].setgID();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 5:
+                list_mem[a[0]].setpnumber();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 6:
+                list_mem[a[0]].setns();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 7:
+                list_mem[a[0]].setgender();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 8:
+                list_mem[a[0]].setposition();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 9:
+                list_mem[a[0]].setC_salary();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 10:
+                list_mem[a[0]].setyear_in();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 11:
+                list_mem[a[0]].setdegree();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 12:
+                list_mem[a[0]].setL_certificate();
+                // cout << list_mem[a[0]] << endl;
+                // getch();
+                break;
+            case 13:
+                cout << "Nhan vien sau khi sua:" << endl;
+                cout << list_mem[a[0]] << endl;
+                cout << "Enter de tiep tuc!" << endl;
+                getch();
+                break;
+            case 0:
+                break;
+            default:
+                break;
+            }
+            if (key == 0)
+            {
+                break;
+            }
+            else
+            {
+                if (key > nCase)
+                {
+                    cout << "Khong co lua chon nay. Moi chon lai!" << endl;
+                    cout << "Enter de tiep tuc!" << endl;
+                    getch();
+                }
+                else if (key < nCase)
+                {
+                    ofstream ofs;
+                    writefile_mem(ofs, nhanvienouttxt);
+                    cout << "Da sua xong!" << endl;
+                    cout << "Enter de tiep tuc!" << endl;
+                    getch();
+                }
+            }
+
+        } while (1);
+    }
+    else
+    {
+        cout << "Khong co nhan vien nay!";
+        getch();
+    }
 }
