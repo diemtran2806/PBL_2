@@ -815,10 +815,8 @@ istream &operator>>(istream &in, member &m)
     getline(in >> ws, m.mlname);
     m.mlname += " ";
     cout << "Nhap ten: ";
-    cin.ignore();
     getline(in >> ws, m.firstname);
     cout << "Nhap ma don vi: ";
-    cin.ignore();
     getline(in >> ws, m.gID);
     cout << "Nhap so dien thoai: ";
     in >> m.pnumber;
