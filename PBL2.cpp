@@ -811,7 +811,6 @@ istream &operator>>(istream &in, member &m)
         }
     } while (check > 0);
     cout << "Nhap ho va ten dem: ";
-    cin.ignore();
     getline(in >> ws, m.mlname);
     m.mlname += " ";
     cout << "Nhap ten: ";
@@ -852,10 +851,8 @@ istream &operator>>(istream &in, member &m)
     cout << "Nhap nam vao lam viec: ";
     in >> m.year_in;
     cout << "Nhap trinh do cua nhan vien: ";
-    cin.ignore();
     getline(in >> ws, m.degree);
     cout << "Nhap trinh do ngoai ngu cua nhan vien: ";
-    cin.ignore();
     getline(in >> ws, m.L_certificate);
     return in;
 }
