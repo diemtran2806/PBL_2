@@ -17,6 +17,7 @@ string nhavienouttxt = "Nhan Vien_out.txt";
 string nhanviensearch = "NhanVien_search.txt";*/
 
 //class đọc thông tin tài khoản mật khẩu
+HANDLE hConsole;
 class account
 {
     string name;
@@ -240,6 +241,10 @@ bool ascending(const member &m1, const member &m2, int key);  //tang dan
 bool descending(const member &m1, const member &m2, int key); //giam dan
 bool checkFile(string path);                                  //check file path có tồn tại ko?
 
+//giao dien
+//delete
+void uxDel();
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 string tk, mk;
@@ -251,6 +256,9 @@ list com;
 //main
 int main()
 {
+
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
     cout << left;
     login();
     if (d != 3)
@@ -268,6 +276,38 @@ int main()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//giao dien
+void uxDel()
+{
+    std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+    std::cout << "|                                                                                                      |" << endl;
+    std::cout << "|                                                                                                      |" << endl;
+    std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+    std::cout << "|  +------------------------------------------------------------------------------------------------+  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  +------------------------------------------------------------------------------------------------+  |" << endl;
+    std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+}
+
+//set con trỏ trong console
+void gotoxy(int x, int y)
+{
+    static HANDLE h = NULL;
+    if (!h)
+        h = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD c = {x, y};
+    SetConsoleCursorPosition(h, c);
+}
 void del_ws(string &s) //Hàm xóa khoảng trắng
 {
     while (s[0] == ' ')
@@ -386,6 +426,7 @@ void login()
     ifstream filein_A;
     int t;
     d = 0;
+    system("cls");
     acc.readfile_account(filein_A);
     cout << endl
          << "NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)" << endl
@@ -1521,6 +1562,10 @@ void list::add_menu()
 //list::delete
 void list::delete_mem_age(int key)
 {
+    system("cls");
+    uxDel();
+    gotoxy(40, 0);
+    cout << "Xoa theo nam sinh";
     birthday dayAge;
     bool checkdel = false;
     int run = 0;
@@ -1528,6 +1573,7 @@ void list::delete_mem_age(int key)
     if (key == 4)
     {
         int nam;
+        gotoxy(5, 6);
         cout << "Nhap nam sinh:";
         cin >> nam;
         dayAge = dateNow;
@@ -1535,6 +1581,7 @@ void list::delete_mem_age(int key)
     }
     else if (key == 5)
     {
+        gotoxy(5, 6);
         cout << "Nhap tuoi muon xoa:";
         cin >> age;
         dayAge = dateNow - age;
@@ -1593,15 +1640,33 @@ void list::delete_mem_age(int key)
     } while (run < numofMem);
     if (checkdel == true)
     {
-        cout << "------------Da xoa xong!--------------" << endl;
-        cout << "-----------Enter de tiep tuc----------" << endl;
-        getch();
+        system("cls");
+        uxDel();
+        gotoxy(40, 0);
+        cout << "Xoa theo nam sinh";
+        gotoxy(5, 6);
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 10);
+        cout << "Da xoa xong!" << endl;
+        gotoxy(5, 7);
+        system("pause");
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 15);
     }
     else
     {
-        cout << "Khong co nhan vien nao trung thong tin can xoa!" << endl;
-        cout << "---------------Enter de tiep tuc--------------" << endl;
-        getch();
+        system("cls");
+        uxDel();
+        gotoxy(40, 0);        
+        cout << "Xoa theo nam sinh";
+        gotoxy(5, 6);
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 12);
+        cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
+        gotoxy(5, 7);
+        system("pause");
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 15);
     }
     if (numofMem > 0)
     {
@@ -1614,17 +1679,27 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
 {
     int a[100];
     string content;
-
+    system("cls");
+    uxDel();
     if (option == 1)
     {
+        gotoxy(45, 0);
+        cout << "Xoa theo ID.";
+        gotoxy(5, 6);
         cout << "Nhap ma nhan vien: ";
     }
     else if (option == 3)
     {
+        gotoxy(45, 0);
+        cout << "Xoa theo ten";
+        gotoxy(5, 6);
         cout << "Nhap ten nhan vien: ";
     }
     else if (option == 13)
     {
+        gotoxy(45, 0);
+        cout << "Xoa theo ho va ten";
+        gotoxy(5, 6);
         cout << "Nhap ho ten nhan vien: ";
     }
     cin.ignore();
@@ -1632,9 +1707,19 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     int n = search(option, content, a);
     if (n == 0)
     {
+        //báo chưa xóa
+        system("cls");
+        uxDel();
+        gotoxy(40, 0);
+        cout << "1. Xoa theo ID.";
+        gotoxy(5, 6);
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 12);
         cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
-        cout << "----------Nhan Enter de tiep tuc!---------" << endl;
-        getch();
+        gotoxy(5, 7);
+        system("pause");
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 15);
     }
     else
     {
@@ -1670,9 +1755,20 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
             ofstream ofs;
             writefile_mem(ofs, nhanvienouttxt);
         }
-        cout << "-----------Da xoa xong!------------" << endl;
-        cout << "------Nhan Enter de tiep tuc!------" << endl;
-        getch();
+
+        //báo xóa xong
+        system("cls");
+        uxDel();
+        gotoxy(40, 0);
+        cout << "1. Xoa theo ID.";
+        gotoxy(5, 6);
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 10);
+        cout << "Da xoa xong!" << endl;
+        gotoxy(5, 7);
+        system("pause");
+        FlushConsoleInputBuffer(hConsole);
+        SetConsoleTextAttribute(hConsole, 15);
     }
 }
 //main_del_mem
@@ -1682,21 +1778,33 @@ void list::delete_mem()
     do
     {
         system("cls");
+        uxDel(); //132
+        gotoxy(40, 0);
+        cout << "Xoa mot nhan vien";
+        gotoxy(5, 6);
         cout << " 1. Xoa theo ID.\n";
+        gotoxy(5, 7);
         cout << " 2. Xoa theo ten.\n";
+        gotoxy(5, 8);
         cout << " 3. Xoa theo ho ten.\n";
+        gotoxy(5, 9);
         cout << " 4. Xoa theo nam sinh. \n";
+        gotoxy(5, 10);
         cout << " 5. Xoa lon hon tuoi.\n";
+        gotoxy(5, 11);
         cout << " 6. Xoa nguoi tren 60 tuoi.\n";
+        gotoxy(5, 12);
         cout << " 7. Hien thi ds.\n";
+        gotoxy(5, 13);
         cout << " 0. Ket Thuc\n";
+        gotoxy(5, 14);
         cout << "Chon chuc nang: ";
         int key;
         cin >> key;
+        string fun;
         switch (key)
         {
         case 1:
-            cout << " 1. Xoa theo ID.\n";
             this->delete_mem_name_id(1);
             break;
         case 2:
