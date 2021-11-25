@@ -12,6 +12,7 @@ using namespace std;
 #define nhanvienouttxt "Nhan Vien_out.txt"
 #define nhanviensearch "NhanVien_search.txt"
 #define A 1500000 //LCB
+#define STD_OUTPUT_HANDLE ((DWORD)-11)
 /*string nhanvientxt = "Nhan Vien.txt"; //main !
 string nhavienouttxt = "Nhan Vien_out.txt";
 string nhanviensearch = "NhanVien_search.txt";*/
@@ -1286,7 +1287,7 @@ void list::menu_dis()
     do
     {
         system("cls");
-        cout << "Hien thi theo danh sach" << endl;
+        cout << "Thong ke theo danh sach" << endl;
         cout << "1: Nhan vien" << endl;
         cout << "2: Don vi" << endl;
         cout << "3: Chuc vu" << endl;
@@ -2005,13 +2006,12 @@ void list::menu()
     {
         system("cls");
         cout << "--------------MENU---------------" << endl;
-        cout << "1: Hien thi" << endl;
-        cout << "2: Thong ke" << endl;
-        cout << "3: Sua thong tin nhan vien" << endl;
-        cout << "4: Them mot nhan vien" << endl;
-        cout << "5: Tim kiem nhan vien" << endl;
-        cout << "6: Xoa mot nhan vien" << endl;
-        cout << "7: Sap xep danh sach nhan vien" << endl;
+        cout << "1: Thong ke" << endl;
+        cout << "2: Sua thong tin nhan vien" << endl;
+        cout << "3: Them mot nhan vien" << endl;
+        cout << "4: Tim kiem nhan vien" << endl;
+        cout << "5: Xoa mot nhan vien" << endl;
+        cout << "6: Sap xep danh sach nhan vien" << endl;
         cout << "0: Thoat!" << endl;
         cout << "Chon: ";
         cin >> chon;
@@ -2021,23 +2021,20 @@ void list::menu()
             menu_dis();
             break;
         case 2:
-
-            break;
-        case 3:
             Edit_mem_inf();
             break;
-        case 4:
+        case 3:
             add_menu();
             getch();
             break;
-        case 5:
+        case 4:
             search();
             getch();
             break;
-        case 6:
+        case 5:
             delete_mem();
             break;
-        case 7:
+        case 6:
             sort();
             break;
         case 0:
