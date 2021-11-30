@@ -12,6 +12,7 @@ using namespace std;
 #define nhanvienouttxt "Nhan Vien_out.txt"
 #define nhanviensearch "NhanVien_search.txt"
 #define A 1500000 //LCB
+#define STD_OUTPUT_HANDLE ((DWORD)-11)
 /*string nhanvientxt = "Nhan Vien.txt"; //main !
 string nhavienouttxt = "Nhan Vien_out.txt";
 string nhanviensearch = "NhanVien_search.txt";*/
@@ -242,8 +243,10 @@ bool descending(const member &m1, const member &m2, int key); //giam dan
 bool checkFile(string path);                                  //check file path có tồn tại ko?
 
 //giao dien
+//display
+void uiDisplay(int n);
 //delete
-void uxDel();
+void uiDel();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -277,7 +280,21 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //giao dien
-void uxDel()
+void uiDisplay(int n)
+{
+    std::cout << "+------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+    std::cout << "|                                                                                                                                                            |" << endl;
+    std::cout << "|                                                                                                                                                            |" << endl;
+    std::cout << "+------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+    std::cout << "|  +------------------------------------------------------------------------------------------------------------------------------------------------------+  |" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        std::cout << "|  |                                                                                                                                                      |  |" << endl;
+    }
+    std::cout << "|  +------------------------------------------------------------------------------------------------------------------------------------------------------+  |" << endl;
+    std::cout << "+------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
+}
+void uiDel()
 {
     std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
     std::cout << "|                                                                                                      |" << endl;
@@ -300,7 +317,7 @@ void uxDel()
 }
 
 //set con trỏ trong console
-void gotoxy(int x, int y)
+void gotoxy(short x, short y)
 {
     static HANDLE h = NULL;
     if (!h)
@@ -1131,18 +1148,28 @@ void list::writefile_mem(ofstream &ofs, string txt)
     ofs.close();
 }
 
+//132
 void list::display_mem()
 {
+    system("cls");
+    uiDisplay(numofMem + 5);
+    gotoxy(60, 0);
+    cout << "Danh sach nhan vien trong cong ty";
+    gotoxy(5, 6);
     cout << setw(6) << "Ma NV" << setw(17) << "|Ho" << setw(7) << "|Ten" << setw(6) << "|Ma DV" << setw(15) << "|So dien thoai" << setw(12)
          << "|Ngay sinh" << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao"
          << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << setw(10) << "|Luong" << setw(10) << "|Thuc linh" << endl
          << endl;
+    int end = 0;
     for (int i = 0; i < numofMem; i++)
     {
+        gotoxy(5, i + 8);
         list_mem[i].display();
         cout << "|" << setw(9) << list_mem[i].getSalary() << "|" << setw(9) << list_mem[i].getNewsalary() << endl
              << endl;
+        end = i + 8; //lưu vị trí con trỏ trên màn hình
     }
+    gotoxy(5, end + 2); //đưa cái press any key xuống cuối
 }
 
 void list::count_gender(int &ml, int &fl, int &mh, int &fh, int &mm, int &fm, int &mt, int &ft, int &ma, int &fa, int &mp, int &fp)
@@ -1233,6 +1260,11 @@ void list::getSumOfSalary(int &sumL, int &sumNL, int &sumH, int &sumNH, int &sum
 
 void list::display_gr()
 {
+    system("cls");
+    uiDisplay(numofGr + 5);
+    gotoxy(60, 0);
+    cout << "Danh sach don vi trong cong ty";
+    gotoxy(20, 6);
     int ml = 0, fl = 0, mh = 0, fh = 0, mm = 0, fm = 0, mt = 0, ft = 0, ma = 0, fa = 0, mp = 0, fp = 0;
     int sumL = 0, sumNL = 0, sumH = 0, sumNH = 0, sumM = 0, sumNM = 0, sumT = 0, sumNT = 0, sumA = 0, sumNA = 0, sumP = 0, sumNP = 0;
     count_gender(ml, fl, mh, fh, mm, fm, mt, ft, ma, fa, mp, fp);
@@ -1240,8 +1272,10 @@ void list::display_gr()
     cout << setw(10) << "Ma DV" << setw(20) << "|Ten don vi" << setw(10) << "|Ma NV" << setw(21) << "|So luong nam"
          << setw(21) << "|So luong nu" << setw(21) << "|Tong luong" << setw(20) << "|Tong thuc linh" << endl
          << endl;
+    int end = 0;
     for (int i = 0; i < numofGr; i++)
     {
+        gotoxy(20, i + 8);
         if (list_gr[i].getGID().compare("LDR") == 0)
             cout << list_gr[i] << "|" << setw(20) << ml << "|" << setw(20) << fl << "|" << setw(20) << sumL << "|" << setw(20) << sumNL
                  << endl
@@ -1266,18 +1300,29 @@ void list::display_gr()
             cout << list_gr[i] << "|" << setw(20) << mp << "|" << setw(20) << fp << "|" << setw(20) << sumP << "|" << setw(20) << sumNP
                  << endl
                  << endl;
+        end = i + 8; //lưu vị trí con trỏ trên màn hình
     }
+    gotoxy(5, end + 2); //đưa cái press any key xuống cuối
 }
 
 void list::display_p()
 {
+    system("cls");
+    uiDisplay(numofP + 5);
+    gotoxy(60, 0);
+    cout << "Danh sach chuc vu trong cong ty";
+    gotoxy(56, 6);
     cout << setw(10) << "Ma CV" << setw(20) << "|Ten chuc vu" << setw(10) << "|He so PC" << endl
          << endl;
+    int end = 0;
     for (int i = 0; i < numofP; i++)
     {
+        gotoxy(56, i + 8);
         cout << list_p[i] << endl
              << endl;
+        end = i + 8; //lưu vị trí con trỏ trên màn hình
     }
+    gotoxy(50, end + 2); //đưa cái press any key xuống cuối
 }
 
 void list::menu_dis()
@@ -1286,7 +1331,7 @@ void list::menu_dis()
     do
     {
         system("cls");
-        cout << "Hien thi theo danh sach" << endl;
+        cout << "Thong ke theo danh sach" << endl;
         cout << "1: Nhan vien" << endl;
         cout << "2: Don vi" << endl;
         cout << "3: Chuc vu" << endl;
@@ -1563,7 +1608,7 @@ void list::add_menu()
 void list::delete_mem_age(int key)
 {
     system("cls");
-    uxDel();
+    uiDel();
     gotoxy(40, 0);
     cout << "Xoa theo nam sinh";
     birthday dayAge;
@@ -1641,7 +1686,7 @@ void list::delete_mem_age(int key)
     if (checkdel == true)
     {
         system("cls");
-        uxDel();
+        uiDel();
         gotoxy(40, 0);
         cout << "Xoa theo nam sinh";
         gotoxy(5, 6);
@@ -1656,8 +1701,8 @@ void list::delete_mem_age(int key)
     else
     {
         system("cls");
-        uxDel();
-        gotoxy(40, 0);        
+        uiDel();
+        gotoxy(40, 0);
         cout << "Xoa theo nam sinh";
         gotoxy(5, 6);
         FlushConsoleInputBuffer(hConsole);
@@ -1680,7 +1725,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     int a[100];
     string content;
     system("cls");
-    uxDel();
+    uiDel();
     if (option == 1)
     {
         gotoxy(45, 0);
@@ -1709,7 +1754,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     {
         //báo chưa xóa
         system("cls");
-        uxDel();
+        uiDel();
         gotoxy(40, 0);
         cout << "1. Xoa theo ID.";
         gotoxy(5, 6);
@@ -1758,7 +1803,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
 
         //báo xóa xong
         system("cls");
-        uxDel();
+        uiDel();
         gotoxy(40, 0);
         cout << "1. Xoa theo ID.";
         gotoxy(5, 6);
@@ -1778,7 +1823,7 @@ void list::delete_mem()
     do
     {
         system("cls");
-        uxDel(); //132
+        uiDel();
         gotoxy(40, 0);
         cout << "Xoa mot nhan vien";
         gotoxy(5, 6);
@@ -2005,13 +2050,12 @@ void list::menu()
     {
         system("cls");
         cout << "--------------MENU---------------" << endl;
-        cout << "1: Hien thi" << endl;
-        cout << "2: Thong ke" << endl;
-        cout << "3: Sua thong tin nhan vien" << endl;
-        cout << "4: Them mot nhan vien" << endl;
-        cout << "5: Tim kiem nhan vien" << endl;
-        cout << "6: Xoa mot nhan vien" << endl;
-        cout << "7: Sap xep danh sach nhan vien" << endl;
+        cout << "1: Thong ke" << endl;
+        cout << "2: Sua thong tin nhan vien" << endl;
+        cout << "3: Them mot nhan vien" << endl;
+        cout << "4: Tim kiem nhan vien" << endl;
+        cout << "5: Xoa mot nhan vien" << endl;
+        cout << "6: Sap xep danh sach nhan vien" << endl;
         cout << "0: Thoat!" << endl;
         cout << "Chon: ";
         cin >> chon;
@@ -2021,23 +2065,20 @@ void list::menu()
             menu_dis();
             break;
         case 2:
-
-            break;
-        case 3:
             Edit_mem_inf();
             break;
-        case 4:
+        case 3:
             add_menu();
             getch();
             break;
-        case 5:
+        case 4:
             search();
             getch();
             break;
-        case 6:
+        case 5:
             delete_mem();
             break;
-        case 7:
+        case 6:
             sort();
             break;
         case 0:
