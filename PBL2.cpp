@@ -246,7 +246,7 @@ bool checkFile(string path);                                  //check file path 
 //display
 void uiDisplay(int n);
 //delete
-void uiDel();
+void uiFunc();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -294,7 +294,7 @@ void uiDisplay(int n)
     std::cout << "|  +------------------------------------------------------------------------------------------------------------------------------------------------------+  |" << endl;
     std::cout << "+------------------------------------------------------------------------------------------------------------------------------------------------------------+" << endl;
 }
-void uiDel()
+void uiFunc()
 {
     std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
     std::cout << "|                                                                                                      |" << endl;
@@ -1330,12 +1330,20 @@ void list::menu_dis()
     int key;
     do
     {
+        
         system("cls");
+        uiFunc();
+        gotoxy(40, 0);
         cout << "Thong ke theo danh sach" << endl;
+        gotoxy(5, 6);
         cout << "1: Nhan vien" << endl;
+        gotoxy(5, 7);
         cout << "2: Don vi" << endl;
+        gotoxy(5, 8);
         cout << "3: Chuc vu" << endl;
+        gotoxy(5, 9);
         cout << "0: Thoat!" << endl;
+        gotoxy(5, 10);
         cout << "Chon: ";
         cin >> key;
         switch (key)
@@ -1608,7 +1616,7 @@ void list::add_menu()
 void list::delete_mem_age(int key)
 {
     system("cls");
-    uiDel();
+    uiFunc();
     gotoxy(40, 0);
     cout << "Xoa theo nam sinh";
     birthday dayAge;
@@ -1686,7 +1694,7 @@ void list::delete_mem_age(int key)
     if (checkdel == true)
     {
         system("cls");
-        uiDel();
+        uiFunc();
         gotoxy(40, 0);
         cout << "Xoa theo nam sinh";
         gotoxy(5, 6);
@@ -1701,7 +1709,7 @@ void list::delete_mem_age(int key)
     else
     {
         system("cls");
-        uiDel();
+        uiFunc();
         gotoxy(40, 0);
         cout << "Xoa theo nam sinh";
         gotoxy(5, 6);
@@ -1725,7 +1733,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     int a[100];
     string content;
     system("cls");
-    uiDel();
+    uiFunc();
     if (option == 1)
     {
         gotoxy(45, 0);
@@ -1754,7 +1762,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     {
         //báo chưa xóa
         system("cls");
-        uiDel();
+        uiFunc();
         gotoxy(40, 0);
         cout << "1. Xoa theo ID.";
         gotoxy(5, 6);
@@ -1803,7 +1811,7 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
 
         //báo xóa xong
         system("cls");
-        uiDel();
+        uiFunc();
         gotoxy(40, 0);
         cout << "1. Xoa theo ID.";
         gotoxy(5, 6);
@@ -1823,7 +1831,7 @@ void list::delete_mem()
     do
     {
         system("cls");
-        uiDel();
+        uiFunc();
         gotoxy(40, 0);
         cout << "Xoa mot nhan vien";
         gotoxy(5, 6);
@@ -2049,16 +2057,27 @@ void list::menu()
     do
     {
         system("cls");
+        uiFunc();
+        gotoxy(35, 0);
         cout << "--------------MENU---------------" << endl;
+        gotoxy(5, 6);
         cout << "1: Thong ke" << endl;
+        gotoxy(5, 7);
         cout << "2: Sua thong tin nhan vien" << endl;
+        gotoxy(5, 8);
         cout << "3: Them mot nhan vien" << endl;
+        gotoxy(5, 9);
         cout << "4: Tim kiem nhan vien" << endl;
+        gotoxy(5, 10);
         cout << "5: Xoa mot nhan vien" << endl;
+        gotoxy(5, 11);
         cout << "6: Sap xep danh sach nhan vien" << endl;
+        gotoxy(5, 12);
         cout << "0: Thoat!" << endl;
+        gotoxy(5, 13);
         cout << "Chon: ";
         cin >> chon;
+        gotoxy(5, 19);//tránh trường hợp lỗi ghi đè lên khung 
         switch (chon)
         {
         case 1:
@@ -2089,6 +2108,7 @@ void list::menu()
             getch();
         }
     } while (chon);
+
 }
 
 void list::Edit_mem_inf()
