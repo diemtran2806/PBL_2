@@ -469,13 +469,16 @@ void login()
     system("cls");
     uiLogin();
     acc.readfile_account(filein_A);
-    gotoxy(5, 19);
+    gotoxy(15, 19);
     cout << "NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)" << endl
          << endl;
     do
     {
         gotoxy(27, 9);
         cout << "Nhap ten tai khoan: ";
+        gotoxy(28, 10);
+        gotoxy(28, 10);
+        cout << "                                            "; //clear khung nhập account
         gotoxy(28, 10);
         getline(cin, tk);
         if (acc.check(tk) != 1)
@@ -486,13 +489,15 @@ void login()
         else
         {
             gotoxy(28, 12);
-            cout << "                                                " << endl;
+            cout << "                                            " << endl;
         }
     } while (acc.check(tk) != 1);
     do
     {
         gotoxy(27, 14);
         cout << "Nhap mat khau: ";
+        gotoxy(28, 15);
+        cout << "                                             "; //clear khung nhập passwỏd
         gotoxy(28, 15);
         string mk = acc.tranpass();
         d++;
@@ -502,11 +507,19 @@ void login()
             gotoxy(27, 18);
             cout << "MAT KHAU KHONG DUNG, VUI LONG NHAP LAI!" << endl;
         }
+        else
+        {
+            gotoxy(27, 18);
+            cout << "                                         " << endl;
+        }
     } while (t != 1 && d != 3);
     if (t == 1)
     {
-        gotoxy(5, 18);
+        gotoxy(5, 19);
+        cout << "                                                                                 ";
+        gotoxy(15, 19);
         cout << "DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..." << endl;
+        gotoxy(80, 19); //break
         d--;
         Sleep(1500);
     }
@@ -733,18 +746,17 @@ void member::setmID()
     int a[100];
     do
     {
-        gotoxy(5, ++cursor);
-        cout << "Nhap ma nhan vien: ";
+        int alert = 21;
+        gotoxy(5, cursor);
+        cout << "Nhap ma nhan vien:                                                                                                                         a";
+        gotoxy(25, cursor);
         string tempmID;
         cin >> tempmID;
         check = com.search(1, tempmID, a);
         if (check > 0)
         {
-            gotoxy(5, ++cursor);
-            cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
-            gotoxy(5, ++cursor);
-            cout << "MOI BAN NHAP LAI: " << endl
-                 << endl;
+            gotoxy(5, alert);
+            cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN,MOI BAN NHAP LAI!" << endl;
         }
         else
         {
@@ -1479,9 +1491,15 @@ void list::search()
         list fileSearchResult; //lưu lại danh sách kết quả tìm được
         if (k > 0)
         {
+            uiDisplay(k + 3);
+            cursor = 5;
+            gotoxy(45, 0);
+            cout << "Tim kiem nhan vien";
+            gotoxy(5, ++cursor);
             cout << "Co " << k << " ket qua phu hop: " << endl;
             for (int i = 0; i < k; i++)
             {
+                gotoxy(5, ++cursor);
                 cout << list_mem[a[i]] << endl;
                 fileSearchResult.add(list_mem[a[i]], 0, nhanviensearch);
             }
@@ -1489,12 +1507,20 @@ void list::search()
             char key;
             do
             {
-                cout << "Ban co muon in ket qua ra file khong?[C/K]: ";
+                gotoxy(5, ++cursor);
+                cout << "Ban co muon in ket qua ra file khong?[C/K]:    ";
+                gotoxy(44, cursor);
                 cin >> key;
                 key = toupper(key);
                 if (key != 'K' && key != 'C')
                 {
+                    gotoxy(5, ++cursor);
                     cout << "Khong co lua chon nay! Moi ban nhap lai:" << endl;
+                }
+                else
+                {
+                    gotoxy(5, ++cursor);
+                    cout << "                                          " << endl; //xoas dòng ở trên
                 }
             } while (key != 'K' && key != 'C');
             if (key == 'C')
@@ -1560,19 +1586,37 @@ int list::menu_Search(string &tt)
     do
     {
         system("cls");
+        uiFunc(18);
+        cursor = 5;
+        gotoxy(45, 0);
+        cout << "Tim kiem nhan vien";
+        gotoxy(5, ++cursor);
         cout << "Ban muon tim kiem thong tin theo cach nao:" << endl;
+        gotoxy(5, ++cursor);
         cout << "1: Ma nhan vien" << endl;
+        gotoxy(5, ++cursor);
         cout << "2: Ho va ten" << endl;
+        gotoxy(5, ++cursor);
         cout << "3: Ten" << endl;
+        gotoxy(5, ++cursor);
         cout << "4: Ma don vi" << endl;
+        gotoxy(5, ++cursor);
         cout << "5: So dien thoai" << endl;
+        gotoxy(5, ++cursor);
         cout << "6: Ngay sinh" << endl;
+        gotoxy(5, ++cursor);
         cout << "7: Gioi tinh" << endl;
+        gotoxy(5, ++cursor);
         cout << "8: Ma chuc vu" << endl;
+        gotoxy(5, ++cursor);
         cout << "9: He so luong" << endl;
+        gotoxy(5, ++cursor);
         cout << "10: Nam vao" << endl;
+        gotoxy(5, ++cursor);
         cout << "11: Trinh do, cap bac" << endl;
+        gotoxy(5, ++cursor);
         cout << "12: Bang ngoai ngu" << endl;
+        gotoxy(5, ++cursor);
         cout << "Chon: ";
         cin >> chon;
     } while (chon < 1 || chon > 12);
@@ -1599,6 +1643,10 @@ int list::menu_Search(string &tt)
     {
         if (chon == 2)
             chon += 11;
+        uiDisplay(18);
+        gotoxy(45, 0);
+        cout << "Tim kiem nhan vien";
+        gotoxy(5, 6);
         cout << "Nhap thong tin can tim kiem: ";
         getline(cin >> ws, tt);
     }
