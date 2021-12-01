@@ -312,6 +312,33 @@ void uiFunc(int n)
     std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
 }
 
+void uiLogin()
+{
+    system("cls");
+    std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+    std::cout << "|                                                                                                      |" << endl;
+    std::cout << "|                                                                                                      |" << endl;
+    std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+    std::cout << "|  +------------------------------------------------------------------------------------------------+  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                           ~LOGIN~                                              |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                      +----------------------------------------------+                          |  |" << endl; //10
+    std::cout << "|  |                      |                                              |                          |  |" << endl;
+    std::cout << "|  |                      +----------------------------------------------+                          |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                      +----------------------------------------------+                          |  |" << endl; //15
+    std::cout << "|  |                      |                                              |                          |  |" << endl;
+    std::cout << "|  |                      +----------------------------------------------+                          |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl;
+    std::cout << "|  |                                                                                                |  |" << endl; //20
+    std::cout << "|  +------------------------------------------------------------------------------------------------+  |" << endl;
+    std::cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+}
+
 //set con trỏ trong console
 void gotoxy(short x, short y)
 {
@@ -440,28 +467,45 @@ void login()
     int t;
     d = 0;
     system("cls");
+    uiLogin();
     acc.readfile_account(filein_A);
-    cout << endl
-         << "NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)" << endl
+    gotoxy(5, 19);
+    cout << "NEU BAN NHAP SAI QUA 3 LAN THI SE BI KHOA TAM THOI! (DUNG CHUONG TRINH)" << endl
          << endl;
     do
     {
+        gotoxy(27, 9);
         cout << "Nhap ten tai khoan: ";
+        gotoxy(28, 10);
         getline(cin, tk);
         if (acc.check(tk) != 1)
+        {
+            gotoxy(28, 12);
             cout << "TEN TAI KHOAN KHONG TON TAI, VUI LONG NHAP LAI!" << endl;
+        }
+        else
+        {
+            gotoxy(28, 12);
+            cout << "                                                " << endl;
+        }
     } while (acc.check(tk) != 1);
     do
     {
+        gotoxy(27, 14);
         cout << "Nhap mat khau: ";
+        gotoxy(28, 15);
         string mk = acc.tranpass();
         d++;
         t = acc.check(mk);
         if (t != 1 && d != 3)
+        {
+            gotoxy(27, 18);
             cout << "MAT KHAU KHONG DUNG, VUI LONG NHAP LAI!" << endl;
+        }
     } while (t != 1 && d != 3);
     if (t == 1)
     {
+        gotoxy(5, 18);
         cout << "DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..." << endl;
         d--;
         Sleep(1500);
