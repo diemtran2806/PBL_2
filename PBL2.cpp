@@ -1500,8 +1500,14 @@ void list::search()
             cout << "Co " << k << " ket qua phu hop: " << endl;
             for (int i = 0; i < k; i++)
             {
+                gotoxy(5, 6);
+                cout << setw(6) << "Ma NV" << setw(17) << "|Ho" << setw(7) << "|Ten" << setw(6) << "|Ma DV" << setw(15) << "|So dien thoai" << setw(12)
+                    << "|Ngay sinh" << setw(10) << "|Gioi tinh" << setw(10) << "|Chuc vu" << setw(13) << "|He so luong" << setw(9) << "|Nam vao"
+                    << setw(10) << "|Trinh do" << setw(12) << "|Ngoai ngu" << endl
+                    << endl;
                 gotoxy(5, ++cursor);
-                cout << list_mem[a[i]] << endl;
+                list_mem[a[i]].display();
+                cout << endl;
                 fileSearchResult.add(list_mem[a[i]], 0, nhanviensearch);
             }
             //chon nhap file
