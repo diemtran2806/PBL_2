@@ -13,6 +13,7 @@ using namespace std;
 #define nhanviensearch "NhanVien_search.txt"
 #define A 1500000 //LCB
 #define STD_OUTPUT_HANDLE ((DWORD)-11)
+
 int cursor = 0;
 /*string nhanvientxt = "Nhan Vien.txt"; //main !
 string nhavienouttxt = "Nhan Vien_out.txt";
