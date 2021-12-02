@@ -1491,7 +1491,7 @@ void list::search()
         list fileSearchResult; //lưu lại danh sách kết quả tìm được
         if (k > 0)
         {
-            uiDisplay(k + 3);
+            uiDisplay(k + 10);
             cursor = 5;
             gotoxy(45, 0);
             cout << "Tim kiem nhan vien";
@@ -1505,22 +1505,26 @@ void list::search()
             }
             //chon nhap file
             char key;
+            cursor += 2;                //vị trí con trỏ hỏi Ban co muon in ket qua ra file khong?[C/K]:
+            int errcursor = cursor + 1; //vị trí con trỏ thông báo lỗi
             do
             {
-                gotoxy(5, ++cursor);
+                gotoxy(5, cursor);
                 cout << "Ban co muon in ket qua ra file khong?[C/K]:    ";
-                gotoxy(44, cursor);
+                gotoxy(49, cursor);
                 cin >> key;
                 key = toupper(key);
                 if (key != 'K' && key != 'C')
                 {
-                    gotoxy(5, ++cursor);
+                    gotoxy(5, errcursor);
                     cout << "Khong co lua chon nay! Moi ban nhap lai:" << endl;
+                    gotoxy(5, cursor);
+                    cout << "                                               " << endl; //xóa c/k câu trả lời của "Ban co muon in ket qua ra file khong?[C/K]:"
                 }
                 else
                 {
-                    gotoxy(5, ++cursor);
-                    cout << "                                          " << endl; //xoas dòng ở trên
+                    gotoxy(5, errcursor);
+                    cout << "                                               " << endl; //xóa thông bao không có lựa chọn này
                 }
             } while (key != 'K' && key != 'C');
             if (key == 'C')
@@ -1528,9 +1532,12 @@ void list::search()
                 ofstream ofs;
                 string fileNameResult; //trả về tên file xuất
                 string tempFileName;   // lưu tên file tạm
-                do                     //chạy cho đến khi không nhập gì hoặc nhâp đúng tên file chưa tồn tại
+                int tcursor = ++cursor;
+                int errcursor = tcursor + 1;
+                do //chạy cho đến khi không nhập gì hoặc nhâp đúng tên file chưa tồn tại
                 {
-                    cout << "Nhap ten file hoac enter de luu vs ten mac dinh!: ";
+                    gotoxy(5, tcursor);
+                    cout << "Nhap ten file hoac bo trong de luu vs ten mac dinh!: ";
                     cin.ignore();
                     getline(cin, tempFileName);
                     tempFileName = tempFileName + ".txt";
@@ -1559,24 +1566,36 @@ void list::search()
                     else //luu theo tên người nhập////////////////////////////
                         if (checkFile(tempFileName) == true)
                     {
-                        cout << "Tep nay da ton tai!. Moi nhap lại!" << endl;
+                        gotoxy(5, errcursor);
+                        cout << "Tep nay da ton tai!. Moi nhap lai!" << endl;
+                        gotoxy(5, tcursor);
+                        cout << "                                                                   ";
                     }
                     else
                     {
+                        gotoxy(5, errcursor);
+                        cout << "                                       " << endl; //xoas dong tệp này đã tồn tại
                         fileNameResult = tempFileName;
                     }
 
                 } while (checkFile(tempFileName) == true);
+                gotoxy(5, ++cursor);
                 cout << "Da luu file voi ten:" << fileNameResult << endl;
                 fileSearchResult.writefile_mem(ofs, fileNameResult); //xuất file
             }
         }
         else
+        {
+            cursor = 6;
+            gotoxy(5, ++cursor);
             cout << "Khong tim thay ket qua phu hop!" << endl;
+        }
+        gotoxy(5, ++cursor);
         cout << "Muon tiep tuc(C/K): ";
         cin >> chon2;
         chon2 = toupper(chon2);
     } while (chon2 != 'K');
+    gotoxy(5, ++cursor);
     cout << "Nhan Enter de tro ve Menu!" << endl;
 }
 
@@ -1620,22 +1639,30 @@ int list::menu_Search(string &tt)
         cout << "Chon: ";
         cin >> chon;
     } while (chon < 1 || chon > 12);
+    cursor = 5;
+    uiDisplay(18);
+    gotoxy(45, 0);
+    cout << "Tim kiem nhan vien";
     if (chon == 6)
     {
         string s;
         tt = s;
+        gotoxy(5, ++cursor);
         cout << "Nhap ngay: ";
         cin >> s;
         tt += s;
+        gotoxy(5, ++cursor);
         cout << "Nhap thang: ";
         cin >> s;
         tt += s;
+        gotoxy(5, ++cursor);
         cout << "Nhap nam: ";
         cin >> s;
         tt += s;
     }
     else if (chon == 7)
     {
+        gotoxy(5, ++cursor);
         cout << "Nhap gioi tinh(0:nam/1:nu): ";
         getline(cin >> ws, tt);
     }
@@ -1643,10 +1670,7 @@ int list::menu_Search(string &tt)
     {
         if (chon == 2)
             chon += 11;
-        uiDisplay(18);
-        gotoxy(45, 0);
-        cout << "Tim kiem nhan vien";
-        gotoxy(5, 6);
+        gotoxy(5, ++cursor);
         cout << "Nhap thong tin can tim kiem: ";
         getline(cin >> ws, tt);
     }
@@ -2158,8 +2182,15 @@ void list::sort()
     do
     {
         system("cls");
+        uiFunc(10);
+        cursor=5;
+        gotoxy(40,0);
+        cout<<"Sap xep";
+        gotoxy(5,++cursor);
         cout << "1: Tang dan" << endl;
+        gotoxy(5,++cursor);
         cout << "2: Giam dan" << endl;
+        gotoxy(5,++cursor);
         cout << "Chon: ";
         cin >> key;
 
@@ -2184,7 +2215,9 @@ void list::sort(bool CompFunc(const member &, const member &, int))
         writefile_mem(ofs, nhanvienouttxt);
         if (key != 0)
         {
+            gotoxy(5,++cursor);
             cout << "-----------Da sap xep xong!------------" << endl;
+            gotoxy(5,++cursor);
             system("pause");
         }
     } while (key);
@@ -2221,15 +2254,29 @@ void list::menu_Sort(int &key)
     do
     {
         system("cls");
+        uiFunc(15);
+        gotoxy(60,0);
+        cout<<"Sap xep";
+        cursor=5;
+        gotoxy(5,++cursor);
         cout << "Ban muon sap xep theo cach nao: " << endl;
+        gotoxy(5,++cursor);
         cout << "1: Ma nhan vien" << endl;
+        gotoxy(5,++cursor);
         cout << "2: Ho va ten" << endl;
+        gotoxy(5,++cursor);
         cout << "3: Ma don vi" << endl;
+        gotoxy(5,++cursor);
         cout << "4: Ngay sinh" << endl;
+        gotoxy(5,++cursor);
         cout << "5: He so luong" << endl;
+        gotoxy(5,++cursor);
         cout << "6: Nam vao" << endl;
+        gotoxy(5,++cursor);
         cout << "7: Hien thi danh sach nhan vien " << endl;
+        gotoxy(5,++cursor);
         cout << "0: Thoat!" << endl;
+        gotoxy(5,++cursor);
         cout << "Chon: ";
         cin >> key;
     } while (key < 0 || key > 7);

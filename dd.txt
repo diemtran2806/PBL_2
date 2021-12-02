@@ -1,0 +1,6 @@
+Ma NV |Ho              |Ten   |Ma DV|So dien thoai |Ngay sinh  |Gioi tinh|Chuc vu  |He so luong |Nam vao |Trinh do |Ngoai ngu  
+P504  |Tran Thi Ngoc   |Anh   |PJT  |0373695101    |20/08/1989 |1        |NV       |3.6         |2012    |Dai Hoc  |ielts 7.5  
+A405  |Tran Duc        |Thang |ACT  |0858134825    |30/10/1993 |0        |NV       |3.4         |2015    |Dai Hoc  |ielts 7.5  
+T303  |Nguyen Trong    |Hoang |TNC  |0366898411    |18/06/1979 |0        |NV       |4.2         |1997    |Dai Hoc  |ielts 7.5  
+M205  |Hoang Le Thanh  |Phuong|MKT  |0948887172    |30/05/1983 |0        |NV       |3.6         |2006    |Dai Hoc  |ielts 7.5  
+M202  |Le Van          |Dat   |MKT  |0862700132    |19/05/1976 |0        |PP       |5.2         |1999    |Dai Hoc  |ielts 7.5  

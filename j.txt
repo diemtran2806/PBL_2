@@ -1,0 +1,6 @@
+Ma NV |Ho              |Ten   |Ma DV|So dien thoai |Ngay sinh  |Gioi tinh|Chuc vu  |He so luong |Nam vao |Trinh do |Ngoai ngu  
+T306  |Nguyen Dac      |Thai  |TNC  |0365718545    |17/10/1995 |0        |NV       |3.5         |2018    |Dai Hoc  |TOEIC 700  
+T305  |Phan Phu        |Quy   |TNC  |0845154919    |16/12/1987 |0        |NV       |3.8         |2009    |Dai Hoc  |TOEIC 850  
+T303  |Nguyen Trong    |Hoang |TNC  |0366898411    |18/06/1979 |0        |NV       |4.2         |1997    |Dai Hoc  |ielts 7.5  
+T302  |Ho Duc          |Hoang |TNC  |0338650408    |20/06/1973 |0        |PP       |5.2         |1995    |Dai Hoc  |ielts 8.0  
+T301  |Nguyen Duc      |Duy   |TNC  |0763503451    |16/11/1974 |0        |TP       |5.5         |1996    |Dai Hoc  |ielts 9.0  
