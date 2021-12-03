@@ -244,6 +244,8 @@ bool ascending(const member &m1, const member &m2, int key);  //tang dan
 bool descending(const member &m1, const member &m2, int key); //giam dan
 bool checkFile(string path);                                  //check file path có tồn tại ko?
 
+//color
+void SET_COLOR(int color);
 //giao dien
 //display
 void uiDisplay(int n);
@@ -262,8 +264,6 @@ list com;
 int main()
 {
 
-    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
     cout << left;
     login();
     if (d != 3)
@@ -281,6 +281,19 @@ int main()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//color
+void SET_COLOR(int color)
+{
+    WORD wColor;
+
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
+    {
+        wColor = (csbi.wAttributes & 0xF0) + (color & 0x0F);
+        SetConsoleTextAttribute(hStdOut, wColor);
+    }
+}
 //giao dien
 void uiDisplay(int n)
 {
@@ -485,11 +498,9 @@ void login()
         if (acc.check(tk) != 1)
         {
             gotoxy(27, 12);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "TEN TAI KHOAN KHONG TON TAI, VUI LONG NHAP LAI!" << endl;
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
         else
         {
@@ -510,11 +521,9 @@ void login()
         if (t != 1 && d != 3)
         {
             gotoxy(27, 18);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "MAT KHAU KHONG DUNG, VUI LONG NHAP LAI!" << endl;
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
         else
         {
@@ -527,22 +536,18 @@ void login()
         gotoxy(5, 19);
         cout << "                                                                                 ";
         gotoxy(15, 19);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 10);
+        SET_COLOR(2);
         cout << "DANH NHAP THANH CONG!, VUI LONG DOI VAI GIAY DE SU DUNG CHUC NANG..." << endl;
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
         gotoxy(80, 19); //break
         d--;
         Sleep(1500);
     }
     else
     {
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 12);
+        SET_COLOR(4);
         cout << "BAN DA NHAP SAI QUA 3 LAN, VUI LONG THU LAI SAU!!" << endl;
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
     }
 }
 
@@ -775,11 +780,9 @@ void member::setmID()
         if (check > 0)
         {
             gotoxy(5, alert);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN,MOI BAN NHAP LAI!" << endl;
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
         else
         {
@@ -958,11 +961,9 @@ istream &operator>>(istream &in, member &m)
         if (check > 0)
         {
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
             gotoxy(5, ++cursor);
             cout << "MOI BAN NHAP LAI: " << endl
                  << endl;
@@ -1486,13 +1487,11 @@ void list::menu_dis()
             gotoxy(40, 0);
             cout << "Thong ke theo danh sach" << endl;
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "Khong co chuc nang nay. Moi nhap lai!" << endl;
             gotoxy(5, 7);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
     } while (key);
 }
@@ -1517,7 +1516,7 @@ void list::search()
     char chon2;
     do
     {
-        int chon = menu_Search(tt); 
+        int chon = menu_Search(tt);
         int k = search(chon, tt, a);
         list fileSearchResult; //lưu lại danh sách kết quả tìm được
         if (k > 0)
@@ -1555,11 +1554,9 @@ void list::search()
                 {
                     gotoxy(5, errcursor);
 
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 12);
+                    SET_COLOR(4);
                     cout << "Khong co lua chon nay! Moi ban nhap lai:" << endl;
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 15);
+                    SET_COLOR(0);
                     gotoxy(5, cursor);
                     cout << "                                               " << endl; //xóa c/k câu trả lời của "Ban co muon in ket qua ra file khong?[C/K]:"
                 }
@@ -1609,11 +1606,9 @@ void list::search()
                         if (checkFile(tempFileName) == true)
                     {
                         gotoxy(5, errcursor);
-                        FlushConsoleInputBuffer(hConsole);
-                        SetConsoleTextAttribute(hConsole, 12);
+                        SET_COLOR(4);
                         cout << "Tep nay da ton tai!. Moi nhap lai!" << endl;
-                        FlushConsoleInputBuffer(hConsole);
-                        SetConsoleTextAttribute(hConsole, 15);
+                        SET_COLOR(0);
                         gotoxy(5, tcursor);
                         cout << "                                                                   ";
                     }
@@ -1626,11 +1621,9 @@ void list::search()
 
                 } while (checkFile(tempFileName) == true);
                 gotoxy(5, ++cursor);
-                FlushConsoleInputBuffer(hConsole);
-                SetConsoleTextAttribute(hConsole, 10);
+                SET_COLOR(2);
                 cout << "Da luu file voi ten:" << fileNameResult << endl;
-                FlushConsoleInputBuffer(hConsole);
-                SetConsoleTextAttribute(hConsole, 15);
+                SET_COLOR(0);
                 fileSearchResult.writefile_mem(ofs, fileNameResult); //xuất file
             }
         }
@@ -1638,19 +1631,16 @@ void list::search()
         {
             cursor = 6;
             gotoxy(5, ++cursor);
-            cout<<"                                               ";//xoa thang
+            cout << "                                               "; //xoa thang
             gotoxy(5, ++cursor);
-            cout<<"                                               ";//xoa nam
+            cout << "                                               "; //xoa nam
             gotoxy(5, ++cursor);
-            cout<<"                                               ";//xoa nam
+            cout << "                                               "; //xoa nam
             cursor = 6;
             gotoxy(5, cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "Khong tim thay ket qua phu hop!" << endl;
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
-            
+            SET_COLOR(0);
         }
         gotoxy(5, ++cursor);
         cout << "Muon tiep tuc(C/K): ";
@@ -1754,11 +1744,9 @@ int list::check(member &m)
     {
         cursor = 5;
         gotoxy(5, ++cursor);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 12);
+        SET_COLOR(4);
         cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
         gotoxy(5, ++cursor);
         cout << "MOI BAN NHAP LAI: " << endl
              << endl;
@@ -1825,13 +1813,11 @@ void list::add_menu()
             cin >> m;
             add(m, 0, nhanvientxt);
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 10);
+            SET_COLOR(2);
             cout << "------------Da them thanh cong!-------------" << endl;
             gotoxy(5, ++cursor);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
             break;
         case 2:
             uiDisplay(36);
@@ -1844,13 +1830,11 @@ void list::add_menu()
             k = --numofMem;
             add(m, k, nhanvientxt);
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 10);
+            SET_COLOR(2);
             cout << "------------Da them thanh cong!-------------" << endl;
             gotoxy(5, ++cursor);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
             break;
         case 3:
             uiDisplay(36);
@@ -1869,24 +1853,20 @@ void list::add_menu()
                 if (k < 0 && k > numofMem)
                 {
                     gotoxy(5, ++cursor);
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 12);
+                    SET_COLOR(4);
                     cout << "Ban da nhap vi tri vuot ngoai danh sach, moi ban nhap lai!";
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 15);
+                    SET_COLOR(0);
                     k = -1;
                 }
 
             } while (k == -1);
             add(m, k, nhanvientxt);
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 10);
+            SET_COLOR(2);
             cout << "------------Da them thanh cong!-------------" << endl;
             gotoxy(5, ++cursor);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
             break;
         case 0:
             break;
@@ -1897,13 +1877,11 @@ void list::add_menu()
             gotoxy(45, 0);
             cout << "Them nhan vien";
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "Khong co chuc nang nay!" << endl;
             gotoxy(5, ++cursor);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
     } while (cv != 0);
 }
@@ -1993,13 +1971,11 @@ void list::delete_mem_age(int key)
         gotoxy(40, 0);
         cout << "Xoa theo nam sinh";
         gotoxy(5, 6);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 10);
+        SET_COLOR(2);
         cout << "Da xoa xong!" << endl;
         gotoxy(5, 7);
         system("pause");
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
     }
     else
     {
@@ -2008,13 +1984,11 @@ void list::delete_mem_age(int key)
         gotoxy(40, 0);
         cout << "Xoa theo nam sinh";
         gotoxy(5, 6);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 12);
+        SET_COLOR(4);
         cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
         gotoxy(5, 7);
         system("pause");
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
     }
     if (numofMem > 0)
     {
@@ -2061,13 +2035,11 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
         gotoxy(40, 0);
         cout << "1. Xoa theo ID.";
         gotoxy(5, 6);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 12);
+        SET_COLOR(4);
         cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
         gotoxy(5, 7);
         system("pause");
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
     }
     else
     {
@@ -2110,13 +2082,11 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
         gotoxy(40, 0);
         cout << "1. Xoa theo ID.";
         gotoxy(5, 6);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 10);
+        SET_COLOR(2);
         cout << "Da xoa xong!" << endl;
         gotoxy(5, 7);
         system("pause");
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
     }
 }
 //main_del_mem
@@ -2185,13 +2155,11 @@ void list::delete_mem()
             gotoxy(40, 0);
             cout << "Xoa mot nhan vien";
             gotoxy(5, 6);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "Khong co chuc nang nay. Moi nhap lai!" << endl;
             gotoxy(5, 7);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
 
     } while (ktr != -1);
@@ -2307,13 +2275,11 @@ void list::sort(bool CompFunc(const member &, const member &, int))
         {
             gotoxy(5, ++cursor);
 
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 10);
+            SET_COLOR(2);
             cout << "-----------Da sap xep xong!------------" << endl;
             gotoxy(5, ++cursor);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
     } while (key);
 }
@@ -2438,13 +2404,11 @@ void list::menu()
             gotoxy(35, 0);
             cout << "--------------MENU---------------" << endl;
             gotoxy(5, ++cursor);
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 12);
+            SET_COLOR(4);
             cout << "Khong co chuc nang nay!" << endl;
             gotoxy(5, ++cursor);
             system("pause");
-            FlushConsoleInputBuffer(hConsole);
-            SetConsoleTextAttribute(hConsole, 15);
+            SET_COLOR(0);
         }
     } while (chon);
 }
@@ -2599,13 +2563,11 @@ void list::Edit_mem_inf()
                 cout << "Sua thong tin nhan vien";
                 cursor = 5;
                 gotoxy(5, ++cursor);
-                FlushConsoleInputBuffer(hConsole);
-                SetConsoleTextAttribute(hConsole, 12);
+                SET_COLOR(4);
                 cout << "Khong co tuy chon nay. Moi nhap lai!" << endl;
                 gotoxy(5, ++cursor);
                 system("pause");
-                FlushConsoleInputBuffer(hConsole);
-                SetConsoleTextAttribute(hConsole, 15);
+                SET_COLOR(0);
                 break;
             }
             if (key == 0)
@@ -2622,13 +2584,11 @@ void list::Edit_mem_inf()
                     cout << "Sua thong tin nhan vien";
                     cursor = 5;
                     gotoxy(5, ++cursor);
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 12);
+                    SET_COLOR(4);
                     cout << "Khong co tuy chon nay. Moi nhap lai!" << endl;
                     gotoxy(5, ++cursor);
                     system("pause");
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 15);
+                    SET_COLOR(0);
                 }
                 else if (key < nCase)
                 {
@@ -2640,13 +2600,11 @@ void list::Edit_mem_inf()
                     gotoxy(60, 0);
                     cout << "Sua thong tin nhan vien";
                     gotoxy(5, ++cursor);
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 10);
+                    SET_COLOR(2);
                     cout << "Da sua xong!" << endl;
                     gotoxy(5, ++cursor);
                     system("pause");
-                    FlushConsoleInputBuffer(hConsole);
-                    SetConsoleTextAttribute(hConsole, 15);
+                    SET_COLOR(0);
                 }
             }
 
@@ -2660,13 +2618,11 @@ void list::Edit_mem_inf()
         gotoxy(40, 0);
         cout << "Sua thong tin nhan vien";
         gotoxy(5, ++cursor);
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 12);
+        SET_COLOR(4);
         cout << "Khong co nhan vien nay!";
         gotoxy(5, ++cursor);
         system("pause");
-        FlushConsoleInputBuffer(hConsole);
-        SetConsoleTextAttribute(hConsole, 15);
+        SET_COLOR(0);
         gotoxy(5, ++cursor + 20);
     }
 }
