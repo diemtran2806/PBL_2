@@ -1,5 +1,4 @@
 Ma NV |Ho              |Ten   |Ma DV|So dien thoai |Ngay sinh  |Gioi tinh|Chuc vu  |He so luong |Nam vao |Trinh do |Ngoai ngu  
-H1000 |Le Van          |Dat   |HSL  |0862700132    |19/05/2002 |0        |NV       |5.6         |2021    |Dai hoc  |IELTS 7.5  
 L001  |Nguyen Quoc     |Tinh  |LDR  |0912459841    |24/06/1965 |0        |GD       |6.5         |1988    |Dai Hoc  |ielts 8.5  
 L002  |Phan Khanh      |Ngan  |LDR  |0896224056    |27/01/1969 |1        |PGD      |6.2         |1990    |Dai Hoc  |ielts 8.0  
 L003  |Tran Trong      |Nam   |LDR  |0899227417    |27/06/1970 |0        |PGD      |6.2         |1993    |Dai Hoc  |ielts 8.5  
