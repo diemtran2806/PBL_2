@@ -242,6 +242,7 @@ list com;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
 {
+    system("color F0");//set screen background
     SetConsoleTitle(TEXT("Chuong trinh quan ly nhan vien")); //console title
     cout << left;
     getCol(); //lấy chiều rộng
