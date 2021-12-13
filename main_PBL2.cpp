@@ -19,8 +19,16 @@
 #include "function.cpp"
 using namespace std;
 
+// BOOL WINAPI FillConsoleOutputAttribute(
+//   __in   HANDLE hConsoleOutput,
+//   __in   WORD wAttribute,
+//   __in   DWORD nLength,
+//   __in   COORD dwWriteCoord,
+//   __out  LPDWORD lpNumberOfAttrsWritten
+// );
 int main()
 {
+    system("color F0");
     SetConsoleTitle(TEXT("Chuong trinh quan ly nhan vien")); //console title
     cout << left;
     getCol(); //lấy chiều rộng
