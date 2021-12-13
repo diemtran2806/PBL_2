@@ -23,14 +23,8 @@ class account
     string password;
 
 public:
-    string getName()
-    {
-        return name;
-    }
-    string getPassword()
-    {
-        return password;
-    }
+    string getName() const;
+    string getPassword() const;
     void readAccount(ifstream &);
 };
 
@@ -137,6 +131,7 @@ public:
     int getSalary();    //tinh luong
     int getNewsalary(); //thực lĩnh
     bool isEqual(int, string);
+    bool isEqual_name(string);
 
     void display();
     friend istream &operator>>(istream &in, member &);
@@ -236,8 +231,7 @@ public:
     void menu();
 };
 
-//Ham xoa ki tu trang du thua
-void del_ws(string &s);
+void del_ws(string &s);                                       //Ham xoa ki tu trang du thua
 bool ascending(const member &m1, const member &m2, int key);  //tang dan
 bool descending(const member &m1, const member &m2, int key); //giam dan
 bool checkFile(string path);                                  //check file path có tồn tại ko?
@@ -478,6 +472,16 @@ void getCol() //lấy hàng cột
 }
 
 //phần class của chức năng đăng nhập
+string account::getName() const
+{
+    return name;
+}
+
+string account::getPassword() const
+{
+    return password;
+}
+
 void account::readAccount(ifstream &in)
 {
     getline(in, name, '|');
@@ -1056,14 +1060,13 @@ istream &operator>>(istream &in, member &m)
         in >> m.mID;
         check = com.search(1, m.mID, a);
         if (check > 0)
-        {
+        {   
             gotoxy(l_uiDisplay + 5, ++cursor);
             SET_COLOR(4);
             cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
             SET_COLOR(0);
             gotoxy(l_uiDisplay + 5, ++cursor);
-            cout << "MOI BAN NHAP LAI: " << endl
-                 << endl;
+            cout << "MOI BAN NHAP LAI: " << endl << endl;
         }
     } while (check > 0);
     gotoxy(l_uiDisplay + 5, ++cursor);
@@ -1148,9 +1151,19 @@ int member::getNewsalary()
         return getSalary();
 }
 
+bool member::isEqual_name(string s){
+    int len = getFullName().length() - s.length();
+    int lenS = s.length();
+    for(int i=0; i <= len; i++){
+        if(s.compare(0,lenS,getFullName(),i,lenS)==0) return 0;
+    }
+    return 1;
+}
+
 bool member::isEqual(int chon, string s)
 {
     string temp; //chuyển kiểu int/float sang string
+    string temp1, temp2, temp3, temp4, temp5, temp6;
     ostringstream convert, convert1, convert2;
     switch (chon)
     {
@@ -1172,7 +1185,19 @@ bool member::isEqual(int chon, string s)
         convert2 << this->ns.getYear();
         temp += convert2.str();*/
         temp = to_string(this->ns.getDay()) + to_string(this->ns.getMonth()) + to_string(this->ns.getYear());
-        return s.compare(temp);
+        if(s == temp) return 0;
+        temp1 = "0" + to_string(this->ns.getMonth()) + to_string(this->ns.getYear());
+        if(s == temp1) return 0;
+        temp2 = to_string(this->ns.getDay()) + "0" + to_string(this->ns.getYear());
+        if(s == temp2) return 0;
+        temp3 = to_string(ns.getDay()) + to_string(ns.getMonth()) + "0";
+        if(s == temp3) return 0;
+        temp4 = "0" + to_string(ns.getMonth()) + "0";
+        if(s == temp4) return 0;
+        temp5 = "00" + to_string(ns.getYear());
+        if(s == temp5) return 0;
+        temp6 = to_string(ns.getDay()) + "00";
+        return s.compare(temp6);
     case 7:
         temp = to_string(this->gender);
         return s.compare(temp);
@@ -1192,6 +1217,8 @@ bool member::isEqual(int chon, string s)
         return s.compare(this->L_certificate);
     case 13:
         return s.compare(this->getFullName());
+    case 14:
+        return isEqual_name(s);
     default:
         return false;
     }
@@ -1615,9 +1642,11 @@ void list::search()
     int a[100];
     string tt; //thông tin
     char chon2;
+    int chon;
     do
     {
-        int chon = menu_Search(tt);
+        chon = menu_Search(tt);
+        if(chon == 0) break;
         int k = search(chon, tt, a);
         list fileSearchResult; //lưu lại danh sách kết quả tìm được
         if (k > 0)
@@ -1748,7 +1777,7 @@ void list::search()
         chon2 = toupper(chon2);
     } while (chon2 != 'K');
     gotoxy(l_uiDisplay + 5, ++cursor);
-    cout << "Nhan Enter de tro ve Menu!" << endl;
+    if(chon != 0) system("pause");
 }
 
 int list::menu_Search(string &tt)
@@ -1769,65 +1798,68 @@ int list::menu_Search(string &tt)
         gotoxy(l_uiFuns + 5, ++cursor);
         cout << "2: Ho va ten" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "3: Ten" << endl;
+        cout << "3: Ma don vi" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "4: Ma don vi" << endl;
+        cout << "4: So dien thoai" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "5: So dien thoai" << endl;
+        cout << "5: Ngay sinh" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "6: Ngay sinh" << endl;
+        cout << "6: Gioi tinh" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "7: Gioi tinh" << endl;
+        cout << "7: Ma chuc vu" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "8: Ma chuc vu" << endl;
+        cout << "8: He so luong" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "9: He so luong" << endl;
+        cout << "9: Nam vao" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "10: Nam vao" << endl;
+        cout << "10: Trinh do, cap bac" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "11: Trinh do, cap bac" << endl;
+        cout << "11: Bang ngoai ngu" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "12: Bang ngoai ngu" << endl;
+        cout << "0: Thoat!" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
         cout << "Chon: ";
         cin >> chon;
-    } while (chon < 1 || chon > 12);
-    cursor = 5;
-    uiDisplay(18);
-    gotoxy(l_uiDisplay + 65, 0);
-    cout << "TIM KIEM NHAN VIEN";
-    if (chon == 6)
-    {
-        string s;
-        tt = s;
-        gotoxy(l_uiDisplay + 5, ++cursor);
-        cout << "Nhap ngay: ";
-        cin >> s;
-        tt += s;
-        gotoxy(l_uiDisplay + 5, ++cursor);
-        cout << "Nhap thang: ";
-        cin >> s;
-        tt += s;
-        gotoxy(l_uiDisplay + 5, ++cursor);
-        cout << "Nhap nam: ";
-        cin >> s;
-        tt += s;
-    }
-    else if (chon == 7)
-    {
-        gotoxy(l_uiDisplay + 5, ++cursor);
-        cout << "Nhap gioi tinh [0:nam/1:nu]: ";
-        getline(cin >> ws, tt);
-    }
-    else
-    {
-        if (chon == 2)
-            chon += 11;
-        gotoxy(l_uiDisplay + 5, ++cursor);
-        cout << "Nhap thong tin can tim kiem: ";
-        getline(cin >> ws, tt);
-    }
-    return chon;
+        if(chon == 0) return chon;
+        cursor = 5;
+        uiDisplay(18);
+        gotoxy(l_uiDisplay + 65, 0);
+        cout << "TIM KIEM NHAN VIEN";
+        if (chon > 1) chon++;
+        if (chon == 6)
+        {
+            string s;
+            tt = s;
+            gotoxy(l_uiDisplay + 5, ++cursor);
+            cout << "Nhap ngay: ";
+            cin >> s;
+            tt += s;
+            gotoxy(l_uiDisplay + 5, ++cursor);
+            cout << "Nhap thang: ";
+            cin >> s;
+            tt += s;
+            gotoxy(l_uiDisplay + 5, ++cursor);
+            cout << "Nhap nam: ";
+            cin >> s;
+            tt += s;
+            gotoxy(l_uiDisplay + 5, ++cursor);
+        }
+        else if (chon == 7)
+        {
+            gotoxy(l_uiDisplay + 5, ++cursor);
+            cout << "Nhap gioi tinh [0:nam/1:nu]: ";
+            getline(cin >> ws, tt);
+        }
+        else
+        {
+            if (chon == 3)
+                chon += 11;
+            gotoxy(l_uiDisplay + 5, ++cursor);
+            cout << "Nhap thong tin can tim kiem: ";
+            getline(cin >> ws, tt);
+        }
+        return chon;
+    } while (chon);
 }
 //list::add
 int list::check(member &m)
@@ -1846,7 +1878,7 @@ int list::check(member &m)
         cursor = 5;
         gotoxy(l_uiDisplay + 5, ++cursor);
         SET_COLOR(4);
-        cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SANnnn!" << endl;
+        cout << "BAN DA NHAP TRUNG MA NHAN VIEN CO SAN!" << endl;
         SET_COLOR(0);
         gotoxy(l_uiDisplay + 5, ++cursor);
         cout << "MOI BAN NHAP LAI: " << endl
@@ -1910,14 +1942,14 @@ void list::add_menu()
             uiDisplay(36);
             cursor = 5;
             gotoxy(l_uiDisplay + 70, 0);
-            cout << "Them nhan vien";
+            cout << "THEM NHAN VIEN";
             gotoxy(l_uiDisplay + 5, ++cursor);
             cout << "Nhap nhan vien muon them vao dau danh sach: " << endl;
             cin >> m;
             add(m, 0, nhanvientxt);
             gotoxy(l_uiDisplay + 5, ++cursor);
             SET_COLOR(2);
-            cout << "------------Da them thanh cong!-------------" << endl;
+            cout << "-------------Da them thanh cong!-------------" << endl;
             gotoxy(l_uiDisplay + 5, ++cursor);
             system("pause");
             SET_COLOR(0);
@@ -1926,7 +1958,7 @@ void list::add_menu()
             uiDisplay(36);
             cursor = 5;
             gotoxy(l_uiDisplay + 70, 0);
-            cout << "Them nhan vien";
+            cout << "THEM NHAN VIEN";
             gotoxy(l_uiDisplay + 5, ++cursor);
             cout << "Nhap nhan vien muon them vao cuoi danh sach: " << endl;
             cin >> m;
@@ -1934,7 +1966,7 @@ void list::add_menu()
             add(m, k, nhanvientxt);
             gotoxy(l_uiDisplay + 5, ++cursor);
             SET_COLOR(2);
-            cout << "------------Da them thanh cong!-------------" << endl;
+            cout << "-------------Da them thanh cong!-------------" << endl;
             gotoxy(l_uiDisplay + 5, ++cursor);
             system("pause");
             SET_COLOR(0);
@@ -1943,7 +1975,7 @@ void list::add_menu()
             uiDisplay(36);
             cursor = 5;
             gotoxy(l_uiDisplay + 70, 0);
-            cout << "Them nhan vien";
+            cout << "THEM NHAN VIEN";
             gotoxy(l_uiDisplay + 5, ++cursor);
             cout << "Nhap nhan vien muon them vao vi tri bat ki trong danh sach: " << endl;
             gotoxy(l_uiDisplay + 5, ++cursor);
@@ -1951,7 +1983,9 @@ void list::add_menu()
             do
             {
                 gotoxy(l_uiDisplay + 5, ++cursor);
-                cout << "Nhap vi tri muon them:";
+                cout<<"Luu y: Vi tri dau tien bat dau tu so 0!";
+                gotoxy(l_uiDisplay + 5, ++cursor);
+                cout << "Nhap vi tri muon them: ";
                 cin >> k;
                 if (k < 0 && k > numofMem)
                 {
@@ -1966,7 +2000,7 @@ void list::add_menu()
             add(m, k, nhanvientxt);
             gotoxy(l_uiDisplay + 5, ++cursor);
             SET_COLOR(2);
-            cout << "-------------Da them thanh cong!-------------" << endl;
+            cout << "--------------Da them thanh cong!-------------" << endl;
             gotoxy(l_uiDisplay + 5, ++cursor);
             system("pause");
             SET_COLOR(0);
@@ -1979,7 +2013,7 @@ void list::add_menu()
             cursor = 5;
             uiFunc(11);
             gotoxy(45, 0);
-            cout << "Them nhan vien";
+            cout << "THEM NHAN VIEN";
             gotoxy(5, ++cursor);
             SET_COLOR(4);
             cout << "Khong co chuc nang nay!" << endl;
@@ -1996,7 +2030,7 @@ void list::delete_mem_age(int key)
     getCol();
     uiFunc(11);
     gotoxy(l_uiFuns + 40, 0);
-    cout << "Xoa theo nam sinh";
+    cout << "XOA THEO NAM SINH";
     birthday dayAge;
     bool checkdel = false;
     char keyy;
@@ -2089,7 +2123,7 @@ void list::delete_mem_age(int key)
         getCol();
         uiFunc(11);
         gotoxy(l_uiFuns + 40, 0);
-        cout << "Xoa theo nam sinh";
+        cout << "XOA THEO NAM SINH";
         gotoxy(l_uiFuns + 5, 6);
         SET_COLOR(2);
         cout << "Da xoa xong!" << endl;
@@ -2103,7 +2137,7 @@ void list::delete_mem_age(int key)
         getCol();
         uiFunc(11);
         gotoxy(l_uiFuns + 40, 0);
-        cout << "Xoa theo nam sinh";
+        cout << "XOA THEO NAM SINH";
         gotoxy(l_uiFuns + 5, 6);
         SET_COLOR(4);
         cout << "Khong co nguoi nao co thong tin trung khop!" << endl;
@@ -2124,21 +2158,21 @@ void list::delete_mem_name_id(int option) //xóa theo tên hoặc id
     if (option == 1)
     {
         gotoxy(l_uiFuns + 45, 0);
-        cout << "Xoa theo ID.";
+        cout << "XOA THEO ID.";
         gotoxy(l_uiFuns + 5, 6);
         cout << "Nhap ma nhan vien: ";
     }
     else if (option == 3)
     {
         gotoxy(l_uiFuns + 45, 0);
-        cout << "Xoa theo ten";
+        cout << "XOA THEO TEN";
         gotoxy(l_uiFuns + 5, 6);
         cout << "Nhap ten nhan vien: ";
     }
     else if (option == 13)
     {
         gotoxy(l_uiFuns + 45, 0);
-        cout << "Xoa theo ho va ten";
+        cout << "XOA THEO HO VA TEN";
         gotoxy(l_uiFuns + 5, 6);
         cout << "Nhap ho ten nhan vien: ";
     }
@@ -2380,14 +2414,15 @@ void list::sort()
         gotoxy(l_uiFuns + 5, ++cursor);
         cout << "2: Giam dan" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
+        cout << "0: Thoat!" << endl;
+        gotoxy(l_uiFuns + 5, ++cursor);
         cout << "Chon: ";
         cin >> key;
-
-    } while (key != 1 && key != 2);
-    if (key == 1)
-        sort(ascending);
-    else if (key == 2)
-        sort(descending);
+        if (key == 1)
+            sort(ascending);
+        else if (key == 2)
+            sort(descending);
+    } while (key);
 }
 
 void list::sort(bool CompFunc(const member &, const member &, int))
@@ -2459,7 +2494,7 @@ void list::menu_Sort(int &key)
         gotoxy(l_uiFuns + 5, ++cursor);
         cout << "3: Ma don vi" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
-        cout << "4: Ngay sinh" << endl;
+        cout << "4: Nam sinh" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
         cout << "5: He so luong" << endl;
         gotoxy(l_uiFuns + 5, ++cursor);
@@ -2522,7 +2557,6 @@ void list::menu()
             break;
         case 4:
             search();
-            getch();
             break;
         case 5:
             delete_mem();
